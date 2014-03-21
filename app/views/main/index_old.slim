@@ -1,0 +1,171 @@
+= render 'map'
+
+coffee:
+  
+
+  countries =
+    'Austria':
+      'Lands': ['vie', 'bud', 'tri', 'boh', 'gal', 'tyr']
+      'Power':
+        'Army': ['vie', 'bud']
+        'Fleet': ['tri']
+    'England':
+      'Lands': ['lvp', 'lon', 'edi', 'wal', 'yor', 'cly']
+      'Power':
+        'Army': ['lvp']
+        'Fleet': ['lon', 'edi']
+    'France':
+      'Lands': ['par', 'mar', 'bre', 'pic', 'bur', 'gas']
+      'Power':
+        'Army': ['par', 'mar']
+        'Fleet': ['bre']
+    'Germany':
+      'Lands': ['ber', 'mun', 'kie', 'sil', 'pru', 'ruh']
+      'Power':
+        'Army': ['ber', 'mun']
+        'Fleet': ['kie']
+    'Italy':
+      'Lands': ['rom', 'ven', 'nap', 'tus', 'apu', 'pie']
+      'Power':
+        'Army': ['rom', 'ven']
+        'Fleet': ['nap']
+    'Russia':
+      'Lands': ['mos', 'war', 'sev', 'ukr', 'lvn', 'fin', 'stp']
+      'Power':
+        'Army': ['mos', 'war']
+        'Fleet': ['stp_sc', 'bot']
+    'Turkey':
+      'Lands': ['con', 'smy', 'ank', 'arm', 'syr']
+      'Power':
+        'Army': ['con', 'smy']
+        'Fleet': ['ank']
+
+
+  place_force = (country, where, type)->
+    address = where.split '_'
+    
+    region = window.regions[address[0]]
+    
+    if address.length == 2
+      pos = address[1]
+    else
+      pos = if type == 'army' then 'mv' else 'xc'
+
+    coords = map.find('#'+where).data('coords')
+
+    force = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
+    force.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+type
+
+    force = $(force)
+
+    force.attr 'class', 'force '+country
+    force.attr 'transform', 'translate('+coords.join(',')+')'
+    
+    force.appendTo places.filter('#'+address[0])
+    
+    force.data 'neighbours', region[pos]
+    force.data 'country', country
+    force.data 'where', where
+    force.data 'type', type
+    force.data 'coords', coords
+    force.data 'address', address[0]
+
+  for country, data of countries
+    place_force country, army_place,  'army'  for army_place  in data['Power']['Army']
+    place_force country, fleet_place, 'fleet' for fleet_place in data['Power']['Fleet']
+    places.filter('#'+land)[0].setAttribute 'class', country for land in data['Lands']
+
+
+  # choose start and finish
+  choosen =
+    force: undefined
+    type: undefined
+    disposition: undefined
+    possibilities: undefined
+    destination: undefined
+
+
+  show_possibilities = ( true_false )->
+    map.find('#'+possibility).toggleAttr 'data-possible', true_false for possibility in choosen.possibilities
+    choosen.disposition.toggleAttr 'data-choosen', true_false
+
+  # find start
+  unhover_hovered_force = ()->
+    if choosen.force
+      choosen.force = undefined
+
+      choosen.disposition.removeAttr 'data-start'
+
+  hover_unhovered_force = ( force )->
+    if force.length
+      choosen.force = force
+      choosen.type = force.data 'type'
+      choosen.disposition = force.parent()
+      choosen.possibilities = force.data 'neighbours'
+
+      choosen.disposition.attr 'data-start', true
+
+  hover_force_search = ( event )->
+    unhover_hovered_force()
+    hover_unhovered_force( $(event.target).siblings('.force') )
+
+  click_force_search = ()->
+    return unless choosen.force
+
+    show_possibilities true
+
+    if choosen.force.data('order')
+      choosen.force.data('order').visualisation.remove()
+      choosen.force.data 'order', undefined
+
+    force_search 'off'
+    destination_search 'on'
+
+  force_search = ( on_off )->
+    map[on_off]( 'mouseover', '.l, .w', hover_force_search )
+    map[on_off]( 'mousedown', '.l, .w', click_force_search )
+
+
+  # find destination
+  unhover_hovered_destination = ()->
+    if choosen.destination
+      choosen.destination.removeAttr 'data-destination'
+      choosen.destination = undefined
+
+  hover_unhovered_destination = ( destination )->
+    if destination.length
+      destination.attr 'data-destination', true
+      choosen.destination = destination
+
+  hover_destination_search = ( event )->
+    unhover_hovered_destination()
+    hover_unhovered_destination( $(event.target).closest('[data-possible]') )
+
+  click_destination_search = ()->
+    if choosen.destination
+      from = choosen.force.data 'coords'
+      to = choosen.destination.data 'coords'
+
+      choosen.force.data 'order',
+        type: 'move'
+        to: choosen.destination.attr 'id'
+        visualisation: drawMove( from, to ).attr( 'class', 'move '+choosen.force.data('country') )
+
+      orders.new.append choosen.force.data('order').visualisation
+
+
+    show_possibilities false
+
+    unhover_hovered_destination()
+    unhover_hovered_force()
+
+    destination_search 'off'
+    force_search 'on'
+
+  destination_search = ( on_off )->
+    map[on_off]( 'mouseover', '.l, .w', hover_destination_search )
+    map[on_off]( 'mousedown', '.l, .w', click_destination_search )
+
+
+  # begin searches
+  force_search 'on'

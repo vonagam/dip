@@ -1,0 +1,71 @@
+#diplomacy_map
+
+  // selection
+  > [data-hover] >
+    .l
+      fill hsl( 50, 30%, 65%)
+    .w
+      fill hsl(210, 30%, 65%)
+    .force
+      fill white !important
+
+  > [data-choosen] > 
+    .l
+      fill hsl( 50, 30%, 60%)
+    .w
+      fill hsl(210, 30%, 60%)
+    .force
+      stroke white !important
+
+  [data-possible]
+    > .l, &.l
+      fill hsl( 50, 30%, 60%)
+    > .w
+      fill hsl(210, 30%, 60%)
+
+  [data-destination]
+    > .l, &.l
+      fill hsl( 50, 20%, 50%)
+    > .w
+      fill hsl(210, 20%, 50%)
+
+  // orders
+  > #Orders > #Orders_new > 
+    line
+      stroke-width 2
+      marker-end url(#move_marker)
+
+  // countries
+  $countries = Austria Turkey Germany Italy France England Russia 
+  $z = length($countries)
+  for $i in (0..$z)
+    $country = $countries[$i]
+    $color = $i * 51
+
+    // force
+    > g > .force.{$country}
+      fill hsl( $color, 90%, 40% )
+      stroke hsl( $color, 100%, 20% )      
+
+    // center and land
+    > .{$country}
+      > .center
+        fill hsl( $color, 100%, 15% )
+
+      > .l
+        fill hsl( $color, 60%, 60% )
+      &[data-start] > .l
+        fill hsl( $color, 60%, 55% )
+      &[data-choosen] > .l
+        fill hsl( $color, 60%, 50% )
+      &[data-possible] > .l, > .l[data-possible]
+        fill hsl( $color, 60%, 50% )
+      &[data-destination] > .l, > .l[data-destination]
+        fill hsl( $color, 50%, 40% )
+
+    > #Orders > #Orders_new > 
+      .{$country}
+        stroke hsl( $color, 100%, 20% )
+        fill hsl( $color, 100%, 20% )
+
+
