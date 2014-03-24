@@ -1,13 +1,18 @@
 @klass = {}
 
 class klass.State
-  initialized: false
-  turned: false
-  childs: []
+  constructor: ( hash = {} )->
+    @initialized = false
+    @turned = false
 
-  initials: {}
-  resets: {}
-  toggls: {}
+    @initials = hash.initials || {}
+    @resets = hash.resets || {}
+
+    @toggls = hash.toggls || {}
+
+    @childs = []
+    
+    add hash.childs if hash.childs
 
 
   add: (childs)->
@@ -20,38 +25,37 @@ class klass.State
 
   turn: (bool)->
     return if @turned == bool
+
     @turned = bool
 
-    # initialization
-    if @initialized == false && bool
-      @set_state_variables @initials
-      @initialize && @initialize()
-      @initialized = true
+    return if @parent && @parent.before_child_toggled this, bool
 
-    # fundamental behaviour
-    if bool
-      @parent && @parent.turn true
-    else
-      child.turn false for child in @childs
+    return if @toggle bool
 
-    # callbacks and toggle
-
-    @parent && @parent.before_child_toggled && @parent.before_child_toggled(this, bool)
-
-    @before_toggle && @before_toggle(bool)
-
-    @set_state_variables(@resets) if bool
-
-    @toggle && @toggle(bool)
-
-    @toggle_toggls(bool)
-
-    @after_toggle && @after_toggle(bool)
-
-    @parent && @parent.after_child_toggled && @parent.after_child_toggled(this, bool)
+    return if @parent && @parent.after_child_toggled this, bool
 
     return
 
+
+  before_child_toggled: (child, bool)->
+    @turn true if bool == true
+    return
+
+  after_child_toggled: (child, bool)->
+    return
+
+  toggle: (bool)->
+    if bool
+      if @initialized == false
+        @initialized = true
+        @set_variables @initials
+      
+      @set_variables @resets
+    else
+      child.turn false for child in @childs
+
+    return @toggle_toggls bool
+    
 
   @get_thing_value: ( thing )->
     return $( thing ) if typeof thing == 'string'
@@ -59,7 +63,7 @@ class klass.State
     return thing
 
 
-  set_state_variables: (variables)->
+  set_variables: (variables)->
     for name, val of variables
       @[name] = State.get_thing_value val
     return
@@ -68,10 +72,16 @@ class klass.State
   toggle_toggls: (bool)->
     for name, toggl of @toggls
       if bool
-        @[name] = State.get_thing_value toggl.target
-        target = @[name]
+        target = State.get_thing_value toggl.target
+
+        return true if target == 42
+
+        @[name] = target
       else
         target = @[name]
+
+        continue if target == undefined
+
         @[name] = undefined
 
 

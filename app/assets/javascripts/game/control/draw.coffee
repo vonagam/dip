@@ -22,31 +22,31 @@
 
 @drawSupport = (supporter, from, to)->
   m = 
-    x: (from.x+to.x)/2.0
-    y: (from.y+to.y)/2.0
+    x: (from[0]+to[0])/2.0
+    y: (from[1]+to[1])/2.0
   mid1 =
-    x: (3*from.x+to.x)/4.0
-    y: (3*from.y+to.y)/4.0
+    x: (3*from[0]+to[0])/4.0
+    y: (3*from[1]+to[1])/4.0
   mid2 = 
-    x: (from.x+3*to.x)/4.0
-    y: (from.y+3*to.y)/4.0
+    x: (from[0]+3*to[0])/4.0
+    y: (from[1]+3*to[1])/4.0
   
   offset = {}
 
-  if to.x > from.x
-    offset.x = 0.05*(to.y - from.y)
-    offset.y = 0.05*(from.x - to.x)
+  if to[0] > from[0]
+    offset.x = 0.05*(to[1] - from[1])
+    offset.y = 0.05*(from[0] - to[0])
   else
-    offset.x = 0.05*(from.y - to.y)
-    offset.y = 0.05*(to.x - from.x)
+    offset.x = 0.05*(from[1] - to[1])
+    offset.y = 0.05*(to[0] - from[0])
 
   cp1 = 
     x: mid1.x + offset.x 
     y: mid1.y + offset.y
 
-  arcpath = ['M',supporter.x,',',supporter.y,'C',m.x,',',m.y,' ',cp1.x,',',cp1.y,' ',mid2.x,',',mid2.y].join('')    
+  arcpath = ['M',supporter[0],',',supporter[1],'C',m.x,',',m.y,' ',cp1.x,',',cp1.y,' ',mid2.x,',',mid2.y].join('')    
 
-  line = document.createElementNS 'http://www.w3.org/2000/svg', 'line'
+  line = document.createElementNS 'http://www.w3.org/2000/svg', 'path'
   line = $ line
   line.attr 'd', arcpath
 

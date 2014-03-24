@@ -18,7 +18,7 @@
     'Lands': ['ber', 'mun', 'kie', 'sil', 'pru', 'ruh']
     'Power':
       'Army': ['ber', 'mun']
-      'Fleet': ['kie']
+      'Fleet': ['bal']
   'Italy':
     'Lands': ['rom', 'ven', 'nap', 'tus', 'apu', 'pie']
     'Power':
@@ -28,7 +28,7 @@
     'Lands': ['mos', 'war', 'sev', 'ukr', 'lvn', 'fin', 'stp']
     'Power':
       'Army': ['mos', 'war']
-      'Fleet': ['stp_sc', 'sev']
+      'Fleet': ['bot', 'sev']
   'Turkey':
     'Lands': ['con', 'smy', 'ank', 'arm', 'syr']
     'Power':

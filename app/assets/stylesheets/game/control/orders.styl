@@ -1,0 +1,54 @@
+#diplomacy_map 
+  > [force_select], > [whom_select]
+    &:hover
+      cur pnt
+
+      >
+        .l
+          fill hsl( 50, 30%, 65%)
+        .w
+          fill hsl(210, 30%, 65%)
+        .force
+          fill white !important
+
+
+    $z = length($countries)
+    for $i in (0..$z)
+      $country = $countries[$i]
+      $color = $i * 51
+
+      &.{$country}:hover > .l
+        fill hsl( $color, 60%, 55% )
+
+  > [force_selected] > .force
+    fill white !important
+    stroke white !important
+  > [whom_selected] > .force
+    fill white !important
+
+  [move_select]
+    > .l, &.l
+      fill hsl( 50, 30%, 60%)
+    > .w
+      fill hsl(210, 30%, 60%)
+
+    &:hover
+      cur pnt
+
+      > .l, &.l
+        fill hsl( 50, 20%, 50%)
+      > .w
+        fill hsl(210, 20%, 50%)
+
+  $z = length($countries)
+  for $i in (0..$z)
+    $country = $countries[$i]
+    $color = $i * 51
+
+    > .{$country}
+
+      &[move_select] > .l, > [move_select]
+        fill hsl( $color, 60%, 50% )
+
+      &[move_select]:hover > .l, > [move_select]:hover
+        fill hsl( $color, 50%, 40% )
