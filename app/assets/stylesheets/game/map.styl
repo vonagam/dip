@@ -26,9 +26,15 @@
     > line, > path
       stroke-width 2
 
-    > .move
+    > .move, > .convoy
       marker-end url(#move_marker)
 
+    > circle.convoy
+      fill none !important
+      stroke-width 2
+      stroke-dasharray 5,2
+
     > .support
+      marker-end url(#support_marker)
       fill none !important
       stroke-dasharray 3,2

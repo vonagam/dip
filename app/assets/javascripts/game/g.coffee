@@ -54,3 +54,9 @@ g.initialize_map = ( countries )->
     g.places.filter('#'+land).attr 'class', country for land in data['Lands']
 
   g.force_places = g.places.filter ()-> $(this).children('.force').length
+
+  g.places.each ()-> 
+    $(this).data 'targeting', {}
+
+  g.map.find('.force').each ()->
+    g.make.order 'hold', $(this)

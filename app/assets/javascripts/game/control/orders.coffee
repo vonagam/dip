@@ -19,10 +19,7 @@ class Actions extends klass.StateRadio
   toggle: (bool)->
     return true if super
     if bool
-      force = @selected.children('.force')
-      if force.data 'order_visualization'
-        force.data('order_visualization').remove()
-        force.data 'order_visualization', undefined
+      force = @selected.children '.force'
 
       @childs[0].turn true 
     return
@@ -31,6 +28,10 @@ class Actions extends klass.StateRadio
     return if bool == true
     for child in @childs
       return if child.turned == true 
+
+    unless @selected.children('.force').data('order')
+      g.make.order 'hold', @selected.children('.force')
+
     @turn false
     return
 
@@ -48,37 +49,42 @@ actions = new Actions
             return support.turn true if e.which == 83
             return move.turn true if e.which == 77
             return actions.turn false if e.which == 32
+
+            if e.which == 72
+              g.make.order 'hold', g.map.data('[force_select]').children('.force')
+              actions.turn false
+              return
         ]
       ]
 
 # Move order
 move = new klass.StateList
   resets:
-    convoy: -> $()
+    convoy: undefined
 
 move.after_list_end = ->
-    return true unless g.map.data '[move_select]'
+  return true unless g.map.data '[move_select]'
 
-    force = g.map.data('[force_select]').children('.force')
-    destination = g.map.data('[move_select]')
+  force = g.map.data('[force_select]').children '.force'
+  destination = g.map.data '[move_select]'
 
-    if force.data('type') == 'army' && regions[destination.attr('id')]['mv'] == undefined
-      @convoy = force.parent() if @convoy.length == 0
-      @convoy = @convoy.add destination
-      @list_index = 0
-      return
+  if force.data('where') == destination.attr('id')
+    g.make.order 'hold', force
+    return true 
 
-    from = force.data('coords')
-    to = destination.data('coords')
+  if force.data('type') == 'army' && regions[destination.attr('id')]['mv'] == undefined
+    @convoy = force.parent().get() unless @convoy
+    @convoy.push destination.get(0)
+    @list_index = 0
+    return
 
-    return true if from == to
+  if @convoy
+    @convoy.push destination.get(0)
+    g.make.order 'convoy', force, @convoy
+  else
+    g.make.order 'move', force, destination
 
-    line = drawMove( from, to )
-    line.attr 'class', 'move '+force.data('country')
-    g.orders_visualizations.new.append line
-    force.data 'order_visualization', line
-
-    return true
+  return true
 
 move_selecting = ->
   force = g.map.data('[force_select]').children '.force'
@@ -89,6 +95,7 @@ move_selecting = ->
     for typ, neis of regions[force.data('where')]
       continue if typ == 'mv'
       for nei in neis
+        nei = nei.split('_')[0]
         continue if regions[nei]['mv'] != undefined
         possibles = possibles.add g.force_places.filter('#'+nei)
 
@@ -103,71 +110,42 @@ convoy_selecting = ->
       possibles = possibles.add g.map.find('#'+nei)
     else
       possibles = possibles.add g.force_places.filter('#'+nei)
-  possibles = possibles.not move.convoy
+  possibles = possibles.not $(move.convoy)
   return possibles
 
 move_select = new g.SelectingState
-  selecting: -> if move.convoy.length > 0 then convoy_selecting() else move_selecting()
+  selecting: -> if move.convoy then convoy_selecting() else move_selecting()
   marking: '[move_select]'
   container: -> g.map
 
 # Support order
 support = new klass.StateList
 support.after_list_end = ->
-  return true unless g.map.data '[whom_select]' && g.map.data '[move_select]'
+  return true unless g.map.data '[move_select]'
 
-  force = g.map.data('[force_select]').children('.force')
-  supporter = force.data('coords')
+  who = g.map.data('[force_select]').children('.force')
+  whom = g.map.data('[move_select]').children('.force')
 
-  from = g.map.data('[whom_select]').children('.force').data('coords')
-  to = g.map.data('[move_select]').data('support_coords')
-
-  line = drawSupport( supporter, from, to )
-  line.attr 'class', 'support '+force.data('country')
-  g.orders_visualizations.new.append line
-  force.data 'order_visualization', line
+  g.make.order 'support', who, whom
 
   return true
 
-support_whom_select = new g.SelectingState
-  selecting:-> g.map.find('.force').parent().not( g.map.data('[force_select]') )
-  marking: '[whom_select]'
-  container: -> g.map
-
-support_to_select = new g.SelectingState
+support_select = new g.SelectingState
   selecting:-> 
-    helper = g.map.data('[force_select]').children('.force')
-    helped = g.map.data('[whom_select]').children('.force')
+    possibles = $()
+    force = actions.selected.children '.force'
+    for neighbour in force.data 'neighbours'
+      for where, who of g.map.find('#'+neighbour.split('_')[0]).data('targeting')
+        continue if who[0] == force[0]
+        possibles = possibles.add who.parent()
 
-    helper_can = $()
-    helper_can = helper_can.add g.map.find('#'+nei).closest('g') for nei in helper.data('neighbours')
-
-    helped_can = helped.parent().data 'support_coords', helped.data('coords')
-    for nei in helped.data('neighbours')
-      helped_can_ = g.map.find('#'+nei)
-      helped_can = helped_can.add(
-        helped_can_.closest('g').data('support_coords', helped_can_.data('coords'))
-      )
-
-    both_can = helper_can.filter helped_can
-
-    if both_can.length == 0
-      actions.turn false
+    if possibles.length == 0
+      move.turn true
       return 42
 
-    if both_can.length == 1
-      g.map.data '[move_select]', both_can.eq(0)
-      support_to_select.turn false
-      return 42
-
-    return both_can
+    return possibles
   marking: '[move_select]'
   container: -> g.map
-  toggls:
-    whom_selected:
-      target:-> g.map.data '[whom_select]'
-      attr: 'whom_selected'
-
 
 # Total scheme
 g.order_index.add [
@@ -177,15 +155,15 @@ g.order_index.add [
       move.add [
         move_select
       ]
+      support.add [
+        support_select
+      ]
     ]
   ]
 ]
 
 ###
-support.add [
-  support_whom_select,
-  support_to_select
-]
+
 convoy.add [
   convoy_army.add [
     convoy_army_loop.add [
