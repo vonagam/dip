@@ -5,8 +5,6 @@ class Object
       
       method($1.to_sym).owner.send( :define_method, method_name, block )
       
-      puts 'undefined'
-      
       return send( method_name, *args )
     end
     
