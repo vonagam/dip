@@ -72,7 +72,7 @@ move.after_list_end = ->
     g.make.order 'hold', force
     return true 
 
-  if force.data('type') == 'army' && regions[destination.attr('id')]['mv'] == undefined
+  if force.data('type') == 'army' && regions[destination.attr('id')].type == 'water'
     @convoy = force.parent().get() unless @convoy
     @convoy.push destination.get(0)
     @list_index = 0
@@ -88,28 +88,32 @@ move.after_list_end = ->
 
 move_selecting = ->
   force = g.map.data('[force_select]').children '.force'
+  
   possibles = g.map.find '#'+force.data('where')
-  possibles = possibles.add g.map.find('#'+possibility) for possibility in force.data('neighbours')
 
-  if force.data('type') == 'army'
-    for typ, neis of regions[force.data('where')]
-      continue if typ == 'mv'
-      for nei in neis
-        nei = nei.split('_')[0]
-        continue if regions[nei]['mv'] != undefined
-        possibles = possibles.add g.force_places.filter('#'+nei)
+  for possibility in force.data 'neighbours'
+    pos = possibility.split('_')[0]
+
+    if force.data('type') == 'army'
+      if regions[pos].type == 'water'
+        continue if g.force_places.filter('#'+pos).length == 0
+    else
+      continue if regions[pos].type == 'land'
+      pos = possibility
+
+    possibles = possibles.add g.map.find('#'+pos)
 
   return possibles
 
 convoy_selecting = ->
   last_one = g.map.data('[move_select]').attr('id')
   possibles = $()
-  for nei in regions[last_one]['xc']
+  for nei in regions[last_one].neis
     nei = nei.split('_')[0]
-    if regions[nei]['mv']
-      possibles = possibles.add g.map.find('#'+nei)
-    else
+    if regions[nei].type == 'water'
       possibles = possibles.add g.force_places.filter('#'+nei)
+    else
+      possibles = possibles.add g.map.find('#'+nei)
   possibles = possibles.not $(move.convoy)
   return possibles
 

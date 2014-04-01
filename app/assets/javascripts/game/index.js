@@ -1,5 +1,4 @@
 //= require game/data/map
-//= require game/data/initial_positions
 
 //= require game/g
 

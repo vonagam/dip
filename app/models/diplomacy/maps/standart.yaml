@@ -1,0 +1,374 @@
+Standard:
+  Areas:
+    adr: 
+      full: Adriatic Sea 
+      type: water
+      neis: [alb,apu,ven,tri,ion]
+    aeg: 
+      full: Aegean Sea 
+      type: water
+      neis: [bul_sc,gre,con,smy,eas,ion]
+    alb: 
+      full: Albania 
+      type: coast
+      neis: [tri,gre,ser,adr,ion]
+    ank:
+      full: Ankara 
+      type: coast
+      neis: [arm,con,smy,bla]
+      center: true
+    apu: 
+      full: Apulia 
+      type: coast
+      neis: [ven,nap,rom,adr,ion]
+    arm: 
+      full: Armenia 
+      type: coast
+      neis: [smy,syr,ank,sev,bla]
+    bal: 
+      full: Baltic Sea 
+      type: water
+      neis: [lvn,pru,ber,kie,den,swe,bot]
+    bar: 
+      full: Barents Sea 
+      type: water
+      neis: [stp_nc,nwg,nor]
+    bel:
+      full: Belgium 
+      type: coast
+      neis: [hol,pic,ruh,bur,eng,nth]
+      center: true
+    ber:
+      full: Berlin 
+      type: coast
+      neis: [kie,pru,sil,mun,bal]
+      center: true
+    bla: 
+      full: Black Sea 
+      type: water
+      neis: [bul_ec,rum,sev,arm,ank,con]
+    boh: 
+      full: Bohemia 
+      type: land
+      neis: [mun,sil,gal,vie,tyr]
+    bot: 
+      full: Gulf of Bothnia 
+      type: water
+      neis: [stp_sc,swe,fin,lvn,bal]
+    bre:
+      full: Brest 
+      type: coast
+      neis: [pic,gas,par,mao,eng]
+      center: true
+    bud:
+      full: Budapest 
+      type: land
+      neis: [vie,gal,rum,ser,tri]
+      center: true
+    bul:
+      full: Bulgaria 
+      type: multi_coast
+      neis:
+        xc: [con,bla,rum,gre,ser,aeg]
+        ec: [con,bla,rum]
+        sc: [gre,aeg,con]
+      center: true
+    bur: 
+      full: Burgundy 
+      type: land
+      neis: [mar,gas,par,pic,bel,ruh,mun]
+    cly: 
+      full: Clyde 
+      type: coast
+      neis: [edi,liv,nao,nwg]
+    con:
+      full: Constantinople 
+      type: coast
+      neis: [bul_sc,bul_ec,ank,smy,bla,aeg]
+      center: true
+    den:
+      full: Denmark 
+      type: coast
+      neis: [swe,kie,hel,nth,bal,ska]
+      center: true
+    eas: 
+      full: Eastern Mediterranean 
+      type: water
+      neis: [syr,smy,aeg,ion]
+    edi:
+      full: Edinburgh 
+      type: coast
+      neis: [liv,yor,cly,nth,nwg]
+      center: true
+    eng: 
+      full: English Channel 
+      type: water
+      neis: [mao,iri,wal,lon,nth,bel,pic,bre]
+    fin: 
+      full: Finland 
+      type: coast
+      neis: [stp_sc,swe,nor,bot]
+    gal: 
+      full: Galicia 
+      type: land
+      neis: [war,ukr,rum,bud,vie,boh,sil]
+    gas: 
+      full: Gascony 
+      type: coast
+      neis: [spa_nc,par,bur,mar,bre,mao]
+    gre:
+      full: Greece 
+      type: coast
+      neis: [bul_sc,alb,ser,aeg,ion]
+      center: true
+    hel: 
+      full: Helgoland Bight 
+      type: water
+      neis: [nth,den,kie,hol]
+    hol:
+      full: Holland 
+      type: coast
+      neis: [bel,kie,ruh,nth,hel]
+      center: true
+    ion: 
+      full: Ionian Sea 
+      type: water
+      neis: [tun,tys,nap,apu,adr,alb,gre,aeg,eas]
+    iri: 
+      full: Irish Sea 
+      type: water
+      neis: [nao,liv,wal,eng,mao]
+    kie:
+      full: Kiel 
+      type: coast
+      neis: [hol,den,ber,mun,ruh,hel,bal]
+      center: true
+    lon:
+      full: London 
+      type: coast
+      neis: [yor,wal,nth,eng]
+      center: true
+    lvn: 
+      full: Livonia 
+      type: coast
+      neis: [stp_sc,pru,mos,war,bal,bot]
+    liv:
+      full: Liverpool 
+      type: coast
+      neis: [wal,edi,yor,cly,iri,nao]
+      center: true
+    lyo: 
+      full: Gulf of Lyons 
+      type: water
+      neis: [spa_sc,mar,pie,tus,tys,wes]
+    mao: 
+      full: Mid-Atlantic Ocean 
+      type: water
+      neis: [nao,iri,eng,bre,gas,spa_nc,por,spa_sc,naf,wes]
+    mar:
+      full: Marseilles 
+      type: coast
+      neis: [spa_sc,pie,gas,bur,lyo]
+      center: true
+    mos:
+      full: Moscow 
+      type: land
+      neis: [stp,lvn,war,ukr,sev]
+      center: true
+    mun:
+      full: Munich 
+      type: land
+      neis: [bur,ruh,kie,ber,sil,boh,tyr]
+      center: true
+    naf: 
+      full: North Africa 
+      type: coast
+      neis: [tun,mao,wes]
+    nao: 
+      full: North Atlantic Ocean 
+      type: water
+      neis: [nwg,liv,iri,mao,cly]
+    nap:
+      full: Naples 
+      type: coast
+      neis: [rom,apu,tys,ion]
+      center: true
+    nor:
+      full: Norway 
+      type: coast
+      neis: [stp_nc,fin,swe,ska,nth,nwg,bar]
+      center: true
+    nth: 
+      full: North Sea 
+      type: water
+      neis: [yor,edi,nwg,nor,ska,den,hel,hol,bel,eng,lon]
+    nwg: 
+      full: Norwegian Sea 
+      type: water
+      neis: [nao,bar,nor,nth,cly,edi]
+    par:
+      full: Paris 
+      type: land
+      neis: [bre,pic,bur,gas]
+      center: true
+    pic: 
+      full: Picardy 
+      type: coast
+      neis: [bur,par,bre,bel,eng]
+    pie: 
+      full: Piedmont 
+      type: coast
+      neis: [mar,tus,ven,tyr,lyo]
+    por:
+      full: Portugal 
+      type: coast
+      neis: [spa_nc,spa_sc,mao]
+      center: true
+    pru: 
+      full: Prussia 
+      type: coast
+      neis: [war,sil,ber,lvn,bal]
+    rom:
+      full: Rome 
+      type: coast
+      neis: [tus,nap,ven,apu,tys]
+      center: true
+    ruh: 
+      full: Ruhr 
+      type: land
+      neis: [bur,bel,hol,kie,mun]
+    rum:
+      full: Rumania 
+      type: coast
+      neis: [bul_ec,ser,bud,gal,ukr,sev,bla]
+      center: true
+    ser:
+      full: Serbia 
+      type: land
+      neis: [tri,bud,rum,bul,gre,alb]
+      center: true
+    sev:
+      full: Sevastopol 
+      type: coast
+      neis: [ukr,mos,rum,arm,bla]
+      center: true
+    sil: 
+      full: Silesia 
+      type: land
+      neis: [mun,ber,pru,war,gal,boh]
+    ska: 
+      full: Skagerrack 
+      type: water
+      neis: [nth,nor,den,swe]
+    smy:
+      full: Smyrna 
+      type: coast
+      neis: [syr,con,ank,arm,eas,aeg]
+      center: true
+    spa:
+      full: Spain 
+      type: multi_coast
+      neis: 
+        xc: [gas,por,wes,lyo,mar,mao]
+        nc: [gas,mao,por]
+        sc: [por,wes,lyo,mar,mao]
+      center: true
+    stp:
+      full: St. Petersburg 
+      type: multi_coast
+      neis: 
+        xc: [fin,lvn,nor,mos,bot,bar]
+        nc: [bar,nor]
+        sc: [fin,lvn,bot]
+      center: true
+    swe:
+      full: Sweden 
+      type: coast
+      neis: [fin,den,nor,bot,bal,ska]
+      center: true
+    syr: 
+      full: Syria 
+      type: coast
+      neis: [smy,arm,eas]
+    tri:
+      full: Trieste 
+      type: coast
+      neis: [tyr,vie,bud,ser,alb,ven,adr]
+      center: true
+    tun:
+      full: Tunis 
+      type: coast
+      neis: [naf,wes,tys,ion]
+      center: true
+    tus: 
+      full: Tuscany 
+      type: coast
+      neis: [rom,pie,ven,tys,lyo]
+    tyr: 
+      full: Tyrolia 
+      type: land
+      neis: [mun,boh,vie,tri,ven,pie]
+    tys: 
+      full: Tyrrhenian Sea 
+      type: water
+      neis: [wes,lyo,tus,rom,nap,ion,tun]
+    ukr: 
+      full: Ukraine 
+      type: land
+      neis: [rum,gal,war,mos,sev]
+    ven:
+      full: Venice 
+      type: coast
+      neis: [tyr,tus,rom,pie,apu,tri,adr]
+      center: true
+    vie:
+      full: Vienna 
+      type: land
+      neis: [tyr,boh,gal,bud,tri]
+      center: true
+    wal: 
+      full: Wales 
+      type: coast
+      neis: [liv,lon,yor,iri,eng]
+    war:
+      full: Warsaw 
+      type: land
+      neis: [sil,pru,lvn,mos,ukr,gal]
+      center: true
+    wes: 
+      full: Western Mediterranean 
+      type: water
+      neis: [spa_sc,mao,lyo,tys,tun,naf]
+    yor: 
+      full: Yorkshire 
+      type: coast
+      neis: [edi,lon,liv,wal,nth]
+  Powers:
+    Russia:
+      A: [mos,sev,war]
+      F: [stp_sc]
+      L: [ukr,lvn,fin]
+    Turkey:
+      A: [smy,con]
+      F: [ank]
+      L: [syr,arm]
+    Austria:
+      A: [bud,vie]
+      F: [tri]
+      L: [tyr,boh,gal]
+    Italy:
+      A: [rom,ven]
+      F: [nap]
+      L: [pie,tus,apu]
+    France:
+      A: [par,mar]
+      F: [bre]
+      L: [gas,pic,bur]
+    England:
+      A: [liv]
+      F: [lon,edi]
+      L: [cly,yor,wal]
+    Germany:
+      A: [ber,mun]
+      F: [kie]
+      L: [ruh,pru,sil]

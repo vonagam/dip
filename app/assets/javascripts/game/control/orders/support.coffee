@@ -33,19 +33,19 @@ g.make.draw_support = (who, from, to)->
   to = to.data 'coords'
 
   middle =
-    x: (from[0]*2+to[0])/3.0
-    y: (from[1]*2+to[1])/3.0
+    x: (from[0]*1.2+to[0]*0.8)/2
+    y: (from[1]*1.2+to[1]*0.8)/2
 
   theta = Math.atan2 middle.y-supporter[1], middle.x-supporter[0]
 
   supporter =
-    x: supporter[0] + 10*Math.cos(theta)
-    y: supporter[1] + 10*Math.sin(theta)
+    x: supporter[0] + 8*Math.cos(theta)
+    y: supporter[1] + 8*Math.sin(theta)
 
   if from == to
     middle =
-      x: middle.x - 10*Math.cos(theta)
-      y: middle.y - 10*Math.sin(theta)
+      x: middle.x - 12*Math.cos(theta)
+      y: middle.y - 12*Math.sin(theta)
   
 
   line = document.createElementNS 'http://www.w3.org/2000/svg', 'path'

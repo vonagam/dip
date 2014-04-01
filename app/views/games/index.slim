@@ -1,0 +1,10 @@
+#Games_index
+  div
+    - Game.all.each do |game|
+      div
+        a href=game_path(game) = game.name
+
+  div
+    = simple_form_for Game.new, remote: true, format: :json do |f|
+      = f.input :name
+      = f.button :button

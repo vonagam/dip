@@ -1,197 +1,232 @@
 @regions =
   'adr':
-    xc:['alb','apu','ven','tri','ion']
+    type:'water'
+    neis:['alb','apu','ven','tri','ion']
   'aeg':
-    xc:['gre','bul_sc','con','smy','eas','ion']
+    type:'water'
+    neis:['bul_sc','gre','con','smy','eas','ion']
   'alb':
-    mv:['tri','gre','ser']
-    xc:['adr','tri','gre','ion']
+    type:'coast'
+    neis:['tri','gre','ser','adr','ion']
   'ank':
-    mv:['arm','con','smy']
-    xc:['bla','arm','con']
+    type:'coast'
+    neis:['arm','con','smy','bla']
   'apu':
-    mv:['ven','nap','rom']
-    xc:['ven','adr','ion','nap']
+    type:'coast'
+    neis:['ven','nap','rom','adr','ion']
   'arm':
-    mv:['smy','syr','ank','sev']
-    xc:['ank','sev','bla']
+    type:'coast'
+    neis:['smy','syr','ank','sev','bla']
   'bal':
-    xc:['lvn','pru','ber','kie','den','swe','bot']
+    type:'water'
+    neis:['lvn','pru','ber','kie','den','swe','bot']
   'bar':
-    xc:['nwg','stp_nc','nor']
+    type:'water'
+    neis:['stp_nc','nwg','nor']
   'bel':
-    mv:['hol','pic','ruh','bur']
-    xc:['eng','nth','hol','pic']
+    type:'coast'
+    neis:['hol','pic','ruh','bur','eng','nth']
   'ber':
-    mv:['kie','pru','sil','mun']
-    xc:['kie','bal','pru']
+    type:'coast'
+    neis:['kie','pru','sil','mun','bal']
   'bla':
-    xc:['rum','sev','arm','ank','con','bul_ec']
+    type:'water'
+    neis:['bul_ec','rum','sev','arm','ank','con']
   'boh':
-    mv:['mun','sil','gal','vie','tyr']
+    type:'land'
+    neis:['mun','sil','gal','vie','tyr']
   'bot':
-    xc:['swe','fin','stp_sc','lvn','bal']
+    type:'water'
+    neis:['stp_sc','swe','fin','lvn','bal']
   'bre':
-    mv:['pic','gas','par']
-    xc:['mao','eng','pic','gas']
+    type:'coast'
+    neis:['pic','gas','par','mao','eng']
   'bud':
-    mv:['vie','gal','rum','ser','tri']
+    type:'land'
+    neis:['vie','gal','rum','ser','tri']
   'bul':
+    type:'coast'
+    neis:['con','bla','rum','gre','ser','aeg']
     ec:['con','bla','rum']
-    mv:['gre','con','ser','rum']
     sc:['gre','aeg','con']
   'bur':
-    mv:['mar','gas','par','pic','bel','ruh','mun']
+    type:'land'
+    neis:['mar','gas','par','pic','bel','ruh','mun']
   'cly':
-    mv:['edi','lvp']
-    xc:['edi','lvp','nao','nwg']
+    type:'coast'
+    neis:['edi','liv','nao','nwg']
   'con':
-    mv:['bul','ank','smy']
-    xc:['bul_sc','bul_ec','bla','ank','smy','aeg']
+    type:'coast'
+    neis:['bul_sc','bul_ec','ank','smy','bla','aeg']
   'den':
-    mv:['swe','kie']
-    xc:['hel','nth','swe','bal','kie','ska']
+    type:'coast'
+    neis:['swe','kie','hel','nth','bal','ska']
   'eas':
-    xc:['syr','smy','aeg','ion']
+    type:'water'
+    neis:['syr','smy','aeg','ion']
   'edi':
-    mv:['lvp','yor','cly']
-    xc:['nth','nwg','cly','yor']
+    type:'coast'
+    neis:['liv','yor','cly','nth','nwg']
   'eng':
-    xc:['mao','iri','wal','lon','nth','bel','pic','bre']
+    type:'water'
+    neis:['mao','iri','wal','lon','nth','bel','pic','bre']
   'fin':
-    mv:['swe','stp','nor']
-    xc:['swe','stp_sc','bot']
+    type:'coast'
+    neis:['stp_sc','swe','nor','bot']
   'gal':
-    mv:['war','ukr','rum','bud','vie','boh','sil']
+    type:'land'
+    neis:['war','ukr','rum','bud','vie','boh','sil']
   'gas':
-    mv:['par','bur','mar','spa','bre']
-    xc:['spa_nc','mao','bre']
+    type:'coast'
+    neis:['spa_nc','par','bur','mar','bre','mao']
   'gre':
-    mv:['bul','alb','ser']
-    xc:['bul_sc','aeg','ion','alb']
+    type:'coast'
+    neis:['bul_sc','alb','ser','aeg','ion']
   'hel':
-    xc:['nth','den','kie','hol']
+    type:'water'
+    neis:['nth','den','kie','hol']
   'hol':
-    mv:['bel','kie','ruh']
-    xc:['bel','nth','hel','kie']
+    type:'coast'
+    neis:['bel','kie','ruh','nth','hel']
   'ion':
-    xc:['tun','tys','nap','apu','adr','alb','gre','aeg','eas']
+    type:'water'
+    neis:['tun','tys','nap','apu','adr','alb','gre','aeg','eas']
   'iri':
-    xc:['nao','lvp','wal','eng','mao']
+    type:'water'
+    neis:['nao','liv','wal','eng','mao']
   'kie':
-    mv:['hol','den','ber','mun','ruh']
-    xc:['hol','hel','den','bal','ber']
+    type:'coast'
+    neis:['hol','den','ber','mun','ruh','hel','bal']
   'lon':
-    mv:['yor','wal']
-    xc:['yor','nth','eng','wal']
+    type:'coast'
+    neis:['yor','wal','nth','eng']
   'lvn':
-    mv:['pru','stp','mos','war']
-    xc:['pru','bal','bot','stp_sc']
-  'lvp':
-    mv:['wal','edi','yor','cly']
-    xc:['wal','iri','nao','cly']
+    type:'coast'
+    neis:['stp_sc','pru','mos','war','bal','bot']
+  'liv':
+    type:'coast'
+    neis:['wal','edi','yor','cly','iri','nao']
   'lyo':
-    xc:['spa_sc','mar','pie','tus','tys','wes']
+    type:'water'
+    neis:['spa_sc','mar','pie','tus','tys','wes']
   'mao':
-    xc:['nao','iri','eng','bre','gas','spa_nc','por','spa_sc','naf','wes']
+    type:'water'
+    neis:['nao','iri','eng','bre','gas','spa_nc','por','spa_sc','naf','wes']
   'mar':
-    mv:['spa','pie','gas','bur']
-    xc:['spa_sc','lyo','pie']
+    type:'coast'
+    neis:['spa_sc','pie','gas','bur','lyo']
   'mos':
-    mv:['stp','lvn','war','ukr','sev']
+    type:'land'
+    neis:['stp','lvn','war','ukr','sev']
   'mun':
-    mv:['bur','ruh','kie','ber','sil','boh','tyr']
+    type:'land'
+    neis:['bur','ruh','kie','ber','sil','boh','tyr']
   'naf':
-    mv:['tun']
-    xc:['mao','wes','tun']
+    type:'coast'
+    neis:['tun','mao','wes']
   'nao':
-    xc:['nwg','lvp','iri','mao','cly']
+    type:'water'
+    neis:['nwg','liv','iri','mao','cly']
   'nap':
-    mv:['rom','apu']
-    xc:['rom','tys','ion','apu']
+    type:'coast'
+    neis:['rom','apu','tys','ion']
   'nor':
-    mv:['fin','stp','swe']
-    xc:['ska','nth','nwg','bar','stp_nc','swe']
+    type:'coast'
+    neis:['stp_nc','fin','swe','ska','nth','nwg','bar']
   'nth':
-    xc:['yor','edi','nwg','nor','ska','den','hel','hol','bel','eng','lon']
+    type:'water'
+    neis:['yor','edi','nwg','nor','ska','den','hel','hol','bel','eng','lon']
   'nwg':
-    xc:['nao','bar','nor','nth','cly','edi']
+    type:'water'
+    neis:['nao','bar','nor','nth','cly','edi']
   'par':
-    mv:['bre','pic','bur','gas']
+    type:'land'
+    neis:['bre','pic','bur','gas']
   'pic':
-    mv:['bur','par','bre','bel']
-    xc:['bre','eng','bel']
+    type:'coast'
+    neis:['bur','par','bre','bel','eng']
   'pie':
-    mv:['mar','tus','ven','tyr']
-    xc:['mar','lyo','tus']
+    type:'coast'
+    neis:['mar','tus','ven','tyr','lyo']
   'por':
-    mv:['spa']
-    xc:['mao','spa_nc','spa_sc']
+    type:'coast'
+    neis:['spa_nc','spa_sc','mao']
   'pru':
-    mv:['war','sil']
-    mv:['ber','lvn']
-    xc:['ber','bal','lvn']
+    type:'coast'
+    neis:['war','sil','ber','lvn','bal']
   'rom':
-    mv:['tus','nap','ven','apu']
-    xc:['tus','tys','nap']
+    type:'coast'
+    neis:['tus','nap','ven','apu','tys']
   'ruh':
-    mv:['bur','bel','hol','kie','mun']
+    type:'land'
+    neis:['bur','bel','hol','kie','mun']
   'rum':
-    mv:['ser','bud','gal','ukr','sev','bul']
-    xc:['sev','bla','bul_ec']
+    type:'coast'
+    neis:['bul_ec','ser','bud','gal','ukr','sev','bla']
   'ser':
-    mv:['tri','bud','rum','bul','gre','alb']
+    type:'land'
+    neis:['tri','bud','rum','bul','gre','alb']
   'sev':
-    mv:['ukr','mos','rum','arm']
-    xc:['rum','bla','arm']
+    type:'coast'
+    neis:['ukr','mos','rum','arm','bla']
   'sil':
-    mv:['mun','ber','pru','war','gal','boh']
+    type:'land'
+    neis:['mun','ber','pru','war','gal','boh']
   'ska':
-    xc:['nth','nor','den','swe']
+    type:'water'
+    neis:['nth','nor','den','swe']
   'smy':
-    mv:['syr','con','ank','arm']
-    xc:['syr','eas','aeg','con']
+    type:'coast'
+    neis:['syr','con','ank','arm','eas','aeg']
   'spa':
-    mv:['gas','por','mar']
+    type:'coast'
+    neis:['gas','por','wes','lyo','mar','mao']
     nc:['gas','mao','por']
     sc:['por','wes','lyo','mar','mao']
   'stp':
-    mv:['fin','lvn','nor','mos']
+    type:'coast'
+    neis:['fin','lvn','nor','mos','bot','bar']
     nc:['bar','nor']
     sc:['fin','lvn','bot']
   'swe':
-    mv:['fin','den','nor']
-    xc:['fin','bot','bal','den','ska','nor']
+    type:'coast'
+    neis:['fin','den','nor','bot','bal','ska']
   'syr':
-    mv:['smy','arm']
-    xc:['eas','smy']
+    type:'coast'
+    neis:['smy','arm','eas']
   'tri':
-    mv:['tyr','vie','bud','ser','alb','ven']
-    xc:['alb','adr','ven']
+    type:'coast'
+    neis:['tyr','vie','bud','ser','alb','ven','adr']
   'tun':
-    mv:['naf']
-    xc:['naf','wes','tys','ion']
+    type:'coast'
+    neis:['naf','wes','tys','ion']
   'tus':
-    mv:['rom','pie','ven']
-    xc:['rom','tys','lyo','pie']
+    type:'coast'
+    neis:['rom','pie','ven','tys','lyo']
   'tyr':
-    mv:['mun','boh','vie','tri','ven','pie']
+    type:'land'
+    neis:['mun','boh','vie','tri','ven','pie']
   'tys':
-    xc:['wes','lyo','tus','rom','nap','ion','tun']
+    type:'water'
+    neis:['wes','lyo','tus','rom','nap','ion','tun']
   'ukr':
-    mv:['rum','gal','war','mos','sev']
+    type:'land'
+    neis:['rum','gal','war','mos','sev']
   'ven':
-    mv:['tyr','tus','rom','pie','apu','tri']
-    xc:['apu','adr','tri']
+    type:'coast'
+    neis:['tyr','tus','rom','pie','apu','tri','adr']
   'vie':
-    mv:['tyr','boh','gal','bud','tri']
+    type:'land'
+    neis:['tyr','boh','gal','bud','tri']
   'wal':
-    mv:['lvp','lon','yor']
-    xc:['lvp','iri','eng','lon']
+    type:'coast'
+    neis:['liv','lon','yor','iri','eng']
   'war':
-    mv:['sil','pru','lvn','mos','ukr','gal']
+    type:'land'
+    neis:['sil','pru','lvn','mos','ukr','gal']
   'wes':
-    xc:['mao','spa_sc','lyo','tys','tun','naf']
+    type:'water'
+    neis:['spa_sc','mao','lyo','tys','tun','naf']
   'yor':
-    mv:['edi','lon','lvp','wal']
-    xc:['edi','nth','lon']
+    type:'coast'
+    neis:['edi','lon','liv','wal','nth']

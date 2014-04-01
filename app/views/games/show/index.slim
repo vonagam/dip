@@ -1,0 +1,13 @@
+#game_container
+
+  = render 'games/show/map'
+
+div = @game.states.last.data
+
+javascript:
+  g.positions = #{ raw( @game.states.last.data ) }
+
+coffee:
+  g.initialize_map g.positions
+
+  #g.order_index.turn true

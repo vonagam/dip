@@ -21,15 +21,10 @@ g.initialize_map = ( countries )->
 
   place_force = (country, where, type)->
     address = where.split '_'
-    
-    region = @regions[address[0]]
-    
-    if address.length == 2
-      pos = address[1]
-    else
-      pos = if type == 'army' then 'mv' else 'xc'
 
     coords = g.map.find('#'+where).data('coords')
+    log address
+    neighbours = @regions[address[0]][address[1] || 'neis']
 
     force = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
     force.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+type
@@ -46,12 +41,14 @@ g.initialize_map = ( countries )->
       where: where
       coords: coords
       country: country
-      neighbours: region[pos]
+      neighbours: neighbours
 
   for country, data of countries
-    place_force country, army_place,  'army'  for army_place  in data['Power']['Army']
-    place_force country, fleet_place, 'fleet' for fleet_place in data['Power']['Fleet']
-    g.places.filter('#'+land).attr 'class', country for land in data['Lands']
+    for place, unit of data.units
+      place_force country, place, if unit == 'A' then 'army' else 'fleet'
+
+    for area in data.areas
+      g.places.filter('#'+area).attr 'class', country 
 
   g.force_places = g.places.filter ()-> $(this).children('.force').length
 
