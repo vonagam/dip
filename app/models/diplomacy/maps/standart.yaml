@@ -345,30 +345,23 @@ Standard:
       neis: [edi,lon,liv,wal,nth]
   Powers:
     Russia:
-      A: [mos,sev,war]
-      F: [stp_sc]
-      L: [ukr,lvn,fin]
+      Force: [Amos,Asev,Awar,Fstp_sc]
+      Lands: [mos,sev,war,stp,ukr,lvn,fin]
     Turkey:
-      A: [smy,con]
-      F: [ank]
-      L: [syr,arm]
+      Force: [Asmy,Acon,Fank]
+      Lands: [smy,con,ank,syr,arm]
     Austria:
-      A: [bud,vie]
-      F: [tri]
-      L: [tyr,boh,gal]
+      Force: [Abud,Avie,Ftri]
+      Lands: [bud,vie,tri,tyr,boh,gal]
     Italy:
-      A: [rom,ven]
-      F: [nap]
-      L: [pie,tus,apu]
+      Force: [Arom,Aven,Fnap]
+      Lands: [rom,ven,nap,pie,tus,apu]
     France:
-      A: [par,mar]
-      F: [bre]
-      L: [gas,pic,bur]
+      Force: [Apar,Amar,Fbre]
+      Lands: [par,mar,bre,gas,pic,bur]
     England:
-      A: [liv]
-      F: [lon,edi]
-      L: [cly,yor,wal]
+      Force: [Aliv,Flon,Fedi]
+      Lands: [liv,lon,edi,cly,yor,wal]
     Germany:
-      A: [ber,mun]
-      F: [kie]
-      L: [ruh,pru,sil]
+      Force: [Aber,Amun,Fkie]
+      Lands: [ber,mun,kie,ruh,pru,sil]

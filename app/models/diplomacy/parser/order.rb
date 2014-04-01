@@ -7,20 +7,18 @@ module Diplomacy
     def parse_orders( all_orders, classes=[Move, Hold, Support, SupportHold, Convoy] )
       result = []
 
-      all_orders.each do | country_orders |
-        country = country_orders.side.name.to_sym
+      all_orders.each do | power_orders |
+        power = power_orders.side.name.to_sym
         orders = JSON.parse order.data
 
         orders.each do | region, order |
-          order = parse_order region, order, country
+          order = parse_order region, order, power
 
           next if order.nil?
-
-          #if order.nil?
           #  raise 
           #end
 
-          #if classes.not_include? order.class
+          next if classes.not_include? order.class
           #  raise WrongOrderTypeError, "expected one of #{classes}, received #{order.class}"
           #end
 
@@ -47,7 +45,7 @@ module Diplomacy
       return location
     end
 
-    def parse_order( region, order, country )
+    def parse_order( region, order, power )
       position = parse_location region
       from = parse_location order['from']
       to = parse_location order['to']
@@ -59,31 +57,27 @@ module Diplomacy
       area = @gamestate[position]
       unit = area.unit
 
-      return nil if unit.not_nil? && unit.owner != country
+      return nil if unit.not_nil? && unit.owner != power
 
+      result = 
       case order['type']
-      when 'hold'
-        result = Hold.new unit, location
-      when 'move'
-        result = Move.new unit, location, dst
+      when 'hold';    Hold.new unit, location
+      when 'move';    Move.new unit, location, dst
+      when 'convoy';  Convoy.new unit, location, src, dst
+      when 'retreat'; Retreat.new unit, location, dst   
+      when 'disband'; Build.new unit, location, false
       when 'support'
         if from
-          result = Support.new unit, location, src, dst
+          Support.new unit, location, src, dst
         else
-          result = SupportHold.new unit, location, dst
+          SupportHold.new unit, location, dst
         end
-      when 'convoy'
-        result = Convoy.new unit, location, src, dst
-      when 'retreat'
-        result = Retreat.new unit, location, dst
       when 'build'
-        unit = Unit.new area.owner, (order['build'] == 'army' ? Unit::ARMY : Unit::FLEET)
-
-        result = Build.new unit, location, true    
-      when 'disband'
-        result = Build.new unit, location, false
+        return nil if area.owner != power
+        unit = Unit.new power, (order['build'] == 'army' ? Unit::ARMY : Unit::FLEET)
+        Build.new unit, location, true 
       else
-        result = nil
+        nil
       end
 
       result.unit_area_coast = position[1] if position.length == 2

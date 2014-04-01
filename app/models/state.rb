@@ -51,7 +51,7 @@ class State::Move < State
 
     return next_state.save if someone_win?( next_data )
 
-    if not next_data.retreats.empty?
+    if next_data.retreats.not_empty?
       next_state.type = 'State::Retreat'
     elsif is_fall?
       next_state.type = 'State::Supply'

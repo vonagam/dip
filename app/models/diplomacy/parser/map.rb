@@ -55,104 +55,27 @@ module Diplomacy
 
             neighbour = map.areas[ nei.to_sym ]
 
-            border_type = [Area::SEA_BORDER, Area::LAND_BORDER]
-
-            if area.type == 'water' || neighbour.type == 'water'
-              border_type.pop
-            elsif area.type == 'land' || neighbour.type == 'land'
-              border_type.shift
-            else
-
-            border_type.each do |type|
-              add_border area, neighbour, type
+            ( 
+              if area.type == 'water' || neighbour.type == 'water'
+                [Area::SEA_BORDER]
+              elsif area.type == 'land' || neighbour.type == 'land'
+                [Area::LAND_BORDER]
+              else
+                [Area::SEA_BORDER, Area::LAND_BORDER]
+              end
+            )
+            .each do |type|
+              area.add_border neighbour, type
             end
 
           end
 
         end
 
-      	yamlmap['Powers'].each do |power, start|
-          state_parser = StateParser.new
-
-          power_s = power.to_sym
-
-          gamestate = state_parser.parse_power_state start, power_s
-
-          gamestate.each_value { |area_state| area_state.owner = power_s }
-
-          start['L'].each do |area|
-            gamestate[area.to_sym] = AreaState.new power.to_sym
-          end
-
-          map.add_power power_s, gamestate
-      	end
+        map.starting_state = StateParser.new().to_state({ 'Powers' => yamlmap['Powers'] })
         
         @maps[mapname] = map
       end
-    end
-  end
-
-  class Area
-    attr_accessor :name, :type, :center, :full_name
-    attr_accessor :borders, :coasts, :neighbours
-
-    LAND_BORDER = 1
-    SEA_BORDER = 2
-
-    def initialize( name, type, center, neighbours, full_name )
-      @name = name
-      @type = type
-      @center = center
-      @full_name = full_name
-
-      @neighbours = neighbours
-
-      @borders = { LAND_BORDER => Set.new, SEA_BORDER => Set.new }
-      @coasts = []
-    end
-
-    def add_border( area, border_type )
-      borders[border_type] << area
-    end
-  end
-
-  class Map
-    attr_accessor :areas, :powers
-
-    def initialize
-      @areas = {}
-      @powers = {}
-    end
-
-    def add_power( name, starting_areas )
-      @powers[name] = starting_areas
-    end
-
-    def add_border( area1, area2, type )
-      area1.add_border area2, type
-      area2.add_border area1, type
-    end
-    
-    def neighbours?( name1, name2, type )
-      @areas[name1].borders[type].include? @areas[name2]
-    end
-
-    def centers
-      @areas.select { |name, area| area.center }
-    end
-
-    def starting_state
-      gamestate = GameState.new
-
-      @areas.each do |area|
-        gamestate[area] = AreaState.new
-      end
-
-      @powers.each_value do |power_gamestate|
-        gamestate.merge! power_gamestate
-      end
-      
-      gamestate
     end
   end
 end
