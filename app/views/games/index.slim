@@ -8,3 +8,6 @@
     = simple_form_for Game.new, remote: true, format: :json do |f|
       = f.input :name
       = f.button :button
+
+  div
+    = Diplomacy::Parser::State.new( MAP_READER.maps['Standard'].starting_state ).to_json

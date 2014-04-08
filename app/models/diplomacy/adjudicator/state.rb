@@ -45,14 +45,6 @@ module Diplomacy
       @owner = @unit.nationality unless @unit.nil?
     end
 
-    def to_s
-      out = []
-      out << "#{@owner}"
-      out << "#{@unit.type_to_s}#{@coast.nil? ? "" : " #{@coast}"} (#{@unit.nationality})" if @unit
-      out << "(emb.)" if @embattled
-      out.join ","
-    end
-
     def ==(other)
       return (@owner == other.owner and @unit == other.unit and @coast == other.coast)
     end
@@ -151,10 +143,6 @@ module Diplomacy
     def initialize(unit, origin_area)
       @unit = unit
       @origin_area = origin_area
-    end
-
-    def to_s
-      "#{@unit.type_to_s}(#{@unit.nationality})*#{@origin_area}"
     end
   end
 end

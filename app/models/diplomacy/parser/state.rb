@@ -1,8 +1,15 @@
+require_relative '../adjudicator/state'
+
 module Diplomacy
   class Parser::State
 
     def initialize( gamestate = nil )
       @gamestate = gamestate || GameState.new
+    end
+
+    def from_json( data )
+      state_data = JSON.parse data
+      to_state state_data
     end
 
     def to_state( data )
@@ -45,22 +52,22 @@ module Diplomacy
       @gamestate.each do |name, area|
         
         if unit = area.unit
-          ( powers[unit.nationality] ||= StateParser.empty_power )[:Force] <<
+          ( powers[unit.nationality] ||= Parser::State.empty_power )[:Force] <<
           unit_to_string( unit, "#{name}#{ area.coast && "_#{area.coast}" }" )
         end
 
         if area.owner
-          ( powers[area.owner] ||= StateParser.empty_power )[:Lands] << name
+          ( powers[area.owner] ||= Parser::State.empty_power )[:Lands] << name
         end
 
       end
 
       @gamestate.dislodges.each do |name, dislodge|
-        ( powers[dislodge.unit.nationality] ||= StateParser.empty_power )[:Force] <<
+        ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Force] <<
         dislodge_to_string( name, dislodge )
       end
 
-      { :Powers => powers, :Embattled => @gamestate.embattled || [] }
+      { :Powers => powers, :Embattled => @gamestate.embattled || [] }.to_json
     end
 
     private
@@ -74,7 +81,7 @@ module Diplomacy
     end
 
     def self.empty_power
-      { :Force => {}, :Lands => [] }
+      { :Force => [], :Lands => [] }
     end
   end
 end

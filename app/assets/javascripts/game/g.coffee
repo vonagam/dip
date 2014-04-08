@@ -10,7 +10,6 @@ g.initialize_map = ( countries )->
     'old': g.map.find '#Orders_old'
     'new': g.map.find '#Orders_new'
 
-
   g.map.find('[data-coords]').each ()->
     q = $ this
     xy = q.attr('data-coords').split(',')
@@ -18,12 +17,10 @@ g.initialize_map = ( countries )->
     xy[1] = parseInt xy[1]
     q.data 'coords', xy
 
-
   place_force = (country, where, type)->
     address = where.split '_'
 
     coords = g.map.find('#'+where).data('coords')
-    log address
     neighbours = @regions[address[0]][address[1] || 'neis']
 
     force = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
@@ -44,10 +41,12 @@ g.initialize_map = ( countries )->
       neighbours: neighbours
 
   for country, data of countries
-    for place, unit of data.units
-      place_force country, place, if unit == 'A' then 'army' else 'fleet'
+    for unit in data.Force
+      if unit_data = unit.match(/^([AF])(\w+)$/)
+        #log unit_data
+        place_force country, unit_data[2], if unit_data[1] == 'A' then 'army' else 'fleet'
 
-    for area in data.areas
+    for area in data.Lands
       g.places.filter('#'+area).attr 'class', country 
 
   g.force_places = g.places.filter ()-> $(this).children('.force').length

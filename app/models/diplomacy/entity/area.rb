@@ -1,7 +1,7 @@
 require 'set'
 module Diplomacy
   class Area
-    attr_accessor :abbrv, :type, :supply_center, :name, :borders, 
+    attr_accessor :abbrv, :type, :supply_center, :name, :borders
     attr_accessor :borders, :neighbours
 
     LAND_BORDER = 1

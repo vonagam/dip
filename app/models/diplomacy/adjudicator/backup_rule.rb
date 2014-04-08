@@ -3,7 +3,6 @@ require_relative 'orders'
 module Diplomacy
   class BackupRule
     def initialize(*rules)
-      @logger = Diplomacy.logger
       @rules = []
       rules.each do |rule|
         if RULES.has_key? rule
@@ -15,17 +14,13 @@ module Diplomacy
     end
     
     def resolve!(loop)
-      @logger.debug "Using backup rule..."
       
       @rules.each do |rule|
         if rule.match(loop)
           rule.resolve!(loop)
-          @logger.debug "Used #{rule.class}"
           return
         end
       end
-      
-      @logger.debug "No rule matched, using All Hold fallback"
       
       # 'All Hold' fallback
       loop.each do |order|

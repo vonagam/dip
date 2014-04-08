@@ -1,7 +1,5 @@
-require 'logger'
-
 require_relative 'state'
-require_relative '../graph/graph'
+require_relative '../entity/area'
 
 module Diplomacy 
   UNRESOLVED = 0
@@ -14,8 +12,9 @@ module Diplomacy
 
   class GenericOrder
     attr_accessor :unit, :unit_area, :dst, :status, :resolution, :unit_area_coast, :dst_coast
+    attr_accessor :origin
+
     def initialize(unit, unit_area, dst)
-      @logger = Diplomacy.logger
       @unit = unit
       @unit_area = unit_area
       @dst = dst
@@ -80,12 +79,10 @@ module Diplomacy
     end
     
     def failed?
-      @logger.debug "UNRESOLVED ORDER! (#{to_s})"if unresolved?
       @resolution == FAILURE
     end
     
     def succeeded?
-      @logger.debug "UNRESOLVED ORDER! (#{to_s})"if unresolved?
       @resolution == SUCCESS
     end
     
@@ -108,17 +105,12 @@ module Diplomacy
     def resolution_readable
       case @resolution
       when SUCCESS
-        res_str = "SUCCESS"
+        "SUCCESS"
       when FAILURE
-        res_str = "FAILURE"
+        "FAILURE"
       when INVALID
-        res_str = "INVALID"
+        "INVALID"
       end
-      res_str
-    end
-    
-    def prefix
-      "#{@unit.nil? ? 'X' : @unit.type_to_s} #{unit_area.to_s}"
     end
   end
 
@@ -126,16 +118,9 @@ module Diplomacy
     def initialize(unit, unit_area)
       super(unit, unit_area, unit_area)
     end
-    
-    def to_s
-      "#{prefix} H"
-    end
   end
 
   class Move < GenericOrder
-    def to_s
-      "#{prefix} -> #{@dst}"
-    end
   end
 
   class Support < GenericOrder
@@ -145,16 +130,9 @@ module Diplomacy
       super(unit, unit_area, dst)
       @src = src
     end
-    
-    def to_s
-      "#{prefix} S #{@src.to_s}#{@src_coast} -> #{@dst}#{dst_coast}"
-    end
   end
 
   class SupportHold < GenericOrder
-    def to_s
-      "#{prefix} S #{@dst} H"
-    end
   end
 
   class Convoy < GenericOrder
@@ -163,19 +141,11 @@ module Diplomacy
       super(unit, unit_area, dst)
       @src = src
     end
-    
-    def to_s
-      "#{prefix} C #{@src} -> #{@dst}"
-    end
   end
 
   class Retreat < GenericOrder
     def initialize(unit, unit_area, dst)
       super(unit, unit_area, dst)
-    end
-
-    def to_s
-      "R #{prefix} -> #{@dst}"
     end
   end
 
@@ -184,10 +154,6 @@ module Diplomacy
     def initialize(unit, unit_area, build=true)
       super(unit, unit_area, nil)
       @build = build
-    end
-
-    def to_s
-      "#{@build ? 'B' : 'D'} #{prefix}"
     end
   end
 

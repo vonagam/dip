@@ -1,6 +1,6 @@
 module Diplomacy
   class Map
-    attr_accessor :areas, :starting_state
+    attr_accessor :areas, :powers, :starting_state
 
     def initialize
       @areas = {}
@@ -15,7 +15,7 @@ module Diplomacy
     end
 
     def supply_centers
-      @areas.select { |name, area| area.center }
+      @areas.select { |name, area| area.supply_center }
     end
   end
 end

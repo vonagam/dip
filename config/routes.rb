@@ -1,13 +1,14 @@
 Diplomacy::Application.routes.draw do
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  
+  devise_for :users
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  resources :games, only: [:index, :new, :create, :show] do
+    resources :states, only: [:show]
+    resource :order, only: [:create, :update], shallow: true    
+    resource :side, only: [:new, :create]
+  end
 
-  resources :games
-
-  root 'games#index'
+  root 'app#root'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

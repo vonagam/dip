@@ -1,5 +1,7 @@
 require 'yaml'
 require 'set'
+require_relative '../entity/area'
+require_relative '../entity/map'
 
 module Diplomacy
   class Parser::Map
@@ -72,7 +74,9 @@ module Diplomacy
 
         end
 
-        map.starting_state = StateParser.new().to_state({ 'Powers' => yamlmap['Powers'] })
+        map.powers = yamlmap['Powers'].keys
+
+        map.starting_state = Parser::State.new().to_state({ 'Powers' => yamlmap['Powers'] })
         
         @maps[mapname] = map
       end

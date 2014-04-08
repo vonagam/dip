@@ -2,7 +2,15 @@ class CreateGameBasis < ActiveRecord::Migration
   def change
     create_table :games do |t|
       t.string :name
-      t.string :status
+
+      t.integer :status
+      t.index :status
+
+      t.text :description
+
+      t.references :creator
+      t.index :creator_id
+
       t.timestamps
     end
 
@@ -11,6 +19,9 @@ class CreateGameBasis < ActiveRecord::Migration
 
       t.references :game
       t.index :game_id
+
+      t.references :user
+      t.index :user_id
     end
 
     create_table :states do |t|

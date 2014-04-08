@@ -7,14 +7,14 @@ gem 'mysql2'
 gem 'slim-rails'
 gem 'stylus'
 
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'
 
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails'
 gem 'jquery-rails'
 
 gem 'vonagam_items', path: '../items'
 
-gem 'ruby-adjudicator', path: '../../other/ruby-adjudicator'
+gem 'devise'
 
 group :development do
   gem 'quiet_assets'
