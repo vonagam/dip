@@ -1,4 +1,6 @@
 Diplomacy::Application.routes.draw do
+
+  mount VonagamItems::Engine, at: "/vonagam_items"
   
   devise_for :users
 
