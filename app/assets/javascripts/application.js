@@ -13,5 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require vonagam_items/basic
+//= require vonagam_items/ajax/form
 //= require states
 //= require game

@@ -14,15 +14,15 @@
 ActiveRecord::Schema.define(version: 20140404160435) do
 
   create_table "games", force: true do |t|
-    t.string   "name"
-    t.string   "status"
     t.text     "description"
+    t.integer  "status"
     t.integer  "creator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "games", ["creator_id"], name: "index_games_on_creator_id", using: :btree
+  add_index "games", ["status"], name: "index_games_on_status", using: :btree
 
   create_table "orders", force: true do |t|
     t.text    "data"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20140404160435) do
 
   create_table "sides", force: true do |t|
     t.string  "name"
+    t.boolean "defeated", default: false, null: false
     t.integer "game_id"
     t.integer "user_id"
   end
@@ -52,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140404160435) do
   add_index "states", ["game_id"], name: "index_states_on_game_id", using: :btree
 
   create_table "users", force: true do |t|
+    t.string   "name"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"

@@ -1,10 +1,12 @@
 Diplomacy::Application.routes.draw do
-
-  mount VonagamItems::Engine, at: "/vonagam_items"
   
   devise_for :users
 
-  resources :games, only: [:index, :new, :create, :show] do
+  resources :games, only: [:index, :new, :create, :show, :destroy] do
+    member do
+      get 'start'
+    end
+
     resources :states, only: [:show]
     resource :order, only: [:create, :update], shallow: true    
     resource :side, only: [:new, :create]

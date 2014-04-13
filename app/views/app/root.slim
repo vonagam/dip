@@ -1,1 +1,5 @@
-a href=games_path Games
+#root
+  - if user_signed_in?
+    div You are #{current_user.name}
+  - else
+    div Not logged in

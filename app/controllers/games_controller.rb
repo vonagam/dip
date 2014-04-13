@@ -10,29 +10,21 @@ class GamesController < ApplicationController
   def create
     new_game = current_user.created_games.create game_params
 
-    render json: { success: true, redirect: game_path(new_game) }
+    respond_with new_game, location: game_path(new_game)
   end
 
   def show
     @game = Game.find params[:id]
+    @state = @game.states.last
+  end
 
-    side = @game.sides.first
-    state = @game.states.last
+  def destroy
+    Game.find( params[:id] ).destroy!
+ 
+    redirect_to action: :index, status: 303
+  end
 
-    order_data = {
-      ukr: {
-        type: 'move',
-        to: 'mos'
-      }
-    }.to_json
-
-    #puts state.id
-
-    #puts state.orders.count
-
-    #side.orders.create state_id: state.id, data: order_data
-
-    @game.progress!
+  def start
   end
 
   private

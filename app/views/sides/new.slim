@@ -1,0 +1,11 @@
+#side
+  
+  ._taken = table @game.sides.to_a, fields: [ :name, { user: Proc.new{ |side| side.user.name } } ]
+
+  ._select
+    = simple_form_for Side.new, url: game_side_path(@game, format: :json),
+    remote: true, html:{'data-resource'=>'side'} do |f|
+    
+      = f.input :name, collection: @game.available_powers, include_blank: false
+
+      = f.button :button

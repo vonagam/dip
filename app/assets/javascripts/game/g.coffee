@@ -2,7 +2,7 @@
 
 g.initialize_map = ( countries )->
 
-  g.container = $ '#game_container'
+  g.container = $ '#game ._map_container'
   g.map = g.container.find '#diplomacy_map'
   g.places = g.map.children('g').not '#Orders'
 

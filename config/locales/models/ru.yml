@@ -1,0 +1,50 @@
+ru:
+  attributes:
+    id: Номер
+    slug: Ссылка
+    created_at: Создан
+    updated_at: Изменен
+    email: Email
+    phone: Телефон
+    full_name: ФИО
+    photo: Фото
+    title: Заголовок
+    header: Заголовок
+    name: Имя
+    description: Описание
+    text: Текст
+    preview: Превью
+    background: Фон
+    password: Пароль
+    password_confirmation: Повторите пароль
+
+  activerecord:
+    models:
+      game:
+        one: Игра
+        few: Игры
+        many: Игр
+        other: Игры
+      side:
+        one: Сторона
+        few: Стороны
+        many: Сторон
+        other: Сторон
+      user:
+        one: Пользователь
+        few: Пользователя
+        many: Пользователей
+        other: Пользователей
+
+    attributes:
+      side:
+        name: Страна
+
+  helpers:
+    submit:
+      game:
+        create: Создать игру
+      side:
+        create: Принять участие
+      user:
+        create: Зарегистрироваться

@@ -1,13 +1,9 @@
-#Games_index
-  div
-    - Game.all.each do |game|
-      div
-        a href=game_path(game) = game.name
+#games
+  
+  = table Game.all,
+    fields: [ { 'id' => Proc.new{ |g| link_to g.id, game_path(g) } }, :description ],
+    row: Proc.new{ |g| { class: g.status } }
 
-  div
-    = simple_form_for Game.new, remote: true, format: :json do |f|
-      = f.input :name
-      = f.button :button
-
-  div
-    = Diplomacy::Parser::State.new( MAP_READER.maps['Standard'].starting_state ).to_json
+  = simple_form_for Game.new, format: :json, remote: true, html: { 'data-resource' => 'game' } do |f|
+    = f.input :description
+    = f.button :button

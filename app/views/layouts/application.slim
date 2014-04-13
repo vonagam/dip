@@ -10,10 +10,17 @@ html
 
     #main_layer
 
-      #main_menu Asd
+      ._menu
+        a.td href=games_path layouts.app.menu.games
 
-      == yield
+        - if user_signed_in?
+          a.td href=destroy_user_session_path layouts.app.menu.leave
+        - else
+          a.td href=new_user_session_path layouts.app.menu.enter
+          a.td href=new_user_registration_path layouts.app.menu.register
 
-    = layer :popup
+      ._content == yield
 
-    = layer :wait
+    #popup_layer.layer: ._content
+
+    #wait_layer.layer: ._content

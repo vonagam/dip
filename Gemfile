@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.0.4'
+gem 'rails', '~> 4.1.0'
 
 gem 'mysql2'
 
@@ -15,6 +15,8 @@ gem 'jquery-rails'
 gem 'vonagam_items', path: '../items'
 
 gem 'devise'
+
+gem 'rails-i18n'
 
 group :development do
   gem 'quiet_assets'

@@ -1,0 +1,19 @@
+ru:
+  views:
+    layouts:
+      app:
+        menu:
+          games: Игры
+          enter: Войти
+          leave: Выйти
+          register: Регистрация
+
+    devise:
+      sign_up:
+        title: Регистрация
+      sign_in:
+        title: Вход
+
+    game:
+      destroy: Отменить игру
+      participate: Принять участие

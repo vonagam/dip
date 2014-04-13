@@ -2,12 +2,14 @@ class SidesController < ApplicationController
   before_filter :authenticate_user!
   
   def new
-    @available_powers = Game.find( params[:game_id] ).available_powers
+    @game = Game.find params[:game_id]
   end
   
   def create
-    params[:side][:game] = Game.find params[:game_id]
-    current_user.sides.create side_params
+    game = Game.find params[:game_id]
+    params[:side][:game] = game
+    side = current_user.sides.create side_params
+    respond_with side, location: game_path(game)
   end
 
   private

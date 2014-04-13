@@ -1,12 +1,10 @@
 class CreateGameBasis < ActiveRecord::Migration
   def change
     create_table :games do |t|
-      t.string :name
+      t.text :description
 
       t.integer :status
       t.index :status
-
-      t.text :description
 
       t.references :creator
       t.index :creator_id
@@ -16,6 +14,7 @@ class CreateGameBasis < ActiveRecord::Migration
 
     create_table :sides do |t|
       t.string :name
+      t.boolean :defeated, default: false, null: false
 
       t.references :game
       t.index :game_id

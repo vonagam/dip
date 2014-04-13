@@ -1,4 +1,4 @@
-//= require game/data/map
+//= require game/map
 
 //= require game/g
 
