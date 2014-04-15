@@ -25,6 +25,13 @@ class GamesController < ApplicationController
   end
 
   def start
+    game = Game.find params[:id]
+
+    return unless current_user == game.creator
+
+    game.progress!
+    
+    respond_with game, location: game_path(game)
   end
 
   private

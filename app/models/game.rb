@@ -18,7 +18,7 @@ class Game < ActiveRecord::Base
 
     State::Move.create game_id: id, data: start_state, date: 0
 
-    update! status: :waiting
+    waiting!
   end
 
   def powers
@@ -32,17 +32,24 @@ class Game < ActiveRecord::Base
   end
 
   def progress!
-    return if ended?
-
-    return in_process! if waiting?
+    return randomize_sides && in_process! if waiting?
 
     states.last.process
 
     ended! if states.last.type == 'State'
   end
 
-  def user_participate?(user)
-    users.pluck(:id).include? user.id
+  def user_side(user)
+    sides.where( user_id: user.id ).first
+  rescue
+    nil
+  end
+
+  def randomize_sides
+    available = available_powers
+    sides.where( name: 'Random' ).each do |side|
+      side.update name: available.shuffle.pop
+    end
   end
 
   def is_filled?

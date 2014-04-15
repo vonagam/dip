@@ -10,7 +10,7 @@ class Side < ActiveRecord::Base
 
   validates :game, presence: true
   
-  validates :name, :user, presence: true, uniqueness: { scope: :game_id }
+  validates :user, presence: true, uniqueness: { scope: :game_id }
 
   validate :game_is_waiting
   def game_is_waiting
@@ -21,7 +21,7 @@ class Side < ActiveRecord::Base
 
   validate :power_name
   def power_name
-    if game.powers.not_include?( name )
+    if name != 'Random' && game.available_powers.not_include?( name )
       errors.add :name, 'Power not found'
     end
   end
