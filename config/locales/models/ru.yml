@@ -17,6 +17,7 @@ ru:
     background: Фон
     password: Пароль
     password_confirmation: Повторите пароль
+    status: Статус
 
   activerecord:
     models:
