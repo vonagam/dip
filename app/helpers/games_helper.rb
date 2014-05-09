@@ -3,10 +3,10 @@ module GamesHelper
     result = [ "'#{game.status}'" ]
 
     state = game.state
-    result.push "'#{state.type}'", state.data
+    result.push "'#{state._type}'", state.data
 
     if side = game.user_side( user )
-      result.push "'#{side.name}'", ( side.order ? side.order.data : 'false' )
+      result.push "'#{side.power}'", ( side.order ? side.order.data : 'false' )
     else
       result.push 'false', 'false'
     end

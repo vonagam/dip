@@ -4,10 +4,7 @@ module Diplomacy
 
     def initialize
       @areas = {}
-    end
-
-    def add_power( name, starting_areas )
-      @powers[name] = starting_areas
+      @powers = []
     end
     
     def neighbours?( name1, name2, type )

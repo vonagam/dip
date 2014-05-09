@@ -1,27 +1,31 @@
 class Game
   include Mongoid::Document
 
-
   field :status, default: 'waiting'
   field :description
 
-
   belongs_to :map
   belongs_to :creator, class_name: 'User'
+  has_many :sides, dependent: :destroy
+  has_many :states, dependent: :destroy
 
-  embeds_many :sides
-  embeds_many :states
+  validates :map, presence: true
 
+  after_create :initial_state
+  def initial_state
+    start_state = Diplomacy::Parser::State.new( map.info.starting_state ).to_json
+    State::Move.create game: self, data: start_state, date: 0
+  end
 
   def state
     states.last
   end
 
   def powers
-    map.powers.all.pluck :name
+    map.info.powers
   end
   def taken_powers
-    sides.all.collect {|s| s.power.name }
+    sides.all.pluck :power
   end
   def available_powers
     powers - taken_powers
@@ -36,7 +40,7 @@ class Game
 
     state.process
 
-    if state.type == 'State'
+    if state._type == 'State'
       update_attributes status: 'ended'
     end
   end
@@ -47,14 +51,13 @@ class Game
 
   def randomize_sides
     available = available_powers
-    sides.where( power_id: nil ).each do |side|
-      side.power = Power.find_by( map_id: map.id, name: available.shuffle.pop )
-      side.save
+    sides.where( power: '' ).each do |side|
+      side.update_attributes power: available.shuffle.pop
     end
   end
 
   def is_filled?
-    sides.count == map.powers.count
+    sides.count == map.info.powers.size
   end
 
   def orders_received?

@@ -1,16 +1,13 @@
 class Order
   include Mongoid::Document
 
-
   field :data
 
-
-  embedded_in :state
-
+  belongs_to :state
   belongs_to :side
 
-
-  validates :side, presence: true, uniqueness: true
+  validates :state, :side, presence: true
+  validates :side, uniqueness: { scope: :state }
 
   validate :game_in_progress
   def game_in_progress

@@ -10,7 +10,7 @@ module Diplomacy
       result = []
 
       all_orders.each do | power_orders |
-        power = power_orders.side.name.to_sym
+        power = power_orders.side.power.to_sym
         orders = JSON.parse power_orders.data
 
         orders.each do | region, order |

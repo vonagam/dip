@@ -1,13 +1,11 @@
 class Map
   include Mongoid::Document
 
-
   field :name
-  field :areas
-  field :initial_state
 
+  has_many :games, dependent: :destroy
 
-  embeds_many :powers
-
-  has_many :games
+  def info
+    MAP_READER.maps[ self.name ]
+  end
 end

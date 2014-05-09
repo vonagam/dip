@@ -1,15 +1,12 @@
 class State
   include Mongoid::Document
 
-
   field :data
   field :date, type: Integer
 
-
-  embedded_in :game
-  embeds_many :orders
+  belongs_to :game
+  has_many :orders, dependent: :destroy
  
-
   def next_date!
     self.date += 1
   end
@@ -32,7 +29,7 @@ class State
   end
 
   def someone_win?( parsed_data )
-    supply_centers = MAP_READER.maps['Standard'].supply_centers
+    supply_centers = game.map.info.supply_centers
     side_centers = {}
     supply_centers.each do |abbrv, area|
       owner = parsed_data[abbrv].owner
@@ -56,7 +53,8 @@ class State
     end
 
     powers.each do |power, resolved|
-      order = game.sides.where( name: power.to_s ).first.orders.where( state_id: id ).first
+      puts power
+      order = game.sides.find_by( power: power.to_s ).order
       order.update_attributes data: resolved.to_json
     end
   end
@@ -77,11 +75,11 @@ class State::Move < State
     return next_state.save if someone_win?( next_data )
 
     if next_data.dislodges.not_empty?
-      next_state.type = 'State::Retreat'
+      next_state._type = 'State::Retreat'
     elsif is_fall?
-      next_state.type = 'State::Supply'
+      next_state._type = 'State::Supply'
     else
-      next_state.type = 'State::Move'
+      next_state._type = 'State::Move'
       next_state.next_date!
     end
 

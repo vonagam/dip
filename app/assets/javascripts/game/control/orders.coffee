@@ -28,7 +28,7 @@ g.order_index = new klass.StateUnited
       target: -> g.container
       class: 'order_index'
     form:
-      target: -> doc.find('#new_order button')
+      target: -> doc.find('.order_form button')
       bind:
         'mousedown': ()->
           orders = {}
