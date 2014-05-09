@@ -16,7 +16,7 @@ module Diplomacy
         orders.each do | region, order |
           order = parse_order region, order, power
 
-          next if order.nil? || classes.not_include? order.class
+          next if order.nil? || classes.not_include?(order.class)
 
           result << order
         end
@@ -63,10 +63,10 @@ module Diplomacy
       when 'retreat'; Retreat.new unit, position, to   
       when 'disband'; Build.new unit, position, false
       when 'support'
-        if from
-          Support.new unit, position, from, to
-        else
+        if from == to
           SupportHold.new unit, position, to
+        else
+          Support.new unit, position, from, to
         end
       when 'build'
         return nil if area.owner != power

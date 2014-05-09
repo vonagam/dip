@@ -1,16 +1,21 @@
-class Order < ActiveRecord::Base
-  # :data
+class Order
+  include Mongoid::Document
+
+
+  field :data
+
+
+  embedded_in :state
 
   belongs_to :side
-  belongs_to :state
 
-  validates :state, :side, presence: true
-  validates :state_id, uniqueness: { scope: :side_id }
+
+  validates :side, presence: true, uniqueness: true
 
   validate :game_in_progress
   def game_in_progress
-    if game.status != 'waiting'
-      errors.add :state, 'Game already start'
+    if state.game.status != 'in_process'
+      errors.add :state, 'Game not going'
     end
   end
   

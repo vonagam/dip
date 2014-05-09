@@ -94,14 +94,15 @@ class klass.State
       if toggl['prop']
         target.prop toggl['prop'], bool
 
+      if toggl['bind']
+        for e, fun of toggl['bind']
 
-      if toggl.bind
-        for e in toggl.bind
-          l = e.length
-          target[ if bool then 'on' else 'off' ](
-              e[0],
-              if l == 3 then e[1] else null,
-              e[l-1]
-            )
+          if typeof fun == 'function'
+            filter = null
+          else
+            filter = fun[0]
+            fun = fun[1]
+
+          target[ if bool then 'on' else 'off' ]( e, filter, fun )
 
     return

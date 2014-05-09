@@ -1,9 +1,47 @@
+order_to_json = ( order )->
+  result = { type: order.type }
+
+  if result.type == 'hold'
+    return result
+
+  if result.type == 'move'
+    result.to = order.position.attr('id')
+    return result
+
+  if result.type == 'support' || result.type == 'convoy'
+    whom = order.whom
+    result.from = whom.data 'where'
+
+    whom_order = whom.data 'order'
+    if whom_order.type == 'move'
+      result.to = whom_order.position.attr('id')
+    else
+      result.to = result.from
+
+    return result
+
+
 # index contain loop and order type selection
 g.order_index = new klass.StateUnited 
-  toggls: 
+  toggls:
     game:
       target: -> g.container
       class: 'order_index'
+    form:
+      target: -> doc.find('#new_order button')
+      bind:
+        'mousedown': ()->
+          orders = {}
+
+          g.forces.each ()->
+            q = $ this
+            if q.data('country') == g.country
+              orders[ q.data('where') ] = order_to_json( q.data('order') )
+
+          log( jso(orders) )
+
+          $(this).closest('form').find('[name="order[data]"]').val( jso(orders) )
+
 
 # order loop
 order_loop = new klass.StateListLooped
@@ -42,20 +80,16 @@ actions = new Actions
       attr: 'force_selected'
     probel:
       target:-> doc
-      bind: [
-        [
-          'keydown',
-          (e)->
-            return support.turn true if e.which == 83
-            return move.turn true if e.which == 77
-            return actions.turn false if e.which == 32
+      bind:
+        'keydown': (e)->
+          return support.turn true if e.which == 83
+          return move.turn true if e.which == 77
+          return actions.turn false if e.which == 32
 
-            if e.which == 72
-              g.make.order 'hold', g.map.data('[force_select]').children('.force')
-              actions.turn false
-              return
-        ]
-      ]
+          if e.which == 72
+            g.make.order 'hold', g.map.data('[force_select]').children('.force')
+            actions.turn false
+            return
 
 # Move order
 move = new klass.StateList
@@ -165,18 +199,3 @@ g.order_index.add [
     ]
   ]
 ]
-
-###
-
-convoy.add [
-  convoy_army.add [
-    convoy_army_loop.add [
-      convoy_army_select
-    ]
-  ]
-  convoy_fleet.add [
-    convoy_fleet_whom_select
-    convoy_fleet_to_select
-  ]
-]
-###

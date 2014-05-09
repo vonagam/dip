@@ -1,16 +1,21 @@
-class State < ActiveRecord::Base
-  # :data, :date, :type, :game_id
+class State
+  include Mongoid::Document
 
-  belongs_to :game
 
-  has_many :orders, dependent: :destroy
+  field :data
+  field :date, type: Integer
+
+
+  embedded_in :game
+  embeds_many :orders
  
+
   def next_date!
-    self.date += 0.5
+    self.date += 1
   end
 
   def is_fall?
-    date % 1 != 0
+    date % 2 != 0
   end
 
   def create_next_state( next_data )

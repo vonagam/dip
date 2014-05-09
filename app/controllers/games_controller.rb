@@ -16,6 +16,8 @@ class GamesController < ApplicationController
   def show
     @game = Game.find params[:id]
     @state = @game.states.last
+
+    render "games/show/#{@game.status}"
   end
 
   def destroy
@@ -30,8 +32,8 @@ class GamesController < ApplicationController
     return unless current_user == game.creator
 
     game.progress!
-    
-    respond_with game, location: game_path(game)
+
+    redirect_to action: :show, status: 303
   end
 
   private

@@ -1,28 +1,36 @@
-class Side < ActiveRecord::Base
-  # :name
+class Side
+  include Mongoid::Document
 
-  belongs_to :game
+
+  embedded_in :game
 
   belongs_to :user
+  belongs_to :power
 
-  has_many :orders, dependent: :destroy
-
-
-  validates :game, presence: true
+  has_many :orders
   
-  validates :user, presence: true, uniqueness: { scope: :game_id }
 
+  validates :user, presence: true, uniqueness: true
   validate :game_is_waiting
+  validate :power_valid
+
+
+  def order
+    game.state.orders.find_by side_id: id
+  end
+
+
+  protected
+  
   def game_is_waiting
-    if game.not_waiting?
+    if game.status != 'waiting'
       errors.add :game_id, 'Game already start'
     end
   end
 
-  validate :power_name
-  def power_name
-    if name != 'Random' && game.available_powers.not_include?( name )
-      errors.add :name, 'Power not found'
+  def power_valid
+    if power_id && game.map.powers.all.pluck(:id).not_include?( power_id )
+      errors.add :power, 'Power not found'
     end
   end
 end

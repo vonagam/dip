@@ -14,13 +14,8 @@ class g.SelectingState extends klass.State
     @toggls.possible = toggl
     @toggls.container = 
       target: @select_container
-      bind: [
-        [
-          'mousedown',
-          @select_marking,
-          @select_click_handler
-        ]
-      ]
+      bind: 
+        'mousedown': [ @select_marking, @select_click_handler ]
 
   toggle: (bool)->
     return true if super

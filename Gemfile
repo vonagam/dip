@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '4.0.1'
 
-gem 'mysql2'
+gem 'mongoid'
 
 gem 'slim-rails'
 gem 'stylus'
@@ -12,11 +12,16 @@ gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
 
-gem 'vonagam_items', path: '../items'
+gem 'rails-i18n'
+gem 'russian'
 
+gem 'cancancan', '~> 1.7'
 gem 'devise'
 
-gem 'rails-i18n'
+gem 'activeadmin',         github: 'gregbell/active_admin'
+gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
+
+gem 'vonagam_items', path: '../items'
 
 group :development do
   gem 'quiet_assets'

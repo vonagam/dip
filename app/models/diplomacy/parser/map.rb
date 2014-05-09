@@ -28,7 +28,7 @@ module Diplomacy
 
         yamlmap['Areas'].each do |name, info|
 
-          if info['type'] != 'multi_coast'
+          if info['neis'].is_a?(Array)
             neighbours = info['neis']
           else
             neighbours = info['neis']['xc']

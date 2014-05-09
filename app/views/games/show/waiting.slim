@@ -1,0 +1,23 @@
+#game
+
+  ._state Waiting
+
+  .row
+
+    ._map_container = render 'games/show/map'
+
+    ._panel
+
+      - if user_signed_in?
+        ._menu
+
+        - if @game.creator == current_user
+          a href=game_path(@game) data-method='delete' game.destroy
+          a href=start_game_path(@game) game.start
+
+        - unless @game.user_side current_user
+          a href=new_game_side_path(@game) game.participate
+
+      ._sides = table @game.sides.to_a, fields: [ :name, { user: Proc.new{ |side| side.user.name } } ]
+
+= render 'games/show/state'

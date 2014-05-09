@@ -67,7 +67,7 @@ Standard:
       center: true
     bul:
       full: Bulgaria 
-      type: multi_coast
+      type: coast
       neis:
         xc: [con,bla,rum,gre,ser,aeg]
         ec: [con,bla,rum]
@@ -267,7 +267,7 @@ Standard:
       center: true
     spa:
       full: Spain 
-      type: multi_coast
+      type: coast
       neis: 
         xc: [gas,por,wes,lyo,mar,mao]
         nc: [gas,mao,por]
@@ -275,7 +275,7 @@ Standard:
       center: true
     stp:
       full: St. Petersburg 
-      type: multi_coast
+      type: coast
       neis: 
         xc: [fin,lvn,nor,mos,bot,bar]
         nc: [bar,nor]

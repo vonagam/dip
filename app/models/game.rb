@@ -1,62 +1,63 @@
-class Game < ActiveRecord::Base
-  # :status, :description
+class Game
+  include Mongoid::Document
 
-  has_many :sides, dependent: :destroy
-  has_many :states, dependent: :destroy
 
-  has_many :users, through: :sides
+  field :status, default: 'waiting'
+  field :description
 
+
+  belongs_to :map
   belongs_to :creator, class_name: 'User'
-  
-  after_create :initial_state
 
-  enum status: [ :waiting, :in_process, :ended ]
+  embeds_many :sides
+  embeds_many :states
 
 
-  def initial_state
-    start_state = Diplomacy::Parser::State.new( MAP_READER.maps['Standard'].starting_state ).to_json
-
-    State::Move.create game_id: id, data: start_state, date: 0
-
-    waiting!
+  def state
+    states.last
   end
 
   def powers
-    MAP_READER.maps['Standard'].powers
+    map.powers.all.pluck :name
   end
   def taken_powers
-    sides.to_a.collect {|s| s.name }
+    sides.all.collect {|s| s.power.name }
   end
   def available_powers
     powers - taken_powers
   end
 
   def progress!
-    return randomize_sides && in_process! if waiting?
+    if status == 'waiting'
+      randomize_sides
+      update_attributes status: 'in_process'
+      return
+    end
 
-    states.last.process
+    state.process
 
-    ended! if states.last.type == 'State'
+    if state.type == 'State'
+      update_attributes status: 'ended'
+    end
   end
 
   def user_side(user)
-    sides.where( user_id: user.id ).first
-  rescue
-    nil
+    sides.find_by user_id: user.id
   end
 
   def randomize_sides
     available = available_powers
-    sides.where( name: 'Random' ).each do |side|
-      side.update name: available.shuffle.pop
+    sides.where( power_id: nil ).each do |side|
+      side.power = Power.find_by( map_id: map.id, name: available.shuffle.pop )
+      side.save
     end
   end
 
   def is_filled?
-    users.count == powers.size
+    sides.count == map.powers.count
   end
 
   def orders_received?
-    states.last.orders.count == sides.count
+    state.orders.count == sides.count
   end
 end

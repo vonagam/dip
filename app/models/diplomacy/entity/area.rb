@@ -27,7 +27,7 @@ module Diplomacy
     end
     
     def is_coastal?
-      @type == 'coast' || @type == 'multi_coast'
+      @type == 'coast'
     end
   end
 end

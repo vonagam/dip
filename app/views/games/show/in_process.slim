@@ -1,0 +1,23 @@
+#game
+
+  ._state Turn #{ @state.date }: Action #{ @state.type }
+
+  .row
+
+    ._map_container = render 'games/show/map'
+
+    ._panel
+
+      - if side = @game.user_side(current_user)
+        div = side.name
+
+        - if order = side.order
+          div = order.data
+
+        = form_for side.order || Order.new, url: game_order_path(@game, format: :json), remote: true do |f|
+          = f.hidden_field :data
+          = f.button 'Отдать приказы'
+
+  div = @game.state.to_json
+
+= render 'games/show/state'
