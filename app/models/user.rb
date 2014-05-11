@@ -1,7 +1,6 @@
 class User
   include Mongoid::Document
   
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -36,14 +35,14 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-
   field :name
 
-
-  has_many :sides
   has_many :created_games, class_name: 'Game', foreign_key: 'creator_id'
-
 
   validates :name, :email, :password, presence: true
   validates :name, :email, uniqueness: { case_insensitive: true }
+
+  def side_in( game )
+    game.side_of self
+  end
 end

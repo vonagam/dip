@@ -1,4 +1,5 @@
 require_relative 'state'
+require_relative '../entity/unit'
 require_relative '../entity/area'
 
 module Diplomacy 

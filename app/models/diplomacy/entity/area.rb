@@ -1,7 +1,8 @@
 require 'set'
+
 module Diplomacy
   class Area
-    attr_accessor :abbrv, :type, :supply_center, :name, :borders
+    attr_accessor :abbrv, :type, :supply_center, :name
     attr_accessor :borders, :neighbours
 
     LAND_BORDER = 1
@@ -23,11 +24,11 @@ module Diplomacy
     end
 
     def is_land?
-      @type != 'water'
+      @type != :water
     end
     
     def is_coastal?
-      @type == 'coast'
+      @type == :coast
     end
   end
 end

@@ -1,25 +1,8 @@
-order_to_json = ( order )->
-  result = { type: order.type }
+get_unit_in = ( area_view )->
+  area_view.children('.unit').data('model')
 
-  if result.type == 'hold'
-    return result
-
-  if result.type == 'move'
-    result.to = order.position.attr('id')
-    return result
-
-  if result.type == 'support' || result.type == 'convoy'
-    whom = order.whom
-    result.from = whom.data 'where'
-
-    whom_order = whom.data 'order'
-    if whom_order.type == 'move'
-      result.to = whom_order.position.attr('id')
-    else
-      result.to = result.from
-
-    return result
-
+contain_unit = ( id )->
+  g.map.find("##{id}").children('.unit').length > 0
 
 # index contain loop and order type selection
 g.order_index = new klass.StateUnited 
@@ -33,10 +16,8 @@ g.order_index = new klass.StateUnited
         'mousedown': ()->
           orders = {}
 
-          g.forces.each ()->
-            q = $ this
-            if q.data('country') == g.country
-              orders[ q.data('where') ] = order_to_json( q.data('order') )
+          for unit in g.map_model.state.powers[ g.power ].units
+            orders[ unit.area.name ] = unit.order.to_json()
 
           log( jso(orders) )
 
@@ -48,7 +29,7 @@ order_loop = new klass.StateListLooped
 
 # first - select force to which order will be
 force_select = new g.SelectingState
-  selecting: -> g.map.find('.force').parent()
+  selecting: -> g.map.find('.unit').parent()
   marking: '[force_select]'
   container: -> g.map
 
@@ -57,8 +38,6 @@ class Actions extends klass.StateRadio
   toggle: (bool)->
     return true if super
     if bool
-      force = @selected.children '.force'
-
       @childs[0].turn true 
     return
   after_child_toggled: (child, bool)->
@@ -67,8 +46,9 @@ class Actions extends klass.StateRadio
     for child in @childs
       return if child.turned == true 
 
-    unless @selected.children('.force').data('order')
-      g.make.order 'hold', @selected.children('.force')
+    unit = get_unit_in(@selected)
+    unless unit.order
+      g.set_order unit, 'Hold'
 
     @turn false
     return
@@ -87,7 +67,8 @@ actions = new Actions
           return actions.turn false if e.which == 32
 
           if e.which == 72
-            g.make.order 'hold', g.map.data('[force_select]').children('.force')
+            unit = get_unit_in g.map.data('[force_select]')
+            g.set_order unit, 'Hold'
             actions.turn false
             return
 
@@ -99,38 +80,41 @@ move = new klass.StateList
 move.after_list_end = ->
   return true unless g.map.data '[move_select]'
 
-  force = g.map.data('[force_select]').children '.force'
-  destination = g.map.data '[move_select]'
+  unit = get_unit_in g.map.data('[force_select]')
+  to = g.map.data '[move_select]'
 
-  if force.data('where') == destination.attr('id')
-    g.make.order 'hold', force
+  if unit.area.name == to.attr('id').split('_')[0]
+    g.set_order unit, 'Hold'
     return true 
 
-  if force.data('type') == 'army' && regions[destination.attr('id')].type == 'water'
-    @convoy = force.parent().get() unless @convoy
-    @convoy.push destination.get(0)
+  if unit.type == 'army' && regions[to.attr('id')].type == 'water'
+    @convoy = unit.area.views.xc.get() unless @convoy
+    @convoy.push to.get(0)
     @list_index = 0
     return
 
   if @convoy
-    @convoy.push destination.get(0)
-    g.make.order 'convoy', force, @convoy
+    g.set_order unit, 'Move', to: to.attr('id')
+    @convoy.shift()
+    for fleet_area in @convoy
+      fleet = get_unit_in $(fleet_area)
+      g.set_order fleet, 'Convoy', to: to.attr('id'), from: unit.area.name
   else
-    g.make.order 'move', force, destination
+    g.set_order unit, 'Move', to: to.attr('id')
 
   return true
 
 move_selecting = ->
-  force = g.map.data('[force_select]').children '.force'
+  unit = get_unit_in g.map.data('[force_select]')
   
-  possibles = g.map.find '#'+force.data('where')
+  possibles = g.map.find '#'+unit.get_full_position()
 
-  for possibility in force.data 'neighbours'
+  for possibility in unit.neighbours
     pos = possibility.split('_')[0]
 
-    if force.data('type') == 'army'
+    if unit.type == 'army'
       if regions[pos].type == 'water'
-        continue if g.force_places.filter('#'+pos).length == 0
+        continue unless contain_unit( pos )
     else
       continue if regions[pos].type == 'land'
       pos = possibility
@@ -142,10 +126,10 @@ move_selecting = ->
 convoy_selecting = ->
   last_one = g.map.data('[move_select]').attr('id')
   possibles = $()
-  for nei in regions[last_one].neis
+  for nei in regions[last_one].xc
     nei = nei.split('_')[0]
     if regions[nei].type == 'water'
-      possibles = possibles.add g.force_places.filter('#'+nei)
+      possibles = possibles.add g.map.find('#'+nei) if contain_unit( nei )
     else
       possibles = possibles.add g.map.find('#'+nei)
   possibles = possibles.not $(move.convoy)
@@ -161,21 +145,22 @@ support = new klass.StateList
 support.after_list_end = ->
   return true unless g.map.data '[move_select]'
 
-  who = g.map.data('[force_select]').children('.force')
-  whom = g.map.data('[move_select]').children('.force')
+  who = get_unit_in g.map.data('[force_select]')
+  whom = get_unit_in g.map.data('[move_select]')
 
-  g.make.order 'support', who, whom
+  g.set_order who, 'Support', from: whom.area.name, to: whom.order.target.name
 
   return true
 
 support_select = new g.SelectingState
-  selecting:-> 
+  selecting:->
     possibles = $()
-    force = actions.selected.children '.force'
-    for neighbour in force.data 'neighbours'
-      for where, who of g.map.find('#'+neighbour.split('_')[0]).data('targeting')
-        continue if who[0] == force[0]
-        possibles = possibles.add who.parent()
+    unit = get_unit_in actions.selected
+    for neighbour in unit.neighbours
+      area = g.map.find('#'+neighbour.split('_')[0]).data('model')
+      for from, order of area.targeting
+        continue if from == unit.area.name
+        possibles = possibles.add g.map.find("##{from}")
 
     if possibles.length == 0
       move.turn true

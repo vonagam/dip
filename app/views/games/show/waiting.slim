@@ -15,7 +15,7 @@
           a href=game_path(@game) data-method='delete' game.destroy
           a href=start_game_path(@game) game.start
 
-        - unless @game.user_side current_user
+        - unless @game.side_of current_user
           a href=new_game_side_path(@game) game.participate
 
       ._sides = table @game.sides.to_a, fields: [ :power, { user: Proc.new{ |side| side.user.name } } ]

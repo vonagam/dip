@@ -50,27 +50,27 @@ module Diplomacy
       unit = area.unit
 
       if unit.nil?
-        return nil unless order['type'] == 'build' && area.owner == power
+        return nil unless order['type'] == 'Build' && area.owner == power
       else
         return nil unless unit.nationality == power
       end
 
       result = 
       case order['type']
-      when 'hold';    Hold.new unit, position
-      when 'move';    Move.new unit, position, to
-      when 'convoy';  Convoy.new unit, position, from, to
-      when 'retreat'; Retreat.new unit, position, to   
-      when 'disband'; Build.new unit, position, false
-      when 'support'
+      when 'Hold';    Hold.new unit, position
+      when 'Move';    Move.new unit, position, to
+      when 'Convoy';  Convoy.new unit, position, from, to
+      when 'Retreat'; Retreat.new unit, position, to   
+      when 'Disband'; Build.new unit, position, false
+      when 'Support'
         if from == to
           SupportHold.new unit, position, to
         else
           Support.new unit, position, from, to
         end
-      when 'build'
+      when 'Build'
         return nil if area.owner != power
-        unit = Unit.new power, (order['build'] == 'army' ? Unit::ARMY : Unit::FLEET)
+        unit = Unit.new power, (order['unit'] == 'army' ? Unit::ARMY : Unit::FLEET)
         Build.new unit, position, true 
       else
         nil

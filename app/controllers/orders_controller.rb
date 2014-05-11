@@ -3,25 +3,17 @@ class OrdersController < ApplicationController
   
   def create
     game = Game.find params[:game_id]
-
-    side = game.user_side current_user
-
-    order = side.orders.build order_params.merge( state: game.state )
-
+    side = game.side_of current_user
+    order = game.state.orders.build order_params.merge( side: side )
     order.save
-
     respond_with order, location: game_path(game)
   end
 
   def update
     game = Game.find params[:game_id]
-
-    side = game.user_side current_user
-
-    order = side.order
-
-    order.update_attributes order_params
-
+    side = game.side_of current_user
+    order = game.state.order_of side
+    order.update_attributes! order_params
     respond_with order, location: game_path(game)
   end
 

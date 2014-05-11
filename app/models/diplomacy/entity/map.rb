@@ -1,6 +1,6 @@
 module Diplomacy
   class Map
-    attr_accessor :areas, :powers, :starting_state
+    attr_accessor :areas, :powers, :starting_state, :yaml_areas
 
     def initialize
       @areas = {}

@@ -4,8 +4,15 @@ class State
   field :data
   field :date, type: Integer
 
-  belongs_to :game
-  has_many :orders, dependent: :destroy
+  embedded_in :game
+  embeds_many :orders
+
+  delegate :map, to: :game
+  delegate :info, :adjudicator, to: :map, prefix: true
+
+  def order_of( side )
+    orders.find_by side: side
+  end
  
   def next_date!
     self.date += 1
@@ -29,7 +36,7 @@ class State
   end
 
   def someone_win?( parsed_data )
-    supply_centers = game.map.info.supply_centers
+    supply_centers = map_info.supply_centers
     side_centers = {}
     supply_centers.each do |abbrv, area|
       owner = parsed_data[abbrv].owner
@@ -53,7 +60,6 @@ class State
     end
 
     powers.each do |power, resolved|
-      puts power
       order = game.sides.find_by( power: power.to_s ).order
       order.update_attributes data: resolved.to_json
     end
@@ -62,7 +68,7 @@ end
 
 class State::Move < State
   def _process( current_data, order_parser )
-    next_data, adjudicated_orders = ADJUDICATOR.resolve!( 
+    next_data, adjudicated_orders = map_adjudicator.resolve!( 
       current_data, 
       order_parser.parse_orders(orders.all), 
       is_fall?
@@ -89,7 +95,7 @@ end
 
 class State::Retreat < State
   def _process( current_data, order_parser )
-    next_data, adjudicated_orders = ADJUDICATOR.resolve_retreats!( 
+    next_data, adjudicated_orders = map_adjudicator.resolve_retreats!( 
       current_data, 
       order_parser.parse_retreats(orders.all), 
       is_fall?
@@ -102,9 +108,9 @@ class State::Retreat < State
     return next_state.save if someone_win?( next_data )
 
     if is_fall?
-      next_state.type = 'State::Supply'
+      next_state._type = 'State::Supply'
     else
-      next_state.type = 'State::Move'
+      next_state._type = 'State::Move'
       next_state.next_date!
     end
 
@@ -114,7 +120,7 @@ end
 
 class State::Supply < State
   def _process( current_data, order_parser )
-    next_data, adjudicated_orders = ADJUDICATOR.resolve_builds!( 
+    next_data, adjudicated_orders = map_adjudicator.resolve_builds!( 
       current_data, 
       order_parser.parse_builds(orders.all)
     )
@@ -125,7 +131,7 @@ class State::Supply < State
 
     return next_state.save if someone_win?( next_data )
 
-    next_state.type = 'State::Move'
+    next_state._type = 'State::Move'
     next_state.next_date!
 
     next_state.save

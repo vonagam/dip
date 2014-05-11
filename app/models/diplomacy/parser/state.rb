@@ -1,4 +1,5 @@
 require_relative '../adjudicator/state'
+require_relative '../entity/unit'
 
 module Diplomacy
   class Parser::State
@@ -18,7 +19,7 @@ module Diplomacy
       data['Powers'].each do |power, state|
         power_s = power.to_sym
 
-        state['Force'].each do |force|
+        state['Units'].each do |force|
           if /^([AF])(\w{3})(?:\_(\w{2}))?(?:\<(\w{3}))?$/ =~ force
             unit = Unit.new power_s, $1 == 'A' ? Unit::ARMY : Unit::FLEET
             area = $2.to_sym
@@ -31,7 +32,7 @@ module Diplomacy
           end
         end
 
-        state['Lands'].each do |land|
+        state['Areas'].each do |land|
           ( @gamestate[land.to_sym] ||= AreaState.new ).owner = power_s
         end
 
@@ -52,18 +53,18 @@ module Diplomacy
       @gamestate.each do |name, area|
         
         if unit = area.unit
-          ( powers[unit.nationality] ||= Parser::State.empty_power )[:Force] <<
+          ( powers[unit.nationality] ||= Parser::State.empty_power )[:Units] <<
           unit_to_string( unit, "#{name}#{ area.coast && "_#{area.coast}" }" )
         end
 
         if area.owner
-          ( powers[area.owner] ||= Parser::State.empty_power )[:Lands] << name
+          ( powers[area.owner] ||= Parser::State.empty_power )[:Areas] << name
         end
 
       end
 
       @gamestate.dislodges.each do |name, dislodge|
-        ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Force] <<
+        ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Units] <<
         dislodge_to_string( name, dislodge )
       end
 
@@ -81,7 +82,7 @@ module Diplomacy
     end
 
     def self.empty_power
-      { :Force => [], :Lands => [] }
+      { :Units => [], :Areas => [] }
     end
   end
 end

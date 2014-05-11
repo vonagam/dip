@@ -27,7 +27,18 @@ group :development do
   gem 'quiet_assets'
 end
 
-#gem 'protected_attributes'
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'selenium-webdriver'
+  gem 'rack'
+end
+
 gem 'simple_form'
 #gem 'remotipart'
 #gem 'paperclip', '~> 3.0'

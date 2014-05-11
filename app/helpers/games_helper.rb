@@ -5,7 +5,7 @@ module GamesHelper
     state = game.state
     result.push "'#{state._type}'", state.data
 
-    if side = game.user_side( user )
+    if side = game.side_of( user )
       result.push "'#{side.power}'", ( side.order ? side.order.data : 'false' )
     else
       result.push 'false', 'false'

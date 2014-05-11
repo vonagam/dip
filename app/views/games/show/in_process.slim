@@ -8,16 +8,16 @@
 
     ._panel
 
-      - if side = @game.user_side(current_user)
+      - if side = @game.side_of( current_user )
         div = side.power
 
-        - if order = side.order
+        - if order = side.order_in( @game.state )
           div = order.data
 
         = form_for side.order || Order.new, url: game_order_path(@game, format: :json), remote: true, html: { class: 'order_form' } do |f|
           = f.hidden_field :data
           = f.button 'Отдать приказы'
 
-  div = @game.state.to_json
+  div style='display: none;' = @game.state.to_json
 
 = render 'games/show/state'

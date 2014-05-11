@@ -3,31 +3,26 @@ class Side
 
   field :power
 
-  belongs_to :game
+  embedded_in :game
   belongs_to :user
-  has_many :orders
   
   validates :game, :user, presence: true
-  validates :user, uniqueness: { scope: :game }
-  
-  validate :game_is_waiting
-  validate :power_valid
+  validates :power, inclusion: {in: proc{|s| s.game.powers}}, allow_blank: true
+  validate :game_is_waiting, on: :create
 
   def order
-    game.state.orders.find_by side: self
+    order_in game.state
+  end
+
+  def order_in( state )
+    state.order_of self
   end
 
   protected
   
   def game_is_waiting
     if game.status != 'waiting'
-      errors.add :game_id, 'Game already start'
-    end
-  end
-
-  def power_valid
-    if power.not_blank? && game.powers.not_include?( power )
-      errors.add :power, 'Power not found'
+      errors.add :game, 'Game already start'
     end
   end
 end

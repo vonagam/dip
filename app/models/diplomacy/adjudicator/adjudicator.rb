@@ -82,12 +82,7 @@ module Diplomacy
     attr_accessor :map
     
     def initialize(map = nil, backup_rule=nil, adjust=false)
-      if map
-        @map = map
-      else
-        mr = Parser::Map.new
-        @map = mr.maps['Standard']
-      end
+      @map = map
       @backup_rule = backup_rule || BackupRule.new(:simple_circular, :convoy_paradox)
     end
 

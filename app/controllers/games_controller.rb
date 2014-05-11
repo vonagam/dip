@@ -28,11 +28,7 @@ class GamesController < ApplicationController
 
   def start
     game = Game.find params[:id]
-
-    return unless current_user == game.creator
-
-    game.progress!
-
+    game.progress! if current_user == game.creator
     redirect_to action: :show, status: 303
   end
 

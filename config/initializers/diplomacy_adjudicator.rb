@@ -1,8 +1,7 @@
-require 'diplomacy/adjudicator/adjudicator'
+require 'diplomacy/parser/map'
 
 MAP_READER = Diplomacy::Parser::Map.new
-ADJUDICATOR = Diplomacy::Adjudicator.new MAP_READER.maps['Standard']
 
-MAP_READER.maps.each do |name, data|
-  Map.find_or_create_by name: name
+MAP_READER.maps.each do |map_name, map|
+  Map.find_or_create_by name: map_name
 end
