@@ -16,7 +16,7 @@ class Order
     end
   end
   
-  validate :valid
+  validate :valid, on: :create
   def valid
     state_parser = Diplomacy::Parser::State.new
     parsed_state = state_parser.from_json state.data

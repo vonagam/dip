@@ -15,7 +15,7 @@ module Diplomacy
     end
 
     def ==(other)
-      return (@owner == other.owner and @unit == other.unit and @coast == other.coast)
+      return (@owner == other.owner and @unit == other.unit) #and @coast == other.coast)
     end
   end
 
@@ -71,6 +71,7 @@ module Diplomacy
             end
 
             set_area_unit(order.dst, area_unit(order.unit_area))
+            area_state( order.dst ).coast = order.dst_coast
             set_area_unit(order.unit_area, nil)
           end
         end

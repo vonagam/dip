@@ -52,4 +52,13 @@ describe 'Adjudicator' do
     expect( orders['bot']['result'] ).to eq 'SUCCESS'
     expect( orders['bal']['result'] ).to eq 'SUCCESS'
   end
+
+  it 'fleet coast move' do
+    orders = orders_check(
+      '"Flvn"',
+      '{"lvn":{"type":"Move","to":"stp_sc"}}'
+    )
+
+    expect( orders['lvn']['result'] ).to eq 'SUCCESS'
+  end
 end

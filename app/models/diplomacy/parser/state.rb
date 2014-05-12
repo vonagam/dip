@@ -20,7 +20,7 @@ module Diplomacy
         power_s = power.to_sym
 
         state['Units'].each do |force|
-          if /^([AF])(\w{3})(?:\_(\w{2}))?(?:\<(\w{3}))?$/ =~ force
+          if /^([AF])(\w{3})(_\w{2})?(?:\<(\w{3}))?$/ =~ force
             unit = Unit.new power_s, $1 == 'A' ? Unit::ARMY : Unit::FLEET
             area = $2.to_sym
 
@@ -54,7 +54,7 @@ module Diplomacy
         
         if unit = area.unit
           ( powers[unit.nationality] ||= Parser::State.empty_power )[:Units] <<
-          unit_to_string( unit, "#{name}#{ area.coast && "_#{area.coast}" }" )
+          unit_to_string( unit, "#{name}#{area.coast}" )
         end
 
         if area.owner
