@@ -77,7 +77,6 @@ describe 'Adjudicator' do
       '{"bul":{"type":"Move","to":"bla"}}'
     )
 
-    puts orders
-    puts @game.state.data
+    expect( orders['bul']['result'] ).to eq 'SUCCESS'
   end
 end

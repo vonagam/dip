@@ -83,6 +83,7 @@ module Diplomacy
         set_area_unit(r.dst, @dislodges[r.unit_area].unit) if r.succeeded?
         # do nothing about the failed ones, they will be discarded
       end
+      @dislodges = {}
     end
 
     def apply_builds!(builds)

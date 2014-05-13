@@ -14,8 +14,8 @@ class klass.Order.Convoy extends klass.Order.Base
     
     line.attr 
       'r': 10
-      'cx': position[0]
-      'cy': position[1]
+      'cx': position.x
+      'cy': position.y
       'class': "convoy #{@unit.power.name}"
 
     return line

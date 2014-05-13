@@ -16,7 +16,7 @@ class klass.Unit
 
     force.attr
       'class': "unit #{@power.name}"
-      'transform': "translate(#{coords.join(',')})"
+      'transform': "translate(#{coords.x},#{coords.y})"
     
     force.appendTo @area.views.xc
 

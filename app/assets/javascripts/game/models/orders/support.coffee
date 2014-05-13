@@ -11,20 +11,16 @@ class klass.Order.Support extends klass.Order.Base
     from = @whom.where.data 'coords'
     to = @to_where.data 'coords'
 
-    middle =
-      x: (from[0]*1.2+to[0]*0.8)/2
-      y: (from[1]*1.2+to[1]*0.8)/2
+    middle = new Vector
+      x: (from.x*1.2+to.x*0.8)/2
+      y: (from.y*1.2+to.y*0.8)/2
 
-    theta = Math.atan2 middle.y-supporter[1], middle.x-supporter[0]
+    vec = middle.dif( supporter ).norm()
 
-    supporter =
-      x: supporter[0] + 8*Math.cos(theta)
-      y: supporter[1] + 8*Math.sin(theta)
+    supporter = supporter.sum( vec.mult(8) )
 
     if from == to
-      middle =
-        x: middle.x - 12*Math.cos(theta)
-        y: middle.y - 12*Math.sin(theta)
+      middle.sub( vec.mult(12) )
     
     line = document.createElementNS 'http://www.w3.org/2000/svg', 'path'
     

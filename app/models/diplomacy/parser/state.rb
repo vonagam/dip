@@ -48,27 +48,29 @@ module Diplomacy
     end
 
     def to_json
-      powers = {}
+      data = {}
 
+      powers = {}
       @gamestate.each do |name, area|
-        
         if unit = area.unit
           ( powers[unit.nationality] ||= Parser::State.empty_power )[:Units] <<
           unit_to_string( unit, "#{name}#{area.coast}" )
         end
-
         if area.owner
           ( powers[area.owner] ||= Parser::State.empty_power )[:Areas] << name
         end
+      end
+      data[:Powers] = powers
 
+      unless @gamestate.dislodges.empty?
+        @gamestate.dislodges.each do |name, dislodge|
+          ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Units] <<
+          dislodge_to_string( name, dislodge )
+        end
+        data[:Embattled] = @gamestate.embattled
       end
 
-      @gamestate.dislodges.each do |name, dislodge|
-        ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Units] <<
-        dislodge_to_string( name, dislodge )
-      end
-
-      { :Powers => powers, :Embattled => @gamestate.embattled || [] }.to_json
+      data.to_json
     end
 
     private

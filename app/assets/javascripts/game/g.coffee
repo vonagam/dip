@@ -14,9 +14,7 @@ g.initialize = ( status, type, state, power, orders )->
   g.map.find('[data-coords]').each ()->
     q = $ this
     xy = q.attr('data-coords').split(',')
-    xy[0] = parseInt xy[0]
-    xy[1] = parseInt xy[1]
-    q.data 'coords', xy
+    q.data 'coords', new Vector({ x: parseInt(xy[0]), y: parseInt(xy[1]) })
 
 
   g.map_model = new klass.Map regions
