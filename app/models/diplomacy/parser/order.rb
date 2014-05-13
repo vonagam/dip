@@ -52,7 +52,8 @@ module Diplomacy
       if unit.nil?
         return nil unless order['type'] == 'Build' && area.owner == power
       else
-        return nil if unit.nationality != power || area.coast != position_coast
+        return nil if unit.nationality != power
+        position_coast = area.coast
       end
 
       result = 

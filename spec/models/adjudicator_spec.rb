@@ -70,4 +70,14 @@ describe 'Adjudicator' do
 
     expect( orders['bla']['result'] ).to eq 'SUCCESS'
   end
+
+  it 'fleet coast move' do
+    orders = orders_check(
+      '"Fbul_ec"',
+      '{"bul":{"type":"Move","to":"bla"}}'
+    )
+
+    puts orders
+    puts @game.state.data
+  end
 end

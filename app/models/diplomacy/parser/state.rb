@@ -78,7 +78,7 @@ module Diplomacy
     end
 
     def dislodge_to_string(area, dislodge_tuple)
-      "#{dump_unit(dislodge_tuple.unit, area)}<#{dislodge_tuple.origin_area}"
+      "#{unit_to_string(dislodge_tuple.unit, area)}<#{dislodge_tuple.origin_area}"
     end
 
     def self.empty_power

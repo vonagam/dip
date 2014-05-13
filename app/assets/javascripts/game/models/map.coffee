@@ -10,8 +10,9 @@ class klass.Map
   set_state: ( state )->
     @state.detach() if @state
     @state = state
-    @state.attach()
-    @state.toggle_orders @show_orders
+    if @state
+      @state.attach()
+      @state.toggle_orders @show_orders
     return
 
   toggle_orders: ( bool )->

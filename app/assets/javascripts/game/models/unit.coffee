@@ -14,7 +14,7 @@ class klass.Unit
 
     force = $(force)
 
-    force.attr 
+    force.attr
       'class': "unit #{@power.name}"
       'transform': "translate(#{coords.join(',')})"
     
