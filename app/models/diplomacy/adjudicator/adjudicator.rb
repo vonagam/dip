@@ -115,22 +115,22 @@ module Diplomacy
         @loop_detector << order
       else
         loop = Array.new(@loop_detector)
-          @loop_detector = []
-          
-          unless @loop # if already in a loop, don't try to second guess (heh)
-            unless guess_resolve!(loop)
-              @backup_rule.resolve!(loop)
-            end
+        @loop_detector = []
+        
+        unless @loop # if already in a loop, don't try to second guess (heh)
+          unless guess_resolve!(loop)
+            @backup_rule.resolve!(loop)
           end
-          
-          return
         end
         
-        dependencies = get_dependencies(order)
-        
-        dependencies.each do |dependency|
-          resolve_order!(dependency)
-        end
+        return
+      end
+      
+      dependencies = get_dependencies(order)
+      
+      dependencies.each do |dependency|
+        resolve_order!(dependency)
+      end
       
       @loop_detector.delete(order)
       
@@ -223,7 +223,7 @@ module Diplomacy
             competing_strengths << calculate_prevent_strength(competing_move)
           end
         end
-        
+
         competing_strengths.sort!
         
         competing_strengths.empty? || attack_strength > competing_strengths[-1] ? 
@@ -281,7 +281,7 @@ module Diplomacy
     
     def check_path(move)
       return true if @map.neighbours?(move.unit_area, move.dst, Area::LAND_BORDER) or @map.neighbours?(move.unit_area, move.dst, Area::SEA_BORDER)
-      
+
       # check convoy path
       related_convoys = @orders.convoys_for_move(move)
       

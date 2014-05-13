@@ -71,7 +71,7 @@ module Diplomacy
           .each do |type|
             area.add_border neighbour, type
 
-            if nei =~ /\A(\w+)_/ && type == Area::LAND_BORDER
+            if nei =~ /\A(\w+)_/
               area.add_border map.areas[ $1.to_sym ], type
             end
           end
