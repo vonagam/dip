@@ -1,6 +1,6 @@
-@klass = {}
+@state = {}
 
-class klass.State
+class state.Base
   constructor: ( hash = {} )->
     @initialized = false
     @turned = false
@@ -65,14 +65,14 @@ class klass.State
 
   set_variables: (variables)->
     for name, val of variables
-      @[name] = State.get_thing_value val
+      @[name] = Base.get_thing_value val
     return
  
 
   toggle_toggls: (bool)->
     for name, toggl of @toggls
       if bool
-        target = State.get_thing_value toggl.target
+        target = Base.get_thing_value toggl.target
 
         return true if target == 42
 

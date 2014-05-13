@@ -1,5 +1,5 @@
 #diplomacy_map 
-  > [force_select]
+  > [unit_select], > [dislodged_select]
     &:hover
       cur pnt
 
@@ -8,9 +8,6 @@
           fill hsl( 50, 30%, 65%)
         .w
           fill hsl(210, 30%, 65%)
-        .unit
-          fill white !important
-
 
     $z = length($countries)
     for $i in (0..$z)
@@ -20,7 +17,16 @@
       &.{$country}:hover > .l
         fill hsl( $color, 60%, 55% )
 
-  > [force_selected] > .unit
+
+  > [unit_select]:hover > .unit
+    fill white !important
+  > [unit_selected] > .unit
+    fill white !important
+    stroke white !important
+
+  > [dislodged_select]:hover > .dislodged
+    stroke black !important
+  > [dislodged_selected] > .dislodged
     fill white !important
     stroke white !important
 

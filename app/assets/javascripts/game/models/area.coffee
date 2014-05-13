@@ -1,4 +1,4 @@
-class klass.Area
+class model.Area
   constructor: ( @map, @name, data )->
     @type = data['type']
 
@@ -16,4 +16,31 @@ class klass.Area
 
     @targeting = {}
 
-    @unit = undefined
+    #@unit
+    #@dislodged
+    #@embattled
+
+  coords: ->
+    @views['xc'].data 'coords'
+
+  embattled: (bool) ->
+    if bool
+      @is_embattled = true
+
+      if !@unit
+        coords = @coords()
+
+        star = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
+        star.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#embattled'
+
+        star = $(star)
+
+        star.attr
+          'class': "embattled"
+          'transform': "translate(#{coords.x},#{coords.y})"
+        
+        star.appendTo @views.xc
+    else
+      @views.xc.find('.embattled').remove()
+      delete this['is_embattled']
+    return

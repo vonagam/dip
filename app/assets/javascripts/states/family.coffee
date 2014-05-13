@@ -1,5 +1,5 @@
 #parent turn off when last child turned off
-class klass.StateFamily extends klass.State
+class state.Family extends state.Base
   after_child_toggled: (child, bool)->
     return true if super
     return if @turned == false

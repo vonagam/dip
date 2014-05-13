@@ -1,11 +1,11 @@
-class klass.Map
+class model.Map
   constructor: ( regions )->
     @state = undefined
     @show_orders = true
 
     @areas = {}
     for name, data of regions
-      @areas[name] = new klass.Area this, name, data
+      @areas[name] = new model.Area this, name, data
 
   set_state: ( state )->
     @state.detach() if @state

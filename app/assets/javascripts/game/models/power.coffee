@@ -1,4 +1,4 @@
-class klass.Power
+class model.Power
   constructor: ( @name )->
     @units = []
     @areas = []

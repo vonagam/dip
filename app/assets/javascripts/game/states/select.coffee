@@ -1,4 +1,4 @@
-class g.SelectingState extends klass.State
+class g.SelectingState extends state.Base
   constructor: ( hash )->
     super
 

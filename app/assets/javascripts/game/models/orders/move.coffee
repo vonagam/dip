@@ -1,4 +1,4 @@
-class klass.Order.Move extends klass.Order.Base
+class model.Order.Move extends model.Order.Base
   constructor: (unit, data)->
     super
     @type = 'Move'
@@ -12,7 +12,7 @@ class klass.Order.Move extends klass.Order.Base
     @to_where = @target.views[@sub_target]
 
   create_visualization: ->
-    from = @unit.where.data 'coords'
+    from = @unit.coords
     to = @to_where.data 'coords'
 
     vec = to.dif(from).norm()

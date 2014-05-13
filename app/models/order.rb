@@ -6,7 +6,7 @@ class Order
   embedded_in :state
   belongs_to :side
 
-  validates :state, :side, presence: true, on: :create
+  validates :state, :side, presence: true
   validates :side, uniqueness: true
 
   validate :game_in_progress, on: :create

@@ -1,4 +1,4 @@
-class klass.StateUnited extends klass.State
+class state.United extends state.Base
   toggle: (bool)->
     return true if super
 

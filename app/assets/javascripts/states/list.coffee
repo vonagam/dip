@@ -1,5 +1,5 @@
 #childs will be turned on automatically and by order
-class klass.StateList extends klass.State
+class state.List extends state.Base
   constructor: ->
     super
     @resets.list_index = 0
@@ -34,7 +34,7 @@ class klass.StateList extends klass.State
     return
 
 
-class klass.StateListLooped extends klass.StateList
+class state.ListLooped extends state.List
   after_list_end: ->
     @list_index = 0
     return

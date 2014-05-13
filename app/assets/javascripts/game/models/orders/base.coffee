@@ -1,10 +1,10 @@
 g.set_order = ( unit, order_class, options )->
-  unit.set_order( new klass.Order[order_class]( unit, options ) )
+  unit.set_order( new model.Order[order_class]( unit, options ) )
   return
 
-klass.Order = {}
+model.Order = {}
 
-class klass.Order.Base
+class model.Order.Base
   constructor: ( unit, data )->
     @unit = unit
     @status = data

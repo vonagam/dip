@@ -14,7 +14,7 @@ module Diplomacy
         orders = JSON.parse power_orders.data
 
         orders.each do | region, order |
-          order = parse_order region, order, power
+          order = parse_order region, order, power, classes
 
           next if order.nil? || classes.not_include?(order.class)
 
@@ -41,13 +41,17 @@ module Diplomacy
       return location
     end
 
-    def parse_order( region, order, power )
+    def parse_order( region, order, power, classes )
       position, position_coast = parse_location region
       from, from_coast = parse_location order['from']
       to, to_coast = parse_location order['to']
 
       area = @gamestate[position]
-      unit = area.unit
+      unit = if classes.include?( Retreat )
+        @gamestate.dislodges[ position ].unit
+      else
+        area.unit
+      end
 
       if unit.nil?
         return nil unless order['type'] == 'Build' && area.owner == power

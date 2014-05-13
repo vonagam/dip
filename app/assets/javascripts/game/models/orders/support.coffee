@@ -1,4 +1,4 @@
-class klass.Order.Support extends klass.Order.Base
+class model.Order.Support extends model.Order.Base
   constructor: (unit, data)->
     super
     @type = 'Support'

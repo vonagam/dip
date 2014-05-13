@@ -1,5 +1,5 @@
 #only one child can be turned on in the same time
-class klass.StateRadio extends klass.State
+class state.Radio extends state.Base
   before_child_toggled: (turned_child, bool)->
     return true if super
 

@@ -1,4 +1,4 @@
-class klass.Order.Convoy extends klass.Order.Base
+class model.Order.Convoy extends model.Order.Base
   constructor: (unit, data)->
     super
     @type = 'Convoy'

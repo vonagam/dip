@@ -79,4 +79,28 @@ describe 'Adjudicator' do
 
     expect( orders['bul']['result'] ).to eq 'SUCCESS'
   end
+
+  it 'retreat' do
+    @game.state._type = 'State::Retreat'
+    @game.state.data = '{
+      "Embattled":["bud","swe"],
+      "Powers":{
+        "Russia":{
+          "Units":["Arum","Fbot","Abud","Aswe"],
+          "Areas":["lvn","rum","mos","sev","war","stp","ukr","fin","bud","swe"]},
+        "Turkey":{
+          "Units":["Avie","Ftri","Abud<gal"],
+          "Areas":["gal","vie","tri","tyr","boh"]
+        }
+      }
+    }'
+
+    #Abudu003Cgal
+    
+    @game.state.orders.create! data: '{"bud":{"type":"Retreat","to":"ser"}}', side: @user.side_in(@game)
+
+    @game.progress!
+
+    puts JSON.parse( @game.states.first.orders.first.data )
+  end
 end

@@ -60,15 +60,16 @@ module Diplomacy
           ( powers[area.owner] ||= Parser::State.empty_power )[:Areas] << name
         end
       end
-      data[:Powers] = powers
 
       unless @gamestate.dislodges.empty?
         @gamestate.dislodges.each do |name, dislodge|
-          ( powers[dislodge.unit.nationality] ||= Parser::State.empty_power )[:Units] <<
+          ( powers[dislodge.unit.nationality] ||= [] )[:Units] <<
           dislodge_to_string( name, dislodge )
         end
         data[:Embattled] = @gamestate.embattled
       end
+
+      data[:Powers] = powers
 
       data.to_json
     end
