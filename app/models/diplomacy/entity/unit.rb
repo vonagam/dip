@@ -3,6 +3,8 @@ module Diplomacy
     ARMY = 1
     FLEET = 2
 
+    attr_accessor :order #vonagam: for apply multiply orders to areas
+
     attr_accessor :nationality
     attr_accessor :type
 

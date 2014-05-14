@@ -8,7 +8,7 @@ class model.State
       power = new model.Power power_name
 
       for unit_data in power_data.Units
-        unit_info = unit_data.match(/^([AF])(\w+)(?:<(\w+))?$/)
+        unit_info = unit_data.match(/^([AF])(\w+)(?:-(\w+))?$/)
         type = if unit_info[1] == 'A' then 'army' else 'fleet'
         address = unit_info[2].split '_'
         area = map.areas[ address[0] ]

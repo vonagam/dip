@@ -6,7 +6,8 @@ describe 'Adjudicator' do
     @map = Map.find_by( name: 'Standart' )
     @game = @user.created_games.create map: @map
     @game.progress!
-    @user.side_in( @game ).power = 'Italy'
+    @user.side_in( @game ).update_attributes power: 'Italy'
+    @game.reload
   end
 
   def orders_check( units, orders )
@@ -81,26 +82,35 @@ describe 'Adjudicator' do
   end
 
   it 'retreat' do
-    @game.state._type = 'State::Retreat'
-    @game.state.data = '{
+    @game.state.update_attributes _type: 'State::Retreat',
+      data: '{
       "Embattled":["bud","swe"],
       "Powers":{
         "Russia":{
           "Units":["Arum","Fbot","Abud","Aswe"],
           "Areas":["lvn","rum","mos","sev","war","stp","ukr","fin","bud","swe"]},
-        "Turkey":{
-          "Units":["Avie","Ftri","Abud<gal"],
+        "Italy":{
+          "Units":["Avie","Ftri","Abud-gal"],
           "Areas":["gal","vie","tri","tyr","boh"]
         }
       }
     }'
 
-    #Abudu003Cgal
+    @game.reload
     
     @game.state.orders.create! data: '{"bud":{"type":"Retreat","to":"ser"}}', side: @user.side_in(@game)
 
     @game.progress!
 
-    puts JSON.parse( @game.states.first.orders.first.data )
+    expect( JSON.parse( @game.states.first.orders.first.data )['bud']['result'] ).to eq 'SUCCESS'
+  end
+
+  it 'two moves' do
+    orders = orders_check(
+      '"Fedi","Aliv"',
+      '{"liv":{"type":"Move","to":"edi"},"edi":{"type":"Move","to":"nth"}}'
+    )
+
+    #puts @game.state.data
   end
 end

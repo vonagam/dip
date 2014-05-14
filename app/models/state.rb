@@ -22,8 +22,14 @@ class State
     date % 2 == 1
   end
 
-  def parse_orders( gamestate )
-    Diplomacy::Parser::Order.new( gamestate ).parse_orders orders.all, self.class.name.demodulize
+  def parse_orders( gamestate, what = nil )
+    what ||= orders.all
+    type = self.class.name.demodulize
+    Diplomacy::Parser::Order.new( gamestate ).parse_orders what, type
+  end
+
+  def get_gamestate
+    Diplomacy::Parser::State.new.from_json data
   end
 
   def create_next_state( next_data )
@@ -32,9 +38,7 @@ class State
   end
 
   def process
-    state_parser = Diplomacy::Parser::State.new
-    
-    gamestate = state_parser.from_json data
+    gamestate = get_gamestate
 
     next_data, adjudicated_orders = resolve gamestate
 
@@ -44,7 +48,7 @@ class State
 
     return next_state.save if someone_win?( next_data )
 
-    next_state._type = 'State::'+next_state_type( next_state )
+    next_state._type = 'State::'+next_state_type( next_state, next_data )
 
     next_state.next_date! if next_state._type == 'State::Move'
 
@@ -80,21 +84,17 @@ class State
       order.update_attributes data: resolved.to_json
     end
   end
-
-  def 
 end
 
 class State::Move < State
   def resolve( gamestate )
     map_adjudicator.resolve!( gamestate, parse_orders( gamestate ), is_fall? )
   end
-  def define_next_state( next_state, next_data )
+  def next_state_type( next_state, next_data )
     if next_data.dislodges.not_empty?
       'Retreat'
-    elsif is_fall?
-      'Supply'
     else
-      'Move'
+      is_fall? ? 'Supply' : 'Move'
     end
   end
 end
@@ -103,12 +103,8 @@ class State::Retreat < State
   def resolve( gamestate )
     map_adjudicator.resolve_retreats!( gamestate, parse_orders( gamestate ), is_fall? )
   end
-  def define_next_state( next_state, next_data )
-    if is_fall?
-      'Supply'
-    else
-      'Move'
-    end
+  def next_state_type( next_state, next_data )
+    is_fall? ? 'Supply' : 'Move'
   end
 end
 
@@ -116,7 +112,7 @@ class State::Supply < State
   def resolve( gamestate )
     map_adjudicator.resolve_builds!( gamestate, parse_orders( gamestate ) )
   end
-  def define_next_state( next_state, next_data )
+  def next_state_type( next_state, next_data )
     'Move'
   end
 end

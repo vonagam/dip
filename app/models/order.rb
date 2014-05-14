@@ -18,10 +18,7 @@ class Order
   
   validate :valid, on: :create
   def valid
-    state_parser = Diplomacy::Parser::State.new
-    parsed_state = state_parser.from_json state.data
-    order_parser = Diplomacy::Parser::Order.new parsed_state
-    order_parser.parse_orders [self]
+    state.parse_orders state.get_gamestate, [self]
   #rescue
   #  errors.add :data, 'Not parsable'
   end

@@ -19,7 +19,7 @@ module Diplomacy
         power_s = power.to_sym
 
         state['Units'].each do |force|
-          if /^([AF])(\w{3})(_\w{2})?(?:\<(\w{3}))?$/ =~ force
+          if /^([AF])(\w{3})(_\w{2})?(?:-(\w{3}))?$/ =~ force
             unit = Unit.new power_s, $1 == 'A' ? Unit::ARMY : Unit::FLEET
             area = $2.to_sym
 
@@ -80,7 +80,7 @@ module Diplomacy
     end
 
     def dislodge_to_string(area, dislodge_tuple)
-      "#{unit_to_string(dislodge_tuple.unit, area)}<#{dislodge_tuple.origin_area}"
+      "#{unit_to_string(dislodge_tuple.unit, area)}-#{dislodge_tuple.origin_area}"
     end
 
     def self.empty_power

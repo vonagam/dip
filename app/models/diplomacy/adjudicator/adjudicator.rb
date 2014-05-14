@@ -514,7 +514,7 @@ module Diplomacy
 
       reconcile!(@builds.orders, invalid_builds)
 
-      state.apply_builds! @builds.orders
+      state.apply_builds! @builds.orders, @map
 
       return state, @builds.orders
     end

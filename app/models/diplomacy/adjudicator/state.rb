@@ -60,21 +60,32 @@ module Diplomacy
     end
 
     def apply_orders!(orders)
+      succeeded_movers = []
       orders.each do |order|
         if Move === order
           # mark area embattled for all moves - it will only matter in empty areas
           self[order.dst].embattled = true
 
           if order.succeeded?
-            if (unit = area_unit(order.dst))
-              @dislodges[order.dst] = DislodgeTuple.new(unit, order.unit_area)
-            end
+            area_from = order.unit_area
+            unit = area_unit area_from
 
-            set_area_unit(order.dst, area_unit(order.unit_area))
-            area_state( order.dst ).coast = order.dst_coast
-            set_area_unit(order.unit_area, nil)
+            unit.order = order
+            succeeded_movers << unit
+
+            set_area_unit area_from, nil
           end
         end
+      end
+      succeeded_movers.each do |mover|
+        order = mover.order
+
+        if unit = area_unit(order.dst)
+          @dislodges[order.dst] = DislodgeTuple.new(unit, order.unit_area)
+        end
+
+        set_area_unit order.dst, mover
+        area_state( order.dst ).coast = order.dst_coast
       end
     end
 
@@ -86,9 +97,44 @@ module Diplomacy
       @dislodges = {}
     end
 
-    def apply_builds!(builds)
+    def apply_builds!(builds, map)
+      powers = {}
+      map.powers.each do |power|
+        powers[power.to_sym] = { supplies: 0, units: [] }
+      end
+      self.each do |abbrv, area_state|
+        if area_state.owner && map.areas[abbrv].supply_center
+          powers[ area_state.owner ][:supplies] += 1
+        end
+        if area_state.unit
+          powers[ area_state.unit.nationality ][:units] << abbrv
+        end
+      end
+
       builds.each do |b|
-        set_area_unit(b.unit_area, b.build ? b.unit : nil) if b.succeeded?
+        next unless b.succeeded?
+
+        power = powers[b.unit.nationality]
+
+        if b.build
+          if power[:supplies] > power[:units].size
+            set_area_unit b.unit_area, b.unit
+            power[:units] << b.unit_area
+          end
+        else
+          if power[:units].size > power[:supplies]
+            set_area_unit b.unit_area, nil
+            power[:units].delete b.unit_area
+          end 
+        end
+      end
+
+      powers.each do |power, stat|
+        puts "#{power} #{stat[:supplies]} #{stat[:units]}"
+        while stat[:supplies] < stat[:units].size
+          abbrv = stat[:units].delete_at rand stat[:units].size
+          set_area_unit abbrv, nil
+        end
       end
     end
 
