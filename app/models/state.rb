@@ -19,7 +19,11 @@ class State
   end
 
   def is_fall?
-    date % 2 != 0
+    date % 2 == 1
+  end
+
+  def parse_orders( gamestate )
+    Diplomacy::Parser::Order.new( gamestate ).parse_orders orders.all, self.class.name.demodulize
   end
 
   def create_next_state( next_data )
@@ -29,10 +33,22 @@ class State
 
   def process
     state_parser = Diplomacy::Parser::State.new
-    current_data = state_parser.from_json data
-    order_parser = Diplomacy::Parser::Order.new current_data
+    
+    gamestate = state_parser.from_json data
 
-    _process current_data, order_parser
+    next_data, adjudicated_orders = resolve gamestate
+
+    update_orders adjudicated_orders
+
+    next_state = create_next_state next_data
+
+    return next_state.save if someone_win?( next_data )
+
+    next_state._type = 'State::'+next_state_type( next_state )
+
+    next_state.next_date! if next_state._type == 'State::Move'
+
+    next_state.save
   end
 
   def someone_win?( parsed_data )
@@ -64,76 +80,43 @@ class State
       order.update_attributes data: resolved.to_json
     end
   end
+
+  def 
 end
 
 class State::Move < State
-  def _process( current_data, order_parser )
-    next_data, adjudicated_orders = map_adjudicator.resolve!( 
-      current_data, 
-      order_parser.parse_orders(orders.all), 
-      is_fall?
-    )
-
-    update_orders adjudicated_orders
-
-    next_state = create_next_state next_data
-
-    return next_state.save if someone_win?( next_data )
-
+  def resolve( gamestate )
+    map_adjudicator.resolve!( gamestate, parse_orders( gamestate ), is_fall? )
+  end
+  def define_next_state( next_state, next_data )
     if next_data.dislodges.not_empty?
-      next_state._type = 'State::Retreat'
+      'Retreat'
     elsif is_fall?
-      next_state._type = 'State::Supply'
+      'Supply'
     else
-      next_state._type = 'State::Move'
-      next_state.next_date!
+      'Move'
     end
-
-    next_state.save
   end
 end
 
 class State::Retreat < State
-  def _process( current_data, order_parser )
-    next_data, adjudicated_orders = map_adjudicator.resolve_retreats!( 
-      current_data, 
-      order_parser.parse_retreats(orders.all), 
-      is_fall?
-    )
-
-    update_orders adjudicated_orders
-
-    next_state = create_next_state next_data
-
-    return next_state.save if someone_win?( next_data )
-
+  def resolve( gamestate )
+    map_adjudicator.resolve_retreats!( gamestate, parse_orders( gamestate ), is_fall? )
+  end
+  def define_next_state( next_state, next_data )
     if is_fall?
-      next_state._type = 'State::Supply'
+      'Supply'
     else
-      next_state._type = 'State::Move'
-      next_state.next_date!
+      'Move'
     end
-
-    next_state.save
   end
 end
 
 class State::Supply < State
-  def _process( current_data, order_parser )
-    next_data, adjudicated_orders = map_adjudicator.resolve_builds!( 
-      current_data, 
-      order_parser.parse_builds(orders.all)
-    )
-
-    update_orders adjudicated_orders
-
-    next_state = create_next_state next_data
-
-    return next_state.save if someone_win?( next_data )
-
-    next_state._type = 'State::Move'
-    next_state.next_date!
-
-    next_state.save
+  def resolve( gamestate )
+    map_adjudicator.resolve_builds!( gamestate, parse_orders( gamestate ) )
+  end
+  def define_next_state( next_state, next_data )
+    'Move'
   end
 end

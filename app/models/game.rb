@@ -61,12 +61,4 @@ class Game
       side.update_attributes power: available.shuffle.pop
     end
   end
-
-  def is_filled?
-    sides.count == map.info.powers.size
-  end
-
-  def orders_received?
-    state.orders.count == sides.count
-  end
 end

@@ -9,8 +9,7 @@ module Diplomacy
     end
 
     def from_json( data )
-      state_data = JSON.parse data
-      to_state state_data
+      to_state JSON.parse data
     end
 
     def to_state( data )
