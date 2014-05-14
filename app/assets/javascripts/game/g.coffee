@@ -27,18 +27,18 @@ g.initialize = ( status, state_type, state_data, power, orders )->
 
   return if status != 'in_process'
 
-  if state_type == 'State::Move'
+  if state_type == 'Move'
     g.set_order unit, 'Hold' for unit in state.units
 
   if orders
-    if state_type == 'State::Move' || state_type == 'State::Retreat'
-      whom = if state_type == 'State::Move' then 'unit' else 'dislodged'
+    if state_type == 'Move' || state_type == 'Retreat'
+      whom = if state_type == 'Move' then 'unit' else 'dislodged'
       for area_name, order of orders
         unit = g.map_model.areas[ area_name.split('_')[0] ][whom]
         g.set_order unit, order.type, order
 
   switch state_type
-    when 'State::Move' then g.move_state.turn true
-    when 'State::Retreat' then g.retreat_state.turn true
+    when 'Move' then g.move_state.turn true
+    when 'Retreat' then g.retreat_state.turn true
 
   return

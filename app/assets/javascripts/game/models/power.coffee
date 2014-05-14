@@ -8,3 +8,8 @@ class model.Power
 
   detach: ->
     area.views.xc.removeAttr 'class' for area in @areas
+
+  supply: ->
+    supply = []
+    supply.push area if area.supply for area in @areas
+    supply

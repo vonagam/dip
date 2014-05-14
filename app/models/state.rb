@@ -22,9 +22,12 @@ class State
     date % 2 == 1
   end
 
+  def type
+    _type.demodulize
+  end
+
   def parse_orders( gamestate, what = nil )
     what ||= orders.all
-    type = self.class.name.demodulize
     Diplomacy::Parser::Order.new( gamestate ).parse_orders what, type
   end
 

@@ -16,12 +16,18 @@ class model.Area
 
     @targeting = {}
 
+    if views['xc'].children('.center').length > 0
+      @supply = true
+
     #@unit
     #@dislodged
     #@embattled
 
+  view: ->
+    @views['xc']
+
   coords: ->
-    @views['xc'].data 'coords'
+    view().data 'coords'
 
   embattled: (bool) ->
     if bool

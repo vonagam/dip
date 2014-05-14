@@ -49,10 +49,10 @@ class model.State
 
   collect_orders: ( power )->
     orders = {}
-    if @type == 'State::Move'
+    if @type == 'Move'
       for unit in @powers[ power ].units
         orders[ unit.area.name ] = unit.order.to_json()
-    if @type == 'State::Retreat'
+    if @type == 'Retreat'
       for unit in @powers[ power ].units
         if unit.dislodged
           orders[ unit.area.name ] = unit.order.to_json()
