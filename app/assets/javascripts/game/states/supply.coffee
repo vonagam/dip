@@ -1,5 +1,8 @@
+togglers = []
+power_stats = {}
+
 class BuildArea
-  constructor: ( area )->
+  constructor: ( area, @power )->
     @view = area.view()
 
     @listener = ->
@@ -41,18 +44,29 @@ class BuildArea
 
     coords = ( place || @view ).data 'coords'
     type = if counter == 1 then 'army' else 'fleet'
-    place_unit
+    place_unit type, coords
+
+  place_unit: ( type, coords )->
+    force = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
+    force.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+type
+
+    force = $(force)
+
+    force.attr
+      'class': "builded #{@power.name}"
+      'transform': "translate(#{@coords.x},#{@coords.y})"
+    
+    force.appendTo @area.views.xc
 
 
-togglers = []
 
 class Actions extends state.Base
   toggle: (bool)->
     return true if super
 
-    if bool
-      power_stats = {}
+    power_stats = {}
 
+    if bool
       map = g.map_model
       state = map.state
 
@@ -68,7 +82,7 @@ class Actions extends state.Base
         if info.surplus > 0
           for supply in info.supplies
             continue if supply.unit
-            togglers.push new BuildArea( supply )
+            togglers.push new BuildArea( supply, power )
 
         else
           for unit in info.units
