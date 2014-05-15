@@ -1,10 +1,10 @@
 g.get_unit_in = ( area_view )->
   area_view.children('.unit').data('model')
 
-g.contain_unit = ( id )->
-  g.map.find("##{id}").children('.unit').length > 0
+g.contain_unit = ( area_name )->
+  g.state.areas[ area_name ].unit
 
-# index contain loop and order type selection
+
 g.order_index = new state.Radio 
   toggls:
     game:
@@ -14,6 +14,6 @@ g.order_index = new state.Radio
       target: -> doc.find('.order_form button')
       bind:
         'mousedown': ()->
-          orders = g.map_model.state.collect_orders g.power
+          orders = g.state.collect_orders g.power
 
           $(this).closest('form').find('[name="order[data]"]').val( jso(orders) )

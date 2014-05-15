@@ -2,15 +2,14 @@ class model.Order.Support extends model.Order.Base
   constructor: (unit, data)->
     super
     @type = 'Support'
-    @whom = @unit.area.map.areas[ data.from ].unit
+    @from = data.from 
     @to = data.to
-    @to_where = @unit.area.map.areas[ data.to ].views['xc']
 
   create_visualization: ->
-    supporter = @unit.where.data 'coords'
-    from = @whom.where.data 'coords'
-    to = @to_where.data 'coords'
-
+    supporter = @unit.coords
+    from = @unit.areas( @from ).unit.coords
+    to = @unit.areas( @to ).coords()
+    
     middle = new Vector
       x: (from.x*1.2+to.x*0.8)/2
       y: (from.y*1.2+to.y*0.8)/2
@@ -34,6 +33,6 @@ class model.Order.Support extends model.Order.Base
 
   to_json: ->
     j = super
-    j['from'] = @whom.area.name
+    j['from'] = @from
     j['to'] = @to
     return j

@@ -1,52 +1,45 @@
 class model.Area
-  constructor: ( @map, @name, data )->
-    @type = data['type']
-
-    view = $('#'+@name)
-    views = { 'xc': view }
-    view.data 'model', this
-
-    view.children('[id]').each ->
-      q = $ this
-      sub = q.attr('id').split('_')[1]
-      views[sub] = q
-      return
-
-    @views = views
+  constructor: ( @name, @state )->
 
     @targeting = {}
 
-    if views['xc'].children('.center').length > 0
-      @supply = true
+    #power
+    #unit
+    #dislodged
+    #embattled
 
-    #@unit
-    #@dislodged
-    #@embattled
+  view: ( sub = 'xc' )->
+    $ '#'+@name+( if sub == 'xc' then '' else '_'+sub )
 
-  view: ->
-    @views['xc']
+  coords: ( sub ) ->
+    @view(sub).data 'coords'
 
-  coords: ->
-    view().data 'coords'
+  attach: ->
+    view = @view()
 
-  embattled: (bool) ->
-    if bool
-      @is_embattled = true
+    view
+    .attr 'class', if @power then @power.name else null
+    .data 'model', this
 
-      if !@unit
-        coords = @coords()
+    if @embattled and not @unit
+      coords = @coords()
 
-        star = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
-        star.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#embattled'
+      star = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
+      star.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#embattled'
 
-        star = $(star)
+      star = $ star
 
-        star.attr
-          'class': "embattled"
-          'transform': "translate(#{coords.x},#{coords.y})"
-        
-        star.appendTo @views.xc
-    else
-      @views.xc.find('.embattled').remove()
-      delete this['is_embattled']
-    return
+      star.attr
+        'class': "embattled"
+        'transform': "translate(#{coords.x},#{coords.y})"
+      
+      star.appendTo view
+
+  detach: ->
+    @view()
+    .removeAttr 'class'
+    .data 'model', null
+    .find('.embattled').remove()
+
+  supply: ->
+    regions[@name].supply

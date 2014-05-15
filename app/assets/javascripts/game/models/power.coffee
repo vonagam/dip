@@ -3,13 +3,12 @@ class model.Power
     @units = []
     @areas = []
 
-  attach: ->
-    area.views.xc.attr 'class', @name for area in @areas
+  add_area: ( area )->
+    area.power = this
+    @areas.push area
+    return
 
-  detach: ->
-    area.views.xc.removeAttr 'class' for area in @areas
-
-  supply: ->
-    supply = []
-    supply.push area if area.supply for area in @areas
-    supply
+  supplies: ->
+    supplies = []
+    supplies.push area if area.supply() for area in @areas
+    supplies

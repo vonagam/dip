@@ -57,7 +57,7 @@ move.after_list_end = ->
   unit = g.get_unit_in g.map.data('[unit_select]')
   to = g.map.data '[move_select]'
 
-  if unit.area.name == to.attr('id').split('_')[0]
+  if unit.area == g.state.get_area to.attr('id')
     g.set_order unit, 'Hold'
     return true 
 
@@ -81,7 +81,7 @@ move.after_list_end = ->
 move_selecting = ->
   unit = g.get_unit_in g.map.data('[unit_select]')
   
-  possibles = g.map.find '#'+unit.get_full_position()
+  possibles = g.map.find '#'+unit.position()
 
   for possibility in unit.neighbours()
     pos = possibility.split('_')[0]
@@ -131,7 +131,7 @@ support_select = new g.SelectingState
     possibles = $()
     unit = g.get_unit_in actions.selected
     for neighbour in unit.neighbours()
-      area = g.map.find('#'+neighbour.split('_')[0]).data('model')
+      area = g.state.get_area neighbour
       for from, order of area.targeting
         continue if from == unit.area.name
         possibles = possibles.add g.map.find("##{from}")

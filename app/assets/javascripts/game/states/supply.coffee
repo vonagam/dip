@@ -1,3 +1,4 @@
+###
 togglers = []
 power_stats = {}
 
@@ -5,13 +6,13 @@ class BuildArea
   constructor: ( area, @power )->
     @view = area.view()
 
-    @listener = ->
-      q = $ this
+    @listener = =>
+      q = $ @view
       model = q.data 'model'
       current = q.data 'build'
       subs = q.children '[id]'
 
-      return @set_unit 1 unless current
+      return @set_unit 1 if !current && power_stats[@power]
 
       return @set_unit 0 if model.type == 'land'
 
@@ -75,7 +76,7 @@ class Actions extends state.Base
 
         info.surplus = info.supplies.size - info.units.size
 
-        power_stats[power] = info
+        power_stats[power] = { supplies: info.supplies.size, units: info.units.size }
 
         continue if info.supplies.size == info.units.size
 
@@ -159,3 +160,4 @@ g.order_index.add [
     ]
   ]
 ]
+###

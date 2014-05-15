@@ -14,17 +14,15 @@ retreat_select = new g.SelectingState
   selecting: -> 
     unit = get_dislodged_in g.map.data('[dislodged_select]')
   
-    possibles = g.map.find '#'+unit.get_full_position()
+    possibles = unit.area.view unit.sub_area
 
     for possibility in unit.neighbours()
-      pos = possibility.split('_')[0]
+      area = g.state.get_area possibility
 
-      area = g.map_model.areas[pos]
-
-      if area.is_embattled || area.unit || area.name == unit.dislodged
+      if area.embattled || area.unit || area.name == unit.dislodged
         continue
 
-      possibles = possibles.add g.map.find('#'+pos)
+      possibles = possibles.add area.view()
 
     return possibles
   marking: '[move_select]'
@@ -51,7 +49,7 @@ retreat.after_list_end = ->
   unit = get_dislodged_in g.map.data('[dislodged_select]')
   to = g.map.data '[move_select]'
 
-  if unit.area.name == to.attr('id').split('_')[0]
+  if unit.area == g.state.get_area to.attr('id')
     unit.set_order undefined
     return true 
 

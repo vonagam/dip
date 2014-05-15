@@ -5,12 +5,9 @@ g.set_order = ( unit, order_class, options )->
 model.Order = {}
 
 class model.Order.Base
-  constructor: ( unit, data )->
-    @unit = unit
-    @status = data
-
-    @target = unit.area
-    @to_where = unit.where
+  constructor: ( @unit, data )->
+    @status = data.result if data
+    @target = @unit.area
   
   attach: ->
     @visualization = @create_visualization()
@@ -25,10 +22,6 @@ class model.Order.Base
 
   create_visualization: ->
     return $()
-
-  toggle: ( bool )->
-    @visualization.toggle bool
-    return
 
   to_json: ->
     return { type: @type }

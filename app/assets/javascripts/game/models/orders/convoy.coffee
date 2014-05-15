@@ -2,7 +2,7 @@ class model.Order.Convoy extends model.Order.Base
   constructor: (unit, data)->
     super
     @type = 'Convoy'
-    @whom = @unit.area.map.areas[ data.from ].unit
+    @from = data.from
     @to = data.to
 
   create_visualization: ->
@@ -10,7 +10,7 @@ class model.Order.Convoy extends model.Order.Base
   
     line = $ line
 
-    position = @unit.where.data 'coords'
+    position = @unit.coords
     
     line.attr 
       'r': 10
@@ -22,6 +22,6 @@ class model.Order.Convoy extends model.Order.Base
 
   to_json: ->
     j = super
-    j['from'] = @whom.area.name
+    j['from'] = @from
     j['to'] = @to
     return j

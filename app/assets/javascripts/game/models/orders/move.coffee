@@ -1,19 +1,13 @@
 class model.Order.Move extends model.Order.Base
-  constructor: (unit, data)->
+  constructor: ( unit, data )->
     super
     @type = 'Move'
-
-    @to = data['to']
-
-    to_info = @to.split '_'
-
-    @target = @unit.area.map.areas[to_info[0]]
-    @sub_target = to_info[1] || 'xc'
-    @to_where = @target.views[@sub_target]
+    @to = data.to
+    @target = @unit.areas @to.split('_')[0]
 
   create_visualization: ->
     from = @unit.coords
-    to = @to_where.data 'coords'
+    to = @target.coords @to.split('_')[1]
 
     vec = to.dif(from).norm()
 
