@@ -9,7 +9,7 @@ class model.Area
     #embattled
 
   view: ( sub = 'xc' )->
-    $ '#'+@name+( if sub == 'xc' then '' else '_'+sub )
+    g.map.find '#'+@name+( if sub == 'xc' then '' else '_'+sub )
 
   coords: ( sub ) ->
     @view(sub).data 'coords'
@@ -41,5 +41,9 @@ class model.Area
     .data 'model', null
     .find('.embattled').remove()
 
+  region: ->
+    regions[@name]
   supply: ->
-    regions[@name].supply
+    @region().supply
+  type: ->
+    @region().type

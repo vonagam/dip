@@ -2,7 +2,7 @@ get_dislodged_in = ( area_view )->
   area_view.children('.dislodged').data('model')
 
 # order loop
-g.retreat_state = new state.ListLooped
+g.game_phase.Retreat = new state.ListLooped
 
 # first - select force to which order will be
 dislodged_select = new g.SelectingState
@@ -59,7 +59,7 @@ retreat.after_list_end = ->
 
 # Retreat scheme
 g.order_index.add [
-  g.retreat_state.add [
+  g.game_phase.Retreat.add [
     dislodged_select
     retreat.add [
       retreat_select

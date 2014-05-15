@@ -6,19 +6,19 @@ class model.Order.Convoy extends model.Order.Base
     @to = data.to
 
   create_visualization: ->
-    line = document.createElementNS 'http://www.w3.org/2000/svg', 'circle'
+    circle = document.createElementNS 'http://www.w3.org/2000/svg', 'circle'
   
-    line = $ line
+    circle = $ circle
 
     position = @unit.coords
     
-    line.attr 
+    circle.attr 
       'r': 10
       'cx': position.x
       'cy': position.y
       'class': "convoy #{@unit.power.name}"
 
-    return line
+    return circle
 
   to_json: ->
     j = super

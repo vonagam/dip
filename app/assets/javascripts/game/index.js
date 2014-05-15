@@ -8,3 +8,4 @@
 //= require game/states/index
 //= require game/states/move
 //= require game/states/retreat
+//= require game/states/supply

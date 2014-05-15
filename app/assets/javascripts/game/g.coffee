@@ -36,14 +36,13 @@ g.initialize = ( status, state_type, state_data, power, orders )->
     g.set_order unit, 'Hold' for unit in state.units
 
   if orders
-    if state_type == 'Move' || state_type == 'Retreat'
-      whom = if state_type == 'Move' then 'unit' else 'dislodged'
-      for area_name, order of orders
-        unit = g.state.areas[ area_name.split('_')[0] ][whom]
+    whom = if state_type == 'Retreat' then 'dislodged' else 'unit'
+    for area_name, order of orders
+      if order.type != 'Build'
+        unit = g.state.get_area( area_name )[whom]
         g.set_order unit, order.type, order
+      else
+        position = area_name.split '_'
+        new model.Order.Build( g.state.get_area(position[0]), order.unit, position[1] )
 
-  switch state_type
-    when 'Move' then g.move_state.turn true
-    when 'Retreat' then g.retreat_state.turn true
-
-  return
+  g.game_phase[state_type].turn true

@@ -38,7 +38,7 @@ module Diplomacy
           info['neis'].select { |k,v| k != 'xc' }.each do |location, neis|
             location_name = ("#{name}_#{location}").to_sym
             map.areas[location_name] = Area.new(
-              location_name, :coast, false, neis, info['full'].to_sym
+              location_name, :coast, false, neis, info['full'].to_sym, false
             )
           end
         end
@@ -48,7 +48,8 @@ module Diplomacy
           info['type'].to_sym,
           info.has_key?('center'),
           neighbours,
-          info['full'].to_sym
+          info['full'].to_sym,
+          !info['neis'].is_a?(Array)
         )
 
       end

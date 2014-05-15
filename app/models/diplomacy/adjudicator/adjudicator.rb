@@ -55,12 +55,24 @@ module Diplomacy
       when Build
         area = @map.areas[order.unit_area]
         if order.build
-          return (
-            @state[order.unit_area].unit.nil? and (
-              (order.unit.is_army? and area.is_land?) or
-              (order.unit.is_fleet? and area.is_coastal?)
-            )
-          )
+          valid = 
+          if area.supply_center && @state[order.unit_area].unit.nil?
+            if order.unit.is_army?
+              area.is_land?
+            else
+              if area.is_coastal?
+                if area.multicoast
+                  if order.unit_area_coast && @map.areas.has_key?(order.unit_area_with_coast)
+                    order.unit_area = order.unit_area_with_coast
+                    true
+                  end
+                else
+                  true
+                end
+              end
+            end
+          end
+          return valid
         else # disband
           return (not @state[order.unit_area].unit.nil?)
         end

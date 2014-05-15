@@ -9,6 +9,10 @@ class model.Power
     return
 
   supplies: ->
-    supplies = []
-    supplies.push area if area.supply() for area in @areas
-    supplies
+    area for area in @areas when area.supply()
+
+  attach: ->
+    unit.attach() for unit in @units
+
+  detach: ->
+    unit.detach() for unit in @units

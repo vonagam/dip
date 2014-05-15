@@ -4,6 +4,7 @@ g.get_unit_in = ( area_view )->
 g.contain_unit = ( area_name )->
   g.state.areas[ area_name ].unit
 
+g.game_phase = {}
 
 g.order_index = new state.Radio 
   toggls:

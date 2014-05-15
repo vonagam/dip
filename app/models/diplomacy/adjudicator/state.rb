@@ -130,7 +130,6 @@ module Diplomacy
       end
 
       powers.each do |power, stat|
-        puts "#{power} #{stat[:supplies]} #{stat[:units]}"
         while stat[:supplies] < stat[:units].size
           abbrv = stat[:units].delete_at rand stat[:units].size
           set_area_unit abbrv, nil

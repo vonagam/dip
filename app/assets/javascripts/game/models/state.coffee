@@ -1,7 +1,6 @@
 class model.State
   constructor: ( data, @type )->
     @powers = {}
-    @units = []
     @areas = {}
 
     for name, region of regions
@@ -18,9 +17,7 @@ class model.State
         sub_area = address[1] || 'xc'
         dislodged = unit_info[3]
 
-        unit = new model.Unit power, type, area, sub_area, dislodged
-
-        @units.push unit
+        new model.Unit power, type, area, sub_area, dislodged
 
       for area_name in power_data.Areas
         power.add_area @areas[area_name]
@@ -33,23 +30,22 @@ class model.State
 
   attach: ->
     area.attach() for name, area of @areas
-    unit.attach() for unit in @units
+    power.attach() for name, power of @powers
     return
 
   detach: ->
     area.detach() for name, area of @areas
-    unit.detach() for unit in @units
+    power.detach() for name, power of @powers
     return
 
   collect_orders: ( power )->
     orders = {}
-    if @type == 'Move'
-      for unit in @powers[ power ].units
-        orders[ unit.area.name ] = unit.order.to_json() if unit.order.type != 'Hold'
-    if @type == 'Retreat'
-      for unit in @powers[ power ].units
-        if unit.dislodged
-          orders[ unit.area.name ] = unit.order.to_json()
+
+    for unit in @powers[ power ].units
+      if unit.order && unit.order.type != 'Hold'
+        position = if @type == 'Build' then unit.position() else unit.area.name
+        orders[ position ] = unit.order.to_json()
+
     orders
 
   get_area: ( area )->

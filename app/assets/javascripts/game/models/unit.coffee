@@ -3,6 +3,7 @@ class model.Unit
     @order = undefined
     @power.units.push this
     @status = if @dislodged then 'dislodged' else 'unit'
+    @area[@status] = this
 
   attach: ->
     @coords = @area.coords @sub_area
@@ -11,26 +12,23 @@ class model.Unit
       offset = @coords.dif( @areas( @dislodged ).coords() ).norm()
       @coords = @coords.sum( offset.scale(14) )
 
-    force = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
-    force.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+@type
+    @view = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
+    @view.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+@type
 
-    force = $(force)
+    @view = $ @view
 
-    force.attr
+    @view
+    .attr
       'class': "unit #{@power.name} #{ (@dislodged && 'dislodged') || '' }"
       'transform': "translate(#{@coords.x},#{@coords.y})"
-    
-    force.appendTo @area.view()
+    .data 'model': this
+    .appendTo @area.view()
 
-    @view = force
-    @view.data 'model', this
-    @area[@status] = this
     @order.attach() if @order
     return
 
   detach: ->
     @view.remove()
-    @area[@status] = undefined
     @order.detach() if @order
     return
 

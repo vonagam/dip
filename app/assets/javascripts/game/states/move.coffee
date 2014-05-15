@@ -1,5 +1,5 @@
 # order loop
-g.move_state = new state.ListLooped
+g.game_phase.Move = new state.ListLooped
 
 # first - select unit to which order will be
 unit_select = new g.SelectingState
@@ -146,7 +146,7 @@ support_select = new g.SelectingState
 
 # Total scheme
 g.order_index.add [
-  g.move_state.add [
+  g.game_phase.Move.add [
     unit_select
     actions.add [
       move.add [

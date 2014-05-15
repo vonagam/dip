@@ -113,4 +113,27 @@ describe 'Adjudicator' do
 
     #puts @game.state.data
   end
+
+  it 'build' do
+    @game.state.update_attributes _type: 'State::Supply',
+      data: '{
+      "Powers":{
+        "Italy":{
+          "Units":["Arum"],
+          "Areas":["lvn","rum","mos","sev","war","stp","ukr","fin","bud","swe"]},
+        "Russia":{
+          "Units":["Avie","Ftri","Abud"],
+          "Areas":["gal","vie","tri","tyr","boh"]
+        }
+      }
+    }'
+
+    @game.reload
+    
+    @game.state.orders.create! data: '{"stp_nc":{"type":"Build","unit":"fleet"}}', side: @user.side_in(@game)
+
+    @game.progress!
+
+    #puts @game.state.data
+  end
 end
