@@ -33,7 +33,9 @@ g.initialize = ( status, state_type, state_data, power, orders )->
   return if status != 'in_process'
 
   if state_type == 'Move'
-    g.set_order unit, 'Hold' for unit in state.units
+    for power_name, power_data of g.state.powers
+      for unit in power_data.units
+        g.set_order unit, 'Hold'
 
   if orders
     whom = if state_type == 'Retreat' then 'dislodged' else 'unit'

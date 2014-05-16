@@ -15,7 +15,7 @@ gem 'jquery-rails'
 gem 'rails-i18n'
 gem 'russian'
 
-gem 'cancancan', '~> 1.7'
+gem 'cancancan', '~> 1.8'
 gem 'devise'
 
 gem 'activeadmin',         github: 'gregbell/active_admin'

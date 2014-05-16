@@ -14,6 +14,7 @@ class OrdersController < ApplicationController
     side = game.side_of current_user
     order = game.state.order_of side
     order.update_attributes! order_params
+    game.save
     respond_with order, location: game_path(game)
   end
 

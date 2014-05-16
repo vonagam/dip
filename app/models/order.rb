@@ -6,8 +6,8 @@ class Order
   embedded_in :state
   belongs_to :side
 
-  validates :state, :side, presence: true
-  validates :side, uniqueness: true
+  validates :state, :side_id, presence: true
+  validates :side_id, uniqueness: true
 
   validate :game_in_progress, on: :create
   def game_in_progress
@@ -23,6 +23,7 @@ class Order
   #  errors.add :data, 'Not parsable'
   end
 
+  validates :side, presence: true, on: :create
   def side
     state.game.sides.find side_id
   end
