@@ -33,6 +33,7 @@ gem 'devise'
 
 group :development do
   gem 'quiet_assets'
+  #gem 'rails-i18n-debug'
 end
 
 group :development, :test do

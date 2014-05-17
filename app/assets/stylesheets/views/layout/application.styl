@@ -1,11 +1,28 @@
-#main_layer
-  > ._menu
-    bac clr hsl(0,0,80)
-    txt siz 20 hei 40
-    pad x 50
+body >
+  
+  #background
+    dis blo
+    bac img url('/images/home_guard_parade.jpg') siz cvr pos cen att fix
 
-    > .td
-      pad x 20
+  #main
+    bac clr hsla(0,0,100,0.5)
 
-  > ._content
-    pad 50
+    > .menu
+      bac clr hsla(0,0,90,0.9)
+      txt siz 16 hei 30 ali cen
+      sha 0 2 4 hsla(0,0,0,0.5)
+
+      > .td
+        pad x 20
+
+        &:hover
+          bac clr hsl(0,0,85)
+
+        &:active
+          bac clr hsl(0,0,80)
+
+        +on(1)
+          bac clr hsl(0,0,80)
+
+    > .yield
+      pos rel

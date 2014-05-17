@@ -28,13 +28,13 @@ SimpleForm.setup do |config|
     # extensions by default, you can change `b.optional` to `b.use`.
 
     # Calculates maxlength from length validations for string inputs
-    b.use :maxlength
+    b.optional :maxlength
 
     # Calculates pattern from format validations for string inputs
     b.use :pattern
 
     # Calculates min and max from length validations for numeric inputs
-    b.use :min_max
+    b.optional :min_max
 
     # Calculates readonly automatically from readonly attributes
     b.use :readonly
@@ -55,7 +55,7 @@ SimpleForm.setup do |config|
   config.boolean_style = :inline
 
   # Default class for buttons
-  config.button_class = nil
+  config.button_class = 'button'
 
   # Method used to tidy up errors. Specify any Rails Array method.
   # :first lists the first message for each field.
@@ -78,7 +78,7 @@ SimpleForm.setup do |config|
   # config.collection_value_methods = [ :id, :to_s ]
 
   # You can wrap a collection of radio/check boxes in a pre-defined tag, defaulting to none.
-  config.collection_wrapper_tag = :div
+  # config.collection_wrapper_tag = nil
 
   # You can define the class to use on all collection wrappers. Defaulting to none.
   config.collection_wrapper_class = 'collection'
@@ -119,7 +119,10 @@ SimpleForm.setup do |config|
   # Custom mappings for input types. This should be a hash containing a regexp
   # to match as key, and the input type that will be used when the field name
   # matches the regexp as value.
-  # config.input_mappings = { /count/ => :integer }
+  config.input_mappings = { 
+    /(?:terms|remember_me)/ => :boolean,
+    /description/ => :text
+  }
 
   # Custom wrappers for input types. This should be a hash containing an input
   # type as key and the wrapper that will be used for all inputs with specified type.
@@ -141,5 +144,5 @@ SimpleForm.setup do |config|
   # config.cache_discovery = !Rails.env.development?
 
   # Default class for inputs
-  # config.input_class = nil
+  config.input_class = 'input'
 end

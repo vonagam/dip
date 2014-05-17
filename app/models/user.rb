@@ -35,14 +35,19 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  field :name
+  field :login, type: String
 
   has_many :created_games, class_name: 'Game', foreign_key: 'creator_id'
 
-  validates :name, :email, :password, presence: true
-  validates :name, :email, uniqueness: { case_insensitive: true }
+  validates :login, :password, presence: true
+  validates :login, uniqueness: { case_insensitive: true }
+  validates :login, format: { with: /\A[\w_]{5,15}\z/ }
 
   def side_in( game )
     game.side_of self
+  end
+
+  def email_required? 
+    false 
   end
 end

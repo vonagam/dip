@@ -18,6 +18,6 @@
         - unless @game.side_of current_user
           a href=new_game_side_path(@game) game.participate
 
-      ._sides = table @game.sides.to_a, fields: [ :power, { user: Proc.new{ |side| side.user.name } } ]
+      ._sides = table @game.sides.to_a, fields: [ :power, { user: Proc.new{ |side| side.user.login } } ]
 
 = render 'games/show/state'

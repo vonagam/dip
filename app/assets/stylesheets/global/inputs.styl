@@ -1,11 +1,17 @@
-input, textarea, select
+.input
   bac clr white
+  brd rds 0.2em
 
-  sha ins 0 0 0 0.15em hsla(0,0,0,0.2)
+  box-shadow inset 0px 0px 4px hsla(0,0,0,0.4), inset 0px 0px 0px 1000px white
+  //sha ins 0 0 0 0.15em hsla(0,0,0,0.2)
 
   &:hover
-    sha ins 0 0 0 0.15em hsla(0,0,0,0.4)
+    box-shadow inset 0px 0px 4px hsla(0,0,0,0.6), inset 0px 0px 0px 1000px white
+  //  sha ins 0 0 0 0.15em hsla(0,0,0,0.4)
 
   &:focus
-    sha ins 0 0 0 0.15em hsla(0,0,0,0.6)
+    box-shadow inset 0px 0px 4px hsla(0,0,0,0.8), inset 0px 0px 0px 1000px white
+  //  sha ins 0 0 0 0.15em hsla(0,0,0,0.6)
 
+select.input
+  cur pnt

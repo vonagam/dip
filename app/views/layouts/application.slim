@@ -6,21 +6,23 @@ html
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Play:400,700&subset=cyrillic-ext,latin'
+
   body
+    #background.layer
 
-    #main_layer
+    #main.layer
 
-      ._menu
-        a.td href=games_path layouts.app.menu.games
+      .menu
+        a.td href=games_path = t '.games'
 
         - if user_signed_in?
-          a.td href=destroy_user_session_path layouts.app.menu.leave
+          a.td href=destroy_user_session_path = t '.sign_out'
         - else
-          a.td href=new_user_session_path layouts.app.menu.enter
-          a.td href=new_user_registration_path layouts.app.menu.register
+          a.td href=root_path = t '.sign_in'
 
-      ._content == yield
+      .yield == yield
 
-    #popup_layer.layer: ._content
+    #popup.layer: .content
 
-    #wait_layer.layer: ._content
+    #wait.layer: .content

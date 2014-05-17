@@ -1,19 +1,17 @@
 ru:
+  layouts:
+    application:
+      games: Игры
+      sign_in: Войти
+      sign_out: Выйти
+
+  application:
+    root:
+      sign_in: Войти
+      or: или
+      sign_up: Создать аккаунт
+
   views:
-    layouts:
-      app:
-        menu:
-          games: Игры
-          enter: Войти
-          leave: Выйти
-          register: Регистрация
-
-    devise:
-      sign_up:
-        title: Регистрация
-      sign_in:
-        title: Вход
-
     game:
       destroy: Отменить игру
       participate: Принять участие

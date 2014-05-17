@@ -1,0 +1,23 @@
+#application_root.page
+
+  .container
+    = simple_form_for User.new,
+      url: session_path('user', format: :json),
+      remote: true,
+      html: { 'data-resource' => 'user' } do |f|
+
+      = f.input :login
+      = f.input :password
+
+      = f.hidden_field :remember_me, value: 1
+
+      .field 
+        = f.button :button, t('.sign_in'), id: 'in', 'data-url' => session_path('user', format: :json)
+        .or = t '.or'
+        = f.button :button, t('.sign_up'), id: 'up', 'data-url' => registration_path('user', format: :json)
+
+  coffee:
+    $('#application_root form .button').on 'mousedown', ->
+      q = $ this
+      url = q.attr 'data-url'
+      q.closest('form').attr 'action', url

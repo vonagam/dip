@@ -12,7 +12,7 @@ Diplomacy::Application.routes.draw do
     resource :side, only: [:new, :create]
   end
 
-  root 'app#root'
+  root 'application#root'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

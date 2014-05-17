@@ -18,8 +18,9 @@ ru:
     password: Пароль
     password_confirmation: Повторите пароль
     status: Статус
+    login: Логин
 
-  activerecord:
+  mongoid:
     models:
       game:
         one: Игра
@@ -38,14 +39,7 @@ ru:
         other: Пользователей
 
     attributes:
+      game:
+        map: Карта
       side:
         name: Страна
-
-  helpers:
-    submit:
-      game:
-        create: Создать игру
-      side:
-        create: Принять участие
-      user:
-        create: Зарегистрироваться

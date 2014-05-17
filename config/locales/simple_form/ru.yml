@@ -3,10 +3,23 @@ ru:
     yes: Да
     no: Нет
     required:
-      text: 'обязательное поле'
+      text: обязательное поле
       mark: '*'
     error_notification:
       default_message: "Please review the problems below:"
+    labels:
+      user:
+        confirm_password: Подтвердите пароль
+        terms: Я согласен с правилами сервиса
+
+  helpers:
+    submit:
+      game:
+        create: Создать игру
+      side:
+        create: Принять участие
+
+
     # Labels and hints examples
     # labels:
     #   defaults:

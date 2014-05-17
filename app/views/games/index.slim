@@ -1,10 +1,12 @@
-#games
-  
-  = table Game.all,
-    fields: [ { 'id' => Proc.new{ |g| link_to g.id, game_path(g) } }, :description ],
-    row: Proc.new{ |g| { class: g.status } }
+#games_index.page
 
-  = simple_form_for Game.new, format: :json, remote: true, html: { 'data-resource' => 'game' } do |f|
-    = f.input :map, collection: Map.all, include_blank: false
-    = f.input :description
-    = f.button :button
+  .container.td
+    = table Game.all,
+      fields: [ { 'id' => Proc.new{ |g| link_to g.id, game_path(g) } }, :description ],
+      row: Proc.new{ |g| { class: g.status } }
+
+  .container.td
+    = simple_form_for Game.new, format: :json, remote: true, html: { 'data-resource' => 'game' } do |f|
+      = f.input :map, collection: Map.all, include_blank: false
+      = f.input :description
+      .field = f.button :button
