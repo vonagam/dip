@@ -1,4 +1,4 @@
-module Diplomacy
+module Engine
   class Unit
     ARMY = 1
     FLEET = 2

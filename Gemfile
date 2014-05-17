@@ -1,27 +1,35 @@
 source 'https://rubygems.org'
 
+#core
 gem 'rails', '4.0.1'
 
 gem 'mongoid'
 
+#front
 gem 'slim-rails'
-gem 'stylus'
 
-gem 'uglifier'
+gem 'stylus'
 
 gem 'coffee-rails'
 gem 'jquery-rails'
 
+gem 'uglifier'
+
+gem 'simple_form'
+gem 'vonagam_items', path: '../items'
+
+#middle
 gem 'rails-i18n'
 gem 'russian'
-
-gem 'cancancan', '~> 1.8'
-gem 'devise'
 
 gem 'activeadmin',         github: 'gregbell/active_admin'
 gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
 
-gem 'vonagam_items', path: '../items'
+gem 'websocket-rails'
+
+#back
+gem 'cancancan', '~> 1.8'
+gem 'devise'
 
 group :development do
   gem 'quiet_assets'
@@ -39,7 +47,6 @@ group :test do
   gem 'rack'
 end
 
-gem 'simple_form'
 #gem 'remotipart'
 #gem 'paperclip', '~> 3.0'
 #gem 'jbuilder'

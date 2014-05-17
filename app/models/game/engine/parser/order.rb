@@ -1,6 +1,6 @@
 require_relative '../adjudicator/orders'
 
-module Diplomacy
+module Engine
   class Parser::Order
     def initialize( gamestate )
       @gamestate = gamestate

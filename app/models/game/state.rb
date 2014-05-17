@@ -11,7 +11,7 @@ class State
   delegate :info, :adjudicator, to: :map, prefix: true
 
   def order_of( side )
-    orders.find_by side: side
+    orders.find_by side_id: side.id
   end
  
   def next_date!
@@ -28,15 +28,15 @@ class State
 
   def parse_orders( gamestate, what = nil )
     what ||= orders.all
-    Diplomacy::Parser::Order.new( gamestate ).parse_orders what, type
+    Engine::Parser::Order.new( gamestate ).parse_orders what, type
   end
 
   def get_gamestate
-    Diplomacy::Parser::State.new.from_json data
+    Engine::Parser::State.new.from_json data
   end
 
   def create_next_state( next_data )
-    state_parser = Diplomacy::Parser::State.new next_data
+    state_parser = Engine::Parser::State.new next_data
     game.states.build data: state_parser.to_json, date: date
   end
 
@@ -67,6 +67,8 @@ class State
       side_centers[owner] ||= 0
       side_centers[owner] += 1
     end
+    puts side_centers.values.max
+    puts supply_centers.length / 2
     side_centers.values.max > supply_centers.length / 2
   end
 

@@ -10,6 +10,10 @@ Bundler.require(:default, Rails.env)
 
 module Diplomacy
   class Application < Rails::Application
+    %w( models controllers ).each do |folder|
+      config.autoload_paths += Dir[Rails.root.join('app', folder, '{**/}')]
+    end
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

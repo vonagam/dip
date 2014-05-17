@@ -1,4 +1,4 @@
-module Diplomacy
+module Engine
   class Map
     attr_accessor :areas, :powers, :starting_state, :yaml_areas
 

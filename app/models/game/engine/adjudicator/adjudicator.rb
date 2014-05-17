@@ -1,7 +1,7 @@
 require_relative 'orders'
 require_relative 'backup_rule'
 
-module Diplomacy
+module Engine
   class Validator
     def initialize(state, map, order_list, class_list)
       @state = state
@@ -448,7 +448,7 @@ module Diplomacy
       head = loop[0]
       tail = loop[1..-1].reverse
       
-      head.guess(Diplomacy::FAILURE)
+      head.guess(Engine::FAILURE)
       tail.each do |order|
         resolve_order!(order)
       end
@@ -456,12 +456,12 @@ module Diplomacy
       head.unresolve
       adjudicate!(head)
       
-      resolutions << (head.resolution == Diplomacy::FAILURE)
+      resolutions << (head.resolution == Engine::FAILURE)
       
       # now clear and guess positive
       clear_orders!(tail)
       
-      head.guess(Diplomacy::SUCCESS)
+      head.guess(Engine::SUCCESS)
       tail.each do |order|
         resolve_order!(order)
       end
@@ -469,12 +469,12 @@ module Diplomacy
       head.unresolve
       adjudicate!(head)
       
-      resolutions << (head.resolution == Diplomacy::SUCCESS)
+      resolutions << (head.resolution == Engine::SUCCESS)
       
       clear_orders!(tail)
       
       if (consistent = resolutions[0] ^ resolutions[1])
-        head.resolution = resolutions[0] ? Diplomacy::FAILURE : Diplomacy::SUCCESS
+        head.resolution = resolutions[0] ? Engine::FAILURE : Engine::SUCCESS
         head.resolve
         
         # hm. might be better to store them

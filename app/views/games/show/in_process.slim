@@ -14,7 +14,7 @@
         - if order = side.order_in( @game.state )
           div = order.data
 
-        = form_for side.order || Order.new, url: game_order_path(@game, format: :json), remote: true, html: { class: 'order_form' } do |f|
+        = form_for Order.new, url: game_order_path(@game, format: :json), remote: true, html: { class: 'order_form' } do |f|
           = f.hidden_field :data
           = f.button 'Отдать приказы'
 

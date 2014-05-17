@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe 'Adjudicator' do
   before do
-    @user = create(:user)
-    @map = Map.find_by( name: 'Standart' )
+    @user = create :user
+    @map = Map.find_by name: 'Standart'
     @game = @user.created_games.create map: @map
     @game.progress!
     @user.side_in( @game ).update_attributes power: 'Italy'

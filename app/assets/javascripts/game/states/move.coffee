@@ -62,7 +62,7 @@ move.after_list_end = ->
     return true 
 
   if unit.type == 'army' && regions[to.attr('id')].type == 'water'
-    @convoy = unit.area.views.xc.get() unless @convoy
+    @convoy = unit.area.view().get() unless @convoy
     @convoy.push to.get(0)
     @list_index = 0
     return

@@ -1,6 +1,6 @@
 require_relative 'orders'
 
-module Diplomacy
+module Engine
   class BackupRule
     def initialize(*rules)
       @rules = []

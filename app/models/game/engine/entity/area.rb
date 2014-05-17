@@ -1,6 +1,6 @@
 require 'set'
 
-module Diplomacy
+module Engine
   class Area
     attr_accessor :abbrv, :type, :supply_center, :name, :multicoast
     attr_accessor :borders, :neighbours

@@ -42,8 +42,8 @@ class model.State
     orders = {}
 
     for unit in @powers[ power ].units
-      if unit.order && unit.order.type != 'Hold'
-        position = if @type == 'Build' then unit.position() else unit.area.name
+      if unit.order
+        position = if @type == 'Supply' then unit.position() else unit.area.name
         orders[ position ] = unit.order.to_json()
 
     orders

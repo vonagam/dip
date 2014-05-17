@@ -8,7 +8,7 @@ Diplomacy::Application.routes.draw do
     end
 
     resources :states, only: [:show]
-    resource :order, only: [:create, :update], shallow: true    
+    resource :order, only: [:create], shallow: true    
     resource :side, only: [:new, :create]
   end
 

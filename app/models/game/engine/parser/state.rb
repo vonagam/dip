@@ -1,7 +1,7 @@
 require_relative '../adjudicator/state'
 require_relative '../entity/unit'
 
-module Diplomacy
+module Engine
   class Parser::State
 
     def initialize( gamestate = nil )

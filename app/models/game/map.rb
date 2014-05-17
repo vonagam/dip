@@ -1,4 +1,4 @@
-require 'diplomacy/adjudicator/adjudicator'
+require 'engine/adjudicator/adjudicator'
 
 class Map
   include Mongoid::Document
@@ -12,6 +12,6 @@ class Map
   end
 
   def adjudicator
-    Diplomacy::Adjudicator.new info
+    Engine::Adjudicator.new info
   end
 end

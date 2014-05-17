@@ -3,7 +3,7 @@ require 'set'
 require_relative '../entity/area'
 require_relative '../entity/map'
 
-module Diplomacy
+module Engine
   class Parser::Map
     attr_accessor :maps
     

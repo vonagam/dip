@@ -1,4 +1,4 @@
-module Diplomacy
+module Engine
 
   class AreaState
     attr_accessor :owner, :unit, :coast, :embattled

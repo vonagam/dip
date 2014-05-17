@@ -16,8 +16,8 @@ class Order
     end
   end
   
-  validate :valid, on: :create
-  def valid
+  validate :parsable, on: :create
+  def parsable
     state.parse_orders state.get_gamestate, [self]
   #rescue
   #  errors.add :data, 'Not parsable'

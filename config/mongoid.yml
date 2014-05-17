@@ -56,6 +56,7 @@ development:
 
     # Ensure all times are UTC in the app side. (default: false)
     # use_utc: false
+    use_utc: true
 test:
   sessions:
     default:
@@ -68,6 +69,8 @@ test:
         # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+  options:
+    raise_not_found_error: false
 
 production:
   sessions:
@@ -75,5 +78,5 @@ production:
       database: dip_production
       hosts:
         - localhost:27017
-
-
+  options:
+    raise_not_found_error: false

@@ -13,7 +13,7 @@ class Game
 
   after_create :initial_state
   def initial_state
-    start_state = Diplomacy::Parser::State.new( map.info.starting_state ).to_json
+    start_state = Engine::Parser::State.new( map.info.starting_state ).to_json
     State::Move.create game: self, data: start_state, date: 0
 
     add_side creator
@@ -38,6 +38,8 @@ class Game
   end
 
   def progress!
+    return if status == 'ended'
+
     if status == 'waiting'
       randomize_sides
       update_attributes! status: 'in_process'
@@ -52,7 +54,7 @@ class Game
   end
 
   def side_of( user )
-    sides.find_by user: user
+    sides.find_by  user_id: user.id
   end
 
   def randomize_sides
