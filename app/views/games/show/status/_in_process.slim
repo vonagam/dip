@@ -1,23 +1,22 @@
-#game
+#map_info.container
+  #state_info
+    = t '.state.year',
+      year: @state.date/2,
+      season: t('.state.season.'+(@state.is_fall? ? 'fall' : 'spring')),
+      type: t(".state.type."+@state.type)
 
-  ._state Turn #{ @state.date }: Action #{ @state.type }
+  - if side = @game.side_of( current_user )
+    = simple_form_for Order.new, url: game_order_path(@game, format: :json), remote: true do |f|
+      = f.hidden_field :data
+      - if side.order_in( @state )
+        = f.button :button, class: 'green'
+          == t '.order.update', side: side.power
+      - else
+        = f.button :button, class: 'yellow'
+          == t '.order.create', side: side.power
 
-  .row
+  #map_statistic
+    div = t'.stats.statistic'
+    .container
+      = table [], fields: [ t('.stats.power'), t('.stats.supplies'), t('.stats.units') ]
 
-    ._map_container = render 'games/show/map'
-
-    ._panel
-
-      - if side = @game.side_of( current_user )
-        div = side.power
-
-        - if order = side.order_in( @game.state )
-          div = order.data
-
-        = form_for Order.new, url: game_order_path(@game, format: :json), remote: true, html: { class: 'order_form' } do |f|
-          = f.hidden_field :data
-          = f.button 'Отдать приказы'
-
-  div style='display: none;' = @game.state.to_json
-
-= render 'games/show/state'

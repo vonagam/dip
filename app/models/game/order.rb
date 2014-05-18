@@ -1,7 +1,7 @@
 class Order
   include Mongoid::Document
 
-  field :data
+  field :data, type: Hash
 
   embedded_in :state
   belongs_to :side

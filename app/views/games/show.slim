@@ -3,26 +3,17 @@
   .pils2
 
     .pil
+      = content_for :asd
     
       #map.container: .keep_ratio= render 'games/show/map'
 
     #resizer
     
-    .pil
-
-      #buttons.container
-        - if @game.creator == current_user
-          .pils2
-            a.button.green.pil href=start_game_path(@game) = t '.start'
-            a.button.red.pil href=game_path(@game) data-method='delete' = t '.delete'
-
-        - unless @game.side_of current_user
-          a.button.yellow href=new_game_side_path(@game) = t '.participate'
+    .pil 
+      = render "games/show/status/#{@game.status}"
 
       #chat.container
-        = table @game.sides.to_a do |t|
-          - t.d :user do t.item.user.login end
-          - t.d :power
+        .window
 
 = render 'games/show/state'
 

@@ -8,8 +8,9 @@ Diplomacy::Application.routes.draw do
     end
 
     resources :states, only: [:show]
-    resource :order, only: [:create], shallow: true    
+    resource :order, only: [:create]  
     resource :side, only: [:new, :create]
+    resources :messages, only: [:create, :index]
   end
 
   root 'application#root'

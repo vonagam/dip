@@ -32,3 +32,34 @@
   #buttons.container
     .button
       wid 50%
+
+  #new_order > .button
+    txt hei 1em
+
+  #map_statistic
+    pos rel
+
+    &:hover > .container
+      dis blo
+
+    > .container
+      pos abs t 100% l 0
+      box brd
+      wid min 100%
+      dis non
+      mar 0
+      bac clr white
+
+      > table
+        mar x aut
+        txt siz 14 wei nor ali cen
+
+        td, th
+          pad x 5
+
+        th
+          txt clr hsl(0,0,38)
+
+  #map_info
+    pos abs t 0 l 0
+    txt ali cen

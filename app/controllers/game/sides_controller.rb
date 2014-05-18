@@ -1,5 +1,5 @@
 class SidesController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :auth_user!
   
   def new
     @game = Game.find params[:game_id]

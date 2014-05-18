@@ -17,7 +17,7 @@ module Engine
 
       all_orders.each do | power_orders |
         power = power_orders.side.power.to_sym
-        orders = JSON.parse power_orders.data
+        orders = power_orders.data
 
         orders.each do | region, order |
           order = parse_order region, order, power, state_type

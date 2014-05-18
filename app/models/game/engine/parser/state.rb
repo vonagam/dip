@@ -8,10 +8,6 @@ module Engine
       @gamestate = gamestate || GameState.new
     end
 
-    def from_json( data )
-      to_state JSON.parse data
-    end
-
     def to_state( data )
       @gamestate = GameState.new
 
@@ -46,7 +42,7 @@ module Engine
       @gamestate
     end
 
-    def to_json
+    def to_hash
       data = {}
 
       powers = {}
@@ -70,7 +66,7 @@ module Engine
 
       data[:Powers] = powers
 
-      data.to_json
+      data
     end
 
     private

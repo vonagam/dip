@@ -18,6 +18,8 @@ ru:
         create: Создать игру
       side:
         create: Принять участие
+      order:
+        create: Отдать приказы
 
 
     # Labels and hints examples

@@ -1,7 +1,7 @@
 class State
   include Mongoid::Document
 
-  field :data
+  field :data, type: Hash
   field :date, type: Integer
 
   embedded_in :game
@@ -32,12 +32,12 @@ class State
   end
 
   def get_gamestate
-    Engine::Parser::State.new.from_json data
+    Engine::Parser::State.new.to_state data
   end
 
   def create_next_state( next_data )
     state_parser = Engine::Parser::State.new next_data
-    game.states.build data: state_parser.to_json, date: date
+    game.states.build data: state_parser.to_hash, date: date
   end
 
   def process
@@ -86,7 +86,7 @@ class State
 
     powers.each do |power, resolved|
       order = game.sides.find_by( power: power.to_s ).order
-      order.update_attributes data: resolved.to_json
+      order.update_attributes data: resolved
     end
   end
 end

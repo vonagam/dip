@@ -19,6 +19,26 @@ ru:
 
   games:
     show:
-      delete: Удалить игру
-      start: Начать игру
-      participate: Принять участие
+      status:
+        waiting:
+          delete: Удалить игру
+          start: Начать игру
+          participate: Принять участие
+        in_process:
+          order:
+            create: "%{side}<br>отдать приказы"
+            update: "%{side}<br>обновить приказы"
+          stats:
+            statistic: показатели
+            power: Страна
+            supplies: Снабжение
+            units: Войска
+          state:
+            year: "%{year}г %{season} %{type}"
+            season:
+              spring: Весна
+              fall: Осень
+            type:
+              Move: Маневры
+              Supply: Снабжение
+              Retreat: Отступления

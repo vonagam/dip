@@ -1,10 +1,7 @@
 class GamesController < ApplicationController
-  before_filter :authenticate_user!, only: [ :new, :create ]
+  before_filter :auth_user!, only: [ :create ]
 
   def index
-  end
-
-  def new
   end
 
   def create
@@ -15,7 +12,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find params[:id]
-    @state = @game.states.last
+    @state = @game.state
   end
 
   def destroy

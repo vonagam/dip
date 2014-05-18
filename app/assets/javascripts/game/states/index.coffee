@@ -12,7 +12,7 @@ g.order_index = new state.Radio
       target: -> g.container
       class: 'order_index'
     form:
-      target: -> doc.find('.order_form button')
+      target: -> doc.find('#new_order button')
       bind:
         'mousedown': ()->
           orders = g.state.collect_orders g.power

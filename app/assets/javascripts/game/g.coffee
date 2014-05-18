@@ -13,6 +13,7 @@ g.initialize = ( status, state_type, state_data, power, orders )->
   g.container = $ '#map.container'
   g.map = g.container.find '#diplomacy_map'
   g.areas = g.map.children('g').not '#Orders'
+  g.stats = $ '#map_statistic tbody'
 
   g.power = power
 

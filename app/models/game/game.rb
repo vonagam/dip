@@ -8,13 +8,14 @@ class Game
   belongs_to :creator, class_name: 'User'
   embeds_many :sides
   embeds_many :states
+  embeds_many :messages
 
   validates :map, :creator, presence: true
 
   after_create :initial_state
   def initial_state
-    start_state = Engine::Parser::State.new( map.info.starting_state ).to_json
-    State::Move.create game: self, data: start_state, date: 0
+    start_state = Engine::Parser::State.new map.info.starting_state
+    State::Move.create game: self, data: start_state.to_hash, date: 0
 
     add_side creator
   end

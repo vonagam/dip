@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :auth_user!
   
   def create
     game = Game.find params[:game_id]
@@ -10,7 +10,10 @@ class OrdersController < ApplicationController
       order.destroy
     end
 
-    order = state.orders.create order_params.merge side: side
+    create_params = order_params.merge side: side
+    create_params[:data] = JSON.parse create_params[:data]
+
+    order = state.orders.create create_params
 
     respond_with order, location: game_path(game)
   end
