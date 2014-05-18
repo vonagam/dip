@@ -4,7 +4,7 @@
       a.button.green.pil href=start_game_path(@game) = t'.start'
       a.button.red.pil href=game_path(@game) data-method='delete' = t'.delete'
 
-  - unless @game.side_of current_user
+  - unless @side
     a.button.green href=new_game_side_path(@game) = t'.participate'
 
 #chat.container

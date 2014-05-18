@@ -19,3 +19,4 @@
 //= require vonagam_items/vector
 //= require states
 //= require game
+//= require_tree ./views

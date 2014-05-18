@@ -5,15 +5,15 @@
       season: t('.state.season.'+(@state.is_fall? ? 'fall' : 'spring')),
       type: t(".state.type."+@state.type)
 
-  - if side = @game.side_of( current_user )
+  - if @side
     = simple_form_for Order.new, url: game_order_path(@game, format: :json), remote: true do |f|
       = f.hidden_field :data
-      - if side.order_in( @state )
+      - if @side.order_in( @state )
         = f.button :button, class: 'green'
-          == t '.order.update', side: side.power
+          == t '.order.update', side: @side.power
       - else
         = f.button :button, class: 'yellow'
-          == t '.order.create', side: side.power
+          == t '.order.create', side: @side.power
 
   #map_statistic
     div = t'.stats.statistic'

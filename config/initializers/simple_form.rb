@@ -121,7 +121,8 @@ SimpleForm.setup do |config|
   # matches the regexp as value.
   config.input_mappings = { 
     /(?:terms|remember_me)/ => :boolean,
-    /description/ => :text
+    /description/ => :text,
+    /text/ => :text
   }
 
   # Custom wrappers for input types. This should be a hash containing an input

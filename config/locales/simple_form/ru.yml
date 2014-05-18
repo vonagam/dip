@@ -11,6 +11,9 @@ ru:
       user:
         confirm_password: Подтвердите пароль
         terms: Я согласен с правилами сервиса
+    placeholders:
+      message:
+        text: Сообщение
 
   helpers:
     submit:
@@ -20,6 +23,8 @@ ru:
         create: Принять участие
       order:
         create: Отдать приказы
+      message:
+        create: Отправить
 
 
     # Labels and hints examples

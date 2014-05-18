@@ -12,42 +12,16 @@
     .pil 
       = render "games/show/status/#{@game.status}"
 
-      #chat.container
-        .window
+      .container
+        #chat data-game=@game.id.to_s data-side=( @side && @side.power )
+
+        = simple_form_for Message.new, url: game_messages_path(@game, format: :json), remote: true do |f|
+          = f.hidden_field :to
+          = f.input :text, label: false
+          .field = f.button :button, class: 'yellow'
 
 = render 'games/show/state'
 
 coffee:
-  container = $ '#game_show > .pils2'
-  resizer = container.children '#resizer'
-  pills = container.children '.pil'
-  first = pills.eq 0
-  second = pills.eq 1
-  offset = 0
-
-  toggle = (on_off)->
-    doc[on_off] 
-      'mousemove': mousemove
-      'mouseup': mouseup
-
-  mouseup = ->
-    toggle 'off'
-
-  resizer.on 'mousedown', (e)->
-    offset = e.pageX - resizer.offset().left
-    toggle 'on'
-    return false
-
-  mousemove = (e)->
-    first_left = first.offset().left
-    mouse_left = e.pageX - offset
-    
-    first_percent = ( mouse_left - first_left ) / container.width() * 100
-
-    if first_percent < 30
-      first_percent = 30
-    else if first_percent > 70
-      first_percent = 70
-
-    first.css width: first_percent + '%'
-    second.css width: (100 - first_percent) + '%'
+  map_resizing()
+  game_chat()
