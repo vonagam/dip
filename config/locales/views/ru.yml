@@ -16,3 +16,9 @@ ru:
       destroy: Отменить игру
       participate: Принять участие
       start: Запустить игру
+
+  games:
+    show:
+      delete: Удалить игру
+      start: Начать игру
+      participate: Принять участие

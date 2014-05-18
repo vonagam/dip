@@ -1,0 +1,62 @@
+#game_show.page
+
+  .pils2
+
+    .pil
+    
+      #map.container: .keep_ratio= render 'games/show/map'
+
+    #resizer
+    
+    .pil
+
+      #buttons.container
+        - if @game.creator == current_user
+          .pils2
+            a.button.green.pil href=start_game_path(@game) = t '.start'
+            a.button.red.pil href=game_path(@game) data-method='delete' = t '.delete'
+
+        - unless @game.side_of current_user
+          a.button.yellow href=new_game_side_path(@game) = t '.participate'
+
+      #chat.container
+        = table @game.sides.to_a do |t|
+          - t.d :user do t.item.user.login end
+          - t.d :power
+
+= render 'games/show/state'
+
+coffee:
+  container = $ '#game_show > .pils2'
+  resizer = container.children '#resizer'
+  pills = container.children '.pil'
+  first = pills.eq 0
+  second = pills.eq 1
+  offset = 0
+
+  toggle = (on_off)->
+    doc[on_off] 
+      'mousemove': mousemove
+      'mouseup': mouseup
+
+  mouseup = ->
+    toggle 'off'
+
+  resizer.on 'mousedown', (e)->
+    offset = e.pageX - resizer.offset().left
+    toggle 'on'
+    return false
+
+  mousemove = (e)->
+    first_left = first.offset().left
+    mouse_left = e.pageX - offset
+    
+    first_percent = ( mouse_left - first_left ) / container.width() * 100
+
+    if first_percent < 30
+      first_percent = 30
+    else if first_percent > 70
+      first_percent = 70
+
+    first.css width: first_percent + '%'
+    second.css width: (100 - first_percent) + '%'

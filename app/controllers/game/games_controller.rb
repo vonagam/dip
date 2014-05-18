@@ -16,8 +16,6 @@ class GamesController < ApplicationController
   def show
     @game = Game.find params[:id]
     @state = @game.states.last
-
-    render "games/show/#{@game.status}"
   end
 
   def destroy

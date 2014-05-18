@@ -42,4 +42,5 @@ ru:
       game:
         map: Карта
       side:
-        name: Страна
+        user: Игрок
+        power: Страна

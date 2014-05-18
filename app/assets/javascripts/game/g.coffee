@@ -10,7 +10,7 @@ g.set_state = ( state )->
   return
 
 g.initialize = ( status, state_type, state_data, power, orders )->
-  g.container = $ '#game ._map_container'
+  g.container = $ '#map.container'
   g.map = g.container.find '#diplomacy_map'
   g.areas = g.map.children('g').not '#Orders'
 

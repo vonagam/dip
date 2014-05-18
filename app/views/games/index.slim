@@ -9,4 +9,4 @@
     = simple_form_for Game.new, format: :json, remote: true, html: { 'data-resource' => 'game' } do |f|
       = f.input :map, collection: Map.all, include_blank: false
       = f.input :description
-      .field = f.button :button
+      .field = f.button :button, class: 'yellow'
