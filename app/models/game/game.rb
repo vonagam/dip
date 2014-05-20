@@ -44,6 +44,7 @@ class Game
     if status == 'waiting'
       randomize_sides
       update_attributes! status: 'in_process'
+      state.chat_message
       return
     end
 
@@ -55,7 +56,7 @@ class Game
   end
 
   def side_of( user )
-    sides.find_by  user_id: user.id
+    sides.find_by  user: user
   end
 
   def randomize_sides

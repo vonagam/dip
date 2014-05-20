@@ -13,7 +13,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find params[:id]
     @state = @game.state
-    @side = user_signed_in? && @game.side_of( current_user ) 
+    @side = @game.side_of current_user 
   end
 
   def destroy
@@ -22,9 +22,16 @@ class GamesController < ApplicationController
     redirect_to action: :index, status: 303
   end
 
-  def start
+  def progress
     game = Game.find params[:id]
-    game.progress! if current_user == game.creator
+
+    case game.status
+    when 'waiting'
+      game.progress! if current_user == game.creator
+    when 'in_process'
+      game.progress!
+    end
+    
     redirect_to action: :show, status: 303
   end
 

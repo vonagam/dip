@@ -15,6 +15,9 @@
         = f.button :button, class: 'yellow'
           == t '.order.create', side: @side.power
 
+    coffee:
+      order_sending()
+
   #map_statistic
     div = t'.stats.statistic'
     .container

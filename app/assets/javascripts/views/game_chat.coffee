@@ -1,13 +1,18 @@
 @game_chat = -> 
   chat = $ '#chat'
 
+  $('#new_message').on 'ajax:success', -> $(this).find('#message_text').val('')
+
+  chat.on 'resize', ->
+    log 1
+
   dispatcher = new WebSocketRails 'localhost:3000/websocket'
 
   game_id = chat.data 'game'
   side = chat.data 'side'
 
   chat.ajax 'get', "/games/#{game_id}/messages.json", {}, (response)->
-    for message in response
+    for message in response.reverse()
       add_message chat, message
 
   channel_public = dispatcher.subscribe game_id
@@ -23,18 +28,22 @@
       add_message chat, message
       return
 
-sides_spans = ( array_of_sides )->
-  r = []
-  r.push "<span class='#{side}'>#{side}</span>" for side in array_of_sides
-  r
+side_span = ( side )->
+  "<span class='#{side}'>#{side}</span>"
+
+time_format = ( created_at )->
+  (new Date(created_at)).toTimeString().replace(/^(\S+)\s+.+$/, "$1")
 
 add_message = ( chat, message ) ->
-  log message
+  scroll = (chat[0].scrollHeight - chat.scrollTop()) <= chat.outerHeight() #innerHeight
+
   $("
     <div class='message #{if message.public then 'public' else 'private'}'>
-      <div class='time'>#{message.created_at}</div>
-      <div class='from'>#{sides_spans([message.from])[0]}</div>
-      <div class='to'>#{sides_spans(message.to).join()}</div>
-      <div class='text'>#{message.text}</div>
+      <div class='when'>#{time_format(message.created_at)}</div>
+      <div class='who'>#{side_span(message.from)}</div>
+      <div class='what'>#{message.text}</div>
     </div>
-  ").appendTo chat
+  ")
+  .appendTo chat
+
+  chat.scrollTop(chat[0].scrollHeight) if scroll

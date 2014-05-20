@@ -6,29 +6,16 @@ class MessagesController < ApplicationController
     state = game.state
     side = game.side_of current_user
 
-    create_params = 
-    message_params.merge({ 
+    create_params = message_params.merge({
       from: side.power,
       public: state.is_fall?
     })
 
-    create_params[:to] = create_params[:to].split ','
+    create_params.delete(:to) if create_params[:public]
 
     message = game.messages.build create_params
 
-    if message.save
-      game_id = game.id.to_s
-
-      if message.public
-        WebsocketRails[game_id].trigger 'message', message
-      else
-        sides = message.to.clone
-        sides.push message.from
-        sides.each do |side|
-          WebsocketRails["#{game_id}_#{side}"].trigger 'message', message
-        end
-      end
-    end
+    message.save
 
     respond_with message, location: nil #game_path(game)
   end

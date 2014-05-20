@@ -1,5 +1,6 @@
 class State
   include Mongoid::Document
+  include WebsocketNotifier
 
   field :data, type: Hash
   field :date, type: Integer
@@ -10,8 +11,17 @@ class State
   delegate :map, to: :game
   delegate :info, :adjudicator, to: :map, prefix: true
 
+  triggers_websocket(:state){ |s| [s.game.id.to_s] }
+  after_create :chat_message
+
+  def chat_message
+    return if game.status == 'waiting'
+    text = "#{date/2}.#{date%2}:#{type}"
+    game.messages.create from: '=', public: true, text: text
+  end
+
   def order_of( side )
-    orders.find_by side_id: side.id
+    orders.find_by side: side
   end
  
   def next_date!

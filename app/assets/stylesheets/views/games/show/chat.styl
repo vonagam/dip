@@ -5,10 +5,25 @@
 #chat
   bac clr white
   brd rds 0.2em
-  hei 3.6em
   overflow-y scroll
   resize vertical
 
   > .message
+    pos rel
     txt siz 14
-    pad x 0.6em
+    pad 0.3em 0.6em
+
+    + .message
+      brd t 1 hsl(0,0,90)
+
+    > .when, > .who, > .what
+      dis inl
+
+    > .when
+      txt clr hsl(0,0,70) siz 10
+
+/*
+    > .when
+      pos abs t 0.3em r 0.6em
+      txt clr hsl(0,0,70)
+*/
