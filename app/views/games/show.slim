@@ -15,7 +15,8 @@
       .container
         #chat data-game=@game.id.to_s data-side=( @side && @side.power ) style='height: 200px'
 
-        = simple_form_for Message.new, url: game_messages_path(@game, format: :json), remote: true do |f|
+        = simple_form_for Message.new, url: game_messages_path(@game, format: :json), remote: true,
+          html: { 'data-no-redirect' => true } do |f|
           = f.input :to, label: false, collection: @game.taken_powers
           = f.input :text, label: false
           .field = f.button :button, class: 'yellow'

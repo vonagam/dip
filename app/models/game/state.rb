@@ -12,12 +12,17 @@ class State
   delegate :info, :adjudicator, to: :map, prefix: true
 
   triggers_websocket(:state){ |s| [s.game.id.to_s] }
-  after_create :chat_message
+  after_create :state_changing
 
-  def chat_message
+  def state_changing
     return if game.status == 'waiting'
+
     text = "#{date/2}.#{date%2}:#{type}"
     game.messages.create from: '=', public: true, text: text
+
+    if type != 'State'
+      game.delay( run_at: self.class::MINUTES.minutes.from_now ).progress!
+    end
   end
 
   def order_of( side )
@@ -102,6 +107,7 @@ class State
 end
 
 class State::Move < State
+  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve!( gamestate, parse_orders( gamestate ), is_fall? )
   end
@@ -115,6 +121,7 @@ class State::Move < State
 end
 
 class State::Retreat < State
+  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve_retreats!( gamestate, parse_orders( gamestate ), is_fall? )
   end
@@ -124,6 +131,7 @@ class State::Retreat < State
 end
 
 class State::Supply < State
+  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve_builds!( gamestate, parse_orders( gamestate ) )
   end

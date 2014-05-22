@@ -4,7 +4,7 @@ Diplomacy::Application.routes.draw do
 
   resources :games, only: [:index, :new, :create, :show, :destroy] do
     member do
-      get 'progress'
+      get 'start'
     end
 
     resources :states, only: [:show]

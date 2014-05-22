@@ -24,7 +24,7 @@ ru:
           delete: Удалить игру
           start: Начать игру
           participate: Принять участие
-        in_process:
+        started:
           order:
             create: "%{side}<br>отдать приказы"
             update: "%{side}<br>обновить приказы"

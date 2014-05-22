@@ -11,7 +11,7 @@ class Order
 
   validate :game_in_progress, on: :create
   def game_in_progress
-    if state.game.status != 'in_process'
+    if state.game.status != 'started'
       errors.add :state, 'Game not going'
     end
   end

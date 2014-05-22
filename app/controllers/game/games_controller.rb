@@ -22,15 +22,10 @@ class GamesController < ApplicationController
     redirect_to action: :index, status: 303
   end
 
-  def progress
+  def start
     game = Game.find params[:id]
 
-    case game.status
-    when 'waiting'
-      game.progress! if current_user == game.creator
-    when 'in_process'
-      game.progress!
-    end
+    game.progress! if game.status == 'waiting' && current_user == game.creator
     
     redirect_to action: :show, status: 303
   end

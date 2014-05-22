@@ -7,7 +7,7 @@
   - unless @side
     a.button.green href=new_game_side_path(@game) = t'.participate'
 
-#chat.container
+.container
   = table @game.sides.to_a do |t|
     - t.d :user do t.item.user.login end
     - t.d :power

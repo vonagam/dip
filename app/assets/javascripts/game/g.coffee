@@ -31,7 +31,7 @@ g.initialize = ( status, state_type, state_data, power, orders )->
   
   g.set_state state
 
-  return if status != 'in_process'
+  return if status != 'started'
 
   if state_type == 'Move'
     for power_name, power_data of g.state.powers

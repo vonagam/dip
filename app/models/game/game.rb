@@ -39,24 +39,24 @@ class Game
   end
 
   def progress!
-    return if status == 'ended'
+    return if status == 'finished'
 
     if status == 'waiting'
       randomize_sides
-      update_attributes! status: 'in_process'
-      state.chat_message
+      update_attributes! status: 'started'
+      state.state_changing
       return
     end
 
     state.process
 
     if state._type == 'State'
-      update_attributes status: 'ended'
+      update_attributes status: 'finished'
     end
   end
 
   def side_of( user )
-    sides.find_by  user: user
+    sides.find_by user: user
   end
 
   def randomize_sides

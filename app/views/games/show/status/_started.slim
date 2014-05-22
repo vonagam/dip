@@ -6,7 +6,8 @@
       type: t(".state.type."+@state.type)
 
   - if @side
-    = simple_form_for Order.new, url: game_order_path(@game, format: :json), remote: true do |f|
+    = simple_form_for Order.new, url: game_order_path(@game, format: :json), remote: true,
+      html: { 'data-no-redirect' => true } do |f|
       = f.hidden_field :data
       - if @side.order_in( @state )
         = f.button :button, class: 'green'
