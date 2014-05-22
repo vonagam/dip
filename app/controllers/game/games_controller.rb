@@ -30,6 +30,12 @@ class GamesController < ApplicationController
     redirect_to action: :show, status: 303
   end
 
+  def progress
+    game = Game.find params[:id]
+    game.progress!
+    head :ok
+  end
+
   private
 
   def game_params 

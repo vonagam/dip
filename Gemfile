@@ -34,6 +34,8 @@ gem 'websocket-rails'
 gem 'cancancan', '~> 1.8'
 gem 'devise'
 
+gem 'rest-client'
+
 gem 'delayed_job_mongoid'
 gem 'daemons'
 

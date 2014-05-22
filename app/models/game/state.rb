@@ -14,6 +14,8 @@ class State
   triggers_websocket(:state){ |s| [s.game.id.to_s] }
   after_create :state_changing
 
+  MINUTES = { 'Move' => 4, 'Retreat' => 2, 'Supply' => 3 }
+
   def state_changing
     return if game.status == 'waiting'
 
@@ -21,7 +23,9 @@ class State
     game.messages.create from: '=', public: true, text: text
 
     if type != 'State'
-      game.delay( run_at: self.class::MINUTES.minutes.from_now ).progress!
+      RestClient
+      .delay( run_at: MINUTES[type].minutes.from_now )
+      .get( "http://localhost:3000/games/#{game.id}/progress" )
     end
   end
 
@@ -107,7 +111,6 @@ class State
 end
 
 class State::Move < State
-  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve!( gamestate, parse_orders( gamestate ), is_fall? )
   end
@@ -121,7 +124,6 @@ class State::Move < State
 end
 
 class State::Retreat < State
-  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve_retreats!( gamestate, parse_orders( gamestate ), is_fall? )
   end
@@ -131,7 +133,6 @@ class State::Retreat < State
 end
 
 class State::Supply < State
-  MINUTES = 1
   def resolve( gamestate )
     map_adjudicator.resolve_builds!( gamestate, parse_orders( gamestate ) )
   end

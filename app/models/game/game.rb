@@ -65,4 +65,8 @@ class Game
       side.update_attributes power: available.shuffle.pop
     end
   end
+
+  def send_progress
+    RestClient.get( "http://localhost:3000/games/#{id}/progress" )
+  end
 end
