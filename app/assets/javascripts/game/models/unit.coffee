@@ -29,13 +29,14 @@ class model.Unit
 
   detach: ->
     @view.remove()
+    delete @view
     @order.detach() if @order
     return
 
   set_order: (order)->
-    @order.detach() if @order
+    @order.detach() if @order && @view
     @order = order
-    @order.attach() if @order
+    @order.attach() if @order && @view
     return
 
   areas: ( name )->

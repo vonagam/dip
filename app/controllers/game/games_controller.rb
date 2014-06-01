@@ -13,7 +13,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find params[:id]
     @state = @game.state
-    @side = @game.side_of current_user 
+    @side = @game.side_of current_user
   end
 
   def destroy

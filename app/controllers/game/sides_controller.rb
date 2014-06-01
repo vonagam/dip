@@ -20,6 +20,6 @@ class SidesController < ApplicationController
   private
 
   def side_params 
-    params.require(:side).permit!
+    params.require(:side).permit :power
   end
 end

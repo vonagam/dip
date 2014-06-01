@@ -1,18 +1,21 @@
 body >
   
   #background
-    dis blo
+    dis non
+    pos fix
     bac img url('/images/home_guard_parade.jpg') siz cvr pos cen att fix
 
   #main
     bac clr hsla(0,0,100,0.5)
 
     > .menu
-      bac clr hsla(0,0,90,0.9)
+      mar t 0
+      hei 30
       txt siz 16 hei 30 ali cen
-      sha 0 2 4 hsla(0,0,0,0.5)
+      brd 0 b 2
 
       > .td
+        txt ali cen
         wid 100
 
         &:hover
@@ -23,6 +26,3 @@ body >
 
         +on(1)
           bac clr hsl(0,0,80)
-
-    > .yield
-      pos rel

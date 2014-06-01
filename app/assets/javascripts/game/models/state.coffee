@@ -1,12 +1,20 @@
 class model.State
-  constructor: ( data, @type )->
+  constructor: ( @raw, @game )->
+    @attached = false
+    @last = false
+
+  reset: ->
+    @detach()
+    @attach()
+
+  read_data: ->
     @powers = {}
     @areas = {}
 
     for name, region of regions
       @areas[name] = new model.Area name, this
 
-    for power_name, power_data of data.Powers
+    for power_name, power_data of @raw.data.Powers
       power = new model.Power power_name
 
       for unit_data in power_data.Units
@@ -24,20 +32,42 @@ class model.State
 
       @powers[power_name] = power
 
-    if data.Embattled
-      for area_name in data.Embattled
+    if @raw.data.Embattled
+      for area_name in @raw.data.Embattled
         @areas[area_name].embattled = true
 
+    if @type() == 'Move'
+      for power_name, power_data of @powers
+        for unit in power_data.units
+          g.set_order unit, 'Hold'
+
+    if @raw.orders.length > 0
+      whom = if @type() == 'Retreat' then 'dislodged' else 'unit'
+      for raw_order in @raw.orders
+        for area_name, order of raw_order.data
+          if order.type != 'Build'
+            unit = @get_area( area_name )[whom]
+            g.set_order unit, order.type, order
+          else
+            position = area_name.split '_'
+            new model.Order.Build( g.state.get_area(position[0]), order.unit, position[1] )
+
   attach: ->
+    @read_data()
+
     @fill_stats()
     area.attach() for name, area of @areas
     power.attach() for name, power of @powers
+
+    @attached = true
     return
 
   detach: ->
-    g.stats.emtpy()
+    g.stats.empty()
     area.detach() for name, area of @areas
     power.detach() for name, power of @powers
+
+    @attached = false
     return
 
   collect_orders: ( power )->
@@ -45,7 +75,7 @@ class model.State
 
     for unit in @powers[ power ].units
       if unit.order
-        position = if @type == 'Supply' then unit.position() else unit.area.name
+        position = if @type() == 'Supply' then unit.position() else unit.area.name
         orders[ position ] = unit.order.to_json()
 
     orders
@@ -63,3 +93,6 @@ class model.State
       ptr.children('.units').html power.units.length
       ptr.children('.supplies').html power.supplies().length
       ptr.appendTo g.stats
+
+  type: ->
+    @raw.type

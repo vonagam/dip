@@ -1,0 +1,28 @@
+#games_show
+  .stats.j_component
+    pos abs t -10 l -10 z 2
+    txt ali cen
+    mar 0
+    brd 0
+
+    > .word
+      txt clr hsl(0,0,50)
+
+    &:hover > .container
+      dis blo
+
+    > .container
+      pos abs l 100% t 0
+      dis non
+      mar 0
+      brd 0
+
+      > table
+        mar x aut
+        txt siz 14 wei nor ali cen
+
+        td, th
+          pad x 5
+
+        th
+          txt clr hsl(0,0,38)

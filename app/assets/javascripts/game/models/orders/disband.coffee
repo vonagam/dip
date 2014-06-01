@@ -12,7 +12,7 @@ class model.Order.Disband extends model.Order.Base
     coords = @unit.coords
 
     cross.attr 
-      'class': 'disband'
+      'class': @view_class_name()
       'transform': "translate(#{coords.x},#{coords.y})"
 
     return cross

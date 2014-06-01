@@ -8,9 +8,6 @@ g.game_phase = {}
 
 g.order_index = new state.Radio 
   toggls:
-    game:
-      target: -> g.container
-      class: 'order_index'
     form:
       target: -> doc.find('#new_order button')
       bind:

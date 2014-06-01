@@ -1,0 +1,23 @@
+#games_show.page
+  .menu.row
+    = render 'games/show/participation'
+    = render 'games/show/history'
+    = render 'games/show/order'
+    = render 'games/show/timer'
+
+  .pils2
+
+    .left.container.pil
+      .keep_ratio 
+        = render 'games/show/stats'
+        = render 'games/show/map'
+
+    .resizer
+    
+    .right.pil
+      = render 'games/show/chat'
+
+
+  javascript:
+    g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
+    map_resizing()

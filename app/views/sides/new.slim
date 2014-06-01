@@ -1,8 +1,9 @@
-#side
+#sides_new.page
   
-  ._taken = table @game.sides.to_a, fields: [ :power, { user: Proc.new{ |side| side.user.name } } ]
+  .taken.container
+    = table @game.sides.to_a, fields: [ :power, { user: Proc.new{ |side| side.user.login } } ]
 
-  ._select
+  .select.container
     = simple_form_for Side.new, url: game_side_path(@game, format: :json),
     remote: true, html:{'data-resource'=>'side'} do |f|
     

@@ -27,7 +27,7 @@ class model.Order.Support extends model.Order.Base
     
     line.attr 
       'd': 'M'+supporter.x+','+supporter.y+'L'+middle.x+','+middle.y
-      'class': "support #{@unit.power.name}"
+      'class': @view_class_name()
 
     return line
 

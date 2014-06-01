@@ -32,7 +32,10 @@ class Game
     map.info.powers
   end
   def taken_powers
-    sides.only(:power).all.collect!{ |s| s.power }
+    sides.only(:power).all.collect!(&:power)
+  end
+  def alive_powers
+    sides.where(alive: true).only(:power).all.collect!(&:power)
   end
   def available_powers
     powers - taken_powers
@@ -62,7 +65,7 @@ class Game
   def randomize_sides
     available = available_powers
     sides.select{ |s| s.power.blank? }.each do |side|
-      side.update_attributes power: available.shuffle.pop
+      side.update_attributes power: available.shuffle!.pop
     end
   end
 

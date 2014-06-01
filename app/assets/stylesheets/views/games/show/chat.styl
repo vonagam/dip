@@ -1,26 +1,27 @@
-#message_text
-  txt hei inh siz 14
-  hei min 3.6em
+.chat
+  > .window
+    bac clr white
+    overflow-y scroll
+    resize vertical
+    brd 2 hsl(0,0,85)
 
-#chat
-  bac clr white
-  brd rds 0.2em
-  overflow-y scroll
-  resize vertical
+    > .message
+      pos rel
+      txt siz 14
+      pad 0.3em 0.6em
 
-  > .message
-    pos rel
-    txt siz 14
-    pad 0.3em 0.6em
+      + .message
+        brd t 1 hsl(0,0,90)
 
-    + .message
-      brd t 1 hsl(0,0,90)
+      > .when, > .who, > .what
+        dis inl
 
-    > .when, > .who, > .what
-      dis inl
+      > .when
+        txt clr hsl(0,0,70) siz 10
 
-    > .when
-      txt clr hsl(0,0,70) siz 10
+  #message_text
+    txt hei inh siz 14
+    hei min 3.6em
 
 /*
     > .when

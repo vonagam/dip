@@ -28,28 +28,35 @@
       font-size 8px
       display none
 
-  > #Orders > #Orders_new 
+  > #Orders
     > line, > path
       stroke-width 2
 
-    > .move, > .convoy
+    > .Move, > .Convoy
       marker-end url(#move_marker)
 
-    > .convoy
+    > .Convoy
       fill none !important
       stroke-width 2
       stroke-dasharray 5,2
 
-    > .support
+    > .Support
       marker-end url(#support_marker)
       fill none !important
       stroke-dasharray 3,2
     
-    > .disband
+    > .Disband
       stroke black
       stroke-width 3
 
-    > .build
+    > .Build
       fill none
       stroke white
       stroke-width 2
+
+    > .SUCCESS
+      stroke black !important
+
+    > .FAILURE
+      stroke white !important
+      

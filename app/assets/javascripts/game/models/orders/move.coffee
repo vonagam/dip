@@ -24,7 +24,7 @@ class model.Order.Move extends model.Order.Base
       x2: t.x
       y2: t.y
     
-    line.attr 'class', "move #{@unit.power.name}"
+    line.attr 'class', @view_class_name()
 
     return line
 

@@ -1,9 +1,9 @@
-@map_resizing = -> 
-  container = $ '#game_show > .pils2'
-  resizer = container.children '#resizer'
-  pills = container.children '.pil'
-  first = pills.eq 0
-  second = pills.eq 1
+@map_resizing = ->
+  container = $ '#games_show > .pils2'
+  resizer = container.children '.resizer'
+  pils = container.children '.pil'
+  first = pils.eq 0
+  second = pils.eq 1
   offset = 0
 
   toggle = (on_off)->

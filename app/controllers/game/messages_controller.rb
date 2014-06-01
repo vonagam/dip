@@ -4,20 +4,25 @@ class MessagesController < ApplicationController
   def create
     game = Game.find params[:game_id]
     state = game.state
-    side = game.side_of current_user
 
-    create_params = message_params.merge({
-      from: side.power,
-      public: state.is_fall?
-    })
+    from = 
+    if game.status == 'waiting'
+      current_user.login
+    else
+      game.side_of(current_user).power
+    end
 
-    create_params.delete(:to) if create_params[:public]
+    is_public = game.status != 'started' || state.is_fall?
+
+    create_params = message_params.merge from: from, public: is_public
+
+    create_params.delete(:to) if is_public
 
     message = game.messages.build create_params
 
     message.save
 
-    respond_with message, location: nil #game_path(game)
+    respond_with message, location: game_path(game)
   end
 
   def index

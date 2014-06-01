@@ -10,6 +10,7 @@ gem 'mongoid'
 gem 'slim-rails'
 gem 'stylus'
 gem 'coffee-rails'
+gem 'jbuilder'
 
 # assets
 gem 'jquery-rails'
@@ -59,4 +60,3 @@ end
 
 #gem 'remotipart'
 #gem 'paperclip', '~> 3.0'
-#gem 'jbuilder'

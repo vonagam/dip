@@ -35,7 +35,7 @@ class model.Order.Build extends model.Order.Base
     coords = @unit.coords
 
     circle.attr 
-      'class': 'build'
+      'class': @view_class_name()
       'transform': "translate(#{coords.x},#{coords.y})"
 
     return circle

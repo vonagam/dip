@@ -16,7 +16,7 @@ class model.Order.Convoy extends model.Order.Base
       'r': 10
       'cx': position.x
       'cy': position.y
-      'class': "convoy #{@unit.power.name}"
+      'class': @view_class_name()
 
     return circle
 
