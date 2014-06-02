@@ -14,7 +14,7 @@ gem 'jbuilder'
 
 # assets
 gem 'jquery-rails'
-gem 'vonagam_items', path: '../items'
+gem 'vonagam_items', github: 'vonagam/items' # path: '../items'
 
 # helpers
 gem 'simple_form'
@@ -44,6 +44,9 @@ gem 'daemons'
 group :development do
   gem 'quiet_assets'
   #gem 'rails-i18n-debug'
+  gem 'capistrano'
+  gem 'rvm-capistrano'
+  gem 'net-ssh', '~> 2.7.0'
 end
 
 group :development, :test do
