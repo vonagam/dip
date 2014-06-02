@@ -9,6 +9,7 @@ class Game
   embeds_many :sides
   embeds_many :states
   embeds_many :messages
+  embeds_many :orders
 
   validates :map, :creator, presence: true
 
@@ -60,6 +61,9 @@ class Game
 
   def side_of( user )
     sides.find_by user: user
+  end
+  def order_of( side )
+    orders.find_by side: side
   end
 
   def randomize_sides

@@ -25,7 +25,7 @@ class view.Order
 
     if allow_order
       @button.removeClass 'green yellow'
-      color = if @game.state.raw.orders.length > 0 then 'green' else 'yellow'
+      color = if @game.state.raw.orders then 'green' else 'yellow'
       @button.addClass color
 
     return

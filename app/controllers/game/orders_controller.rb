@@ -6,14 +6,14 @@ class OrdersController < ApplicationController
     @state = @game.state
     @side = @game.side_of current_user
 
-    if order = @state.order_of( @side )
-      order.destroy
-    end
-
-    create_params = order_params.merge side: @side
+    create_params = order_params
     create_params[:data] = JSON.parse create_params[:data]
 
-    order = @state.orders.create create_params
+    if order = @game.order_of( @side )
+      order.update_attributes! data: create_params[:data]
+    else
+      @game.orders.create create_params.merge side: @side
+    end
 
     render 'games/show'
   end

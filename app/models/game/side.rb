@@ -16,11 +16,11 @@ class Side
   after_create :send_websocket
 
   def order
-    order_in game.state
+    order_in game
   end
 
-  def order_in( state )
-    state.order_of self
+  def order_in( game )
+    game.order_of self
   end
 
   protected

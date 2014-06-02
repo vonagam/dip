@@ -41,10 +41,10 @@ class model.State
         for unit in power_data.units
           g.set_order unit, 'Hold'
 
-    if @raw.orders.length > 0
+    if @raw.orders
       whom = if @type() == 'Retreat' then 'dislodged' else 'unit'
-      for raw_order in @raw.orders
-        for area_name, order of raw_order.data
+      for power_name, orders of @raw.orders
+        for area_name, order of orders
           if order.type != 'Build'
             unit = @get_area( area_name )[whom]
             g.set_order unit, order.type, order

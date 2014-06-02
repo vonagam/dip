@@ -4,9 +4,9 @@ class State
   field :data, type: Hash
   field :date, type: Integer
   field :end_at, type: Time
+  field :resulted_orders, type: Hash
 
   embedded_in :game
-  embeds_many :orders
 
   delegate :map, to: :game
   delegate :info, :adjudicator, to: :map, prefix: true
@@ -31,10 +31,6 @@ class State
       .get( "http://#{APP_HOST}/games/#{game.id}/progress" )
     end
   end
-
-  def order_of( side )
-    orders.find_by side: side
-  end
  
   def next_date!
     self.date += 1
@@ -49,7 +45,7 @@ class State
   end
 
   def parse_orders( gamestate, what = nil )
-    what ||= orders.all
+    what ||= game.orders.all
     Engine::Parser::Order.new( gamestate ).parse_orders what, type
   end
 
@@ -95,19 +91,20 @@ class State
   def update_orders( resolved_orders )
     powers = {}
 
-    resolved_orders.each do |order|
-      order_data = order.origin
-      power = order_data.delete :power
-      region = order_data.delete :region
-      order_data['result'] = order.resolution_readable
+    resolved_orders.each do |resolver_order|
+      raw = resolver_order.raw
+      order = raw[:order]
+      power = raw[:power]
+      region = raw[:region]
 
-      ( powers[power] ||= {} )[region] = order_data
+      order['result'] = resolver_order.resolution_readable
+
+      ( powers[power] ||= {} )[region] = order
     end
 
-    powers.each do |power, resolved|
-      order = game.sides.find_by( power: power.to_s ).order
-      order.update_attributes data: resolved
-    end
+    update_attributes! resulted_orders: powers
+
+    game.reload.orders.destroy_all
   end
 
   def update_orderable( areas_states )
