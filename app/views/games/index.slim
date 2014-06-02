@@ -1,11 +1,11 @@
-#games_index.page
+#games_index.page.pils2
 
-  .container.td
+  .container.pil
     = table Game.all,
       fields: [ { 'id' => Proc.new{ |g| link_to g.id, game_path(g) } }, :description ],
       row: Proc.new{ |g| { class: g.status } }
 
-  .container.td
+  .container.pil
     = simple_form_for Game.new, format: :json, remote: true do |f|
       = f.input :map, collection: Map.all, include_blank: false
       = f.input :description

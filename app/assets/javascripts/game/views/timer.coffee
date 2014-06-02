@@ -15,8 +15,6 @@ class view.Timer
     if visible
       @time = Date.parse @game.last.raw.end_at
 
-      log @time
-
       @show_remain()
 
       @timer_id = setInterval => 

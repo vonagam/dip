@@ -11,12 +11,11 @@
 
       = f.hidden_field :remember_me, value: 1
 
-      .field 
-        = f.button :button, t('.sign_in'), class: 'green',
-          'data-url' => session_path('user', format: :json)
-        .or = t '.or'
-        = f.button :button, t('.sign_up'), class: 'yellow',
-          'data-url' => registration_path('user', format: :json)
+      = f.button :button, t('.sign_in'), class: 'green',
+        'data-url' => session_path('user', format: :json)
+      .or = t '.or'
+      = f.button :button, t('.sign_up'), class: 'yellow',
+        'data-url' => registration_path('user', format: :json)
 
   coffee:
     $('#application_root form .button').on 'mousedown', ->
