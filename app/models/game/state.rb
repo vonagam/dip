@@ -28,7 +28,7 @@ class State
       update_attributes! end_at: end_at
       RestClient
       .delay( run_at: end_at )
-      .get( "http://localhost:3000/games/#{game.id}/progress" )
+      .get( "http://#{APP_HOST}/games/#{game.id}/progress" )
     end
   end
 
