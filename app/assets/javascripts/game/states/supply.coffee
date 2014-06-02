@@ -90,7 +90,7 @@ class SupplyState extends state.Base
             @order_areas.push new DisbandArea unit
 
     else
-      @order_areas.turn_off() for build_area in @order_areas
+      build_area.turn_off() for build_area in @order_areas
       @order_areas = []
 
     return
