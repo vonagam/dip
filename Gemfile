@@ -8,6 +8,7 @@ gem 'mongoid'
 
 # hadlers
 gem 'slim-rails'
+gem 'sass-rails', '~> 4.0.3'
 gem 'stylus'
 gem 'coffee-rails'
 gem 'jbuilder'

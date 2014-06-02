@@ -17,8 +17,6 @@ json.states @game.states do |state|
     state.resulted_orders
   elsif @side && order = @game.order_of(@side)
     { @side.power => order.data }
-  else
-    nil
   end
     
   json.orders orders

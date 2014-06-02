@@ -1,13 +1,13 @@
 $countries = Austria Turkey Germany Italy France England Russia 
 $z = length($countries)
-for $i in (0..$z)
+for $i in (0...$z)
   $country = $countries[$i]
   $color = $i * 51
 
-  #diplomacy_map >
-    g > .unit.{$country}
-      fill hsl( $color, 90%, 40% )
-      stroke hsl( $color, 100%, 20% )
+  #diplomacy_map 
+    > g > .unit.{$country}
+        fill hsl( $color, 90%, 40% )
+        stroke hsl( $color, 100%, 20% )
 
     .{$country}
       > .center
