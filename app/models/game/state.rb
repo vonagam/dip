@@ -24,7 +24,8 @@ class State
     game.messages.create from: '=', public: true, text: text
 
     if type != 'State'
-      end_at = MINUTES[type].minutes.from_now
+      #end_at = MINUTES[type].minutes.from_now
+      end_at = 1.minutes.from_now
       update_attributes! end_at: end_at
       RestClient
       .delay( run_at: end_at )

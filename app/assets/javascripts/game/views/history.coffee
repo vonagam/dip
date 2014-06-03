@@ -10,7 +10,8 @@ class view.History
       return
 
     @button.clicked ()=>
-      @game.set_state @game.states[ @game.states.length - 1 ]
+      @select.val @game.last.raw.id
+      @game.set_state @game.last
       return
 
   update: ( select_options = false )->

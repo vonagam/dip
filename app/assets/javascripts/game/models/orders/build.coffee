@@ -1,10 +1,9 @@
 class model.Order.Build extends model.Order.Base
-  constructor: ( area, type, sub_area = 'xc' )->
+  constructor: ( area, sub_area = 'xc', data )->
     @type = 'Build'
-    @unit = new model.Unit area.power, type, area, sub_area
-    super @unit
+    @unit = new model.Unit area.power, data.unit, area, sub_area
+    super @unit, data
     @unit.order = this
-    @unit.attach()
 
   remove: ->
     @unit.detach()

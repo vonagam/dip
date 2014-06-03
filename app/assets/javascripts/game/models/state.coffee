@@ -50,7 +50,7 @@ class model.State
             g.set_order unit, order.type, order
           else
             position = area_name.split '_'
-            new model.Order.Build( g.state.get_area(position[0]), order.unit, position[1] )
+            new model.Order.Build( @areas[position[0]], position[1], order )
 
   attach: ->
     @read_data()
