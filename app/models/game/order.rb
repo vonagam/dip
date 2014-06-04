@@ -3,21 +3,21 @@ class Order
 
   field :data, type: Hash
 
-  embedded_in :state
+  embedded_in :game
   belongs_to :side
 
-  validates :state, :side_id, presence: true
-  validates :side_id, uniqueness: true
+  validates :side_id, presence: true, uniqueness: true
 
   validate :game_in_progress, on: :create
   def game_in_progress
-    if state.game.status != 'started'
+    if game.status != 'started'
       errors.add :state, 'Game not going'
     end
   end
   
   validate :parsable, on: :create
   def parsable
+    state = game.state
     state.parse_orders state.get_gamestate, [self]
   #rescue
   #  errors.add :data, 'Not parsable'
@@ -25,6 +25,6 @@ class Order
 
   validates :side, presence: true, on: :create
   def side
-    state.game.sides.find side_id
+    game.sides.find side_id
   end
 end

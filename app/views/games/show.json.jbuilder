@@ -14,16 +14,12 @@ json.states @game.states do |state|
 
   orders =
   if state != @state
-    state.orders
-  elsif @side
-    [state.order_of( @side )].compact
-  else
-    []
+    state.resulted_orders
+  elsif @side && order = @game.order_of(@side)
+    { @side.power => order.data }
   end
     
-  json.orders orders do |order|
-    json.extract! order, :data
-  end
+  json.orders orders
 end
 
 select = [{ public: true }]

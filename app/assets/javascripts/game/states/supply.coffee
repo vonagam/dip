@@ -41,7 +41,8 @@ class BuildArea
 
     type = if counter == 1 then 'army' else 'fleet'
 
-    new model.Order.Build( @area, type, sub_area )
+    build = new model.Order.Build @area, sub_area, { unit: type }
+    build.unit.attach()
 
     return
 

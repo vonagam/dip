@@ -13,7 +13,7 @@ module Engine
 
   class GenericOrder
     attr_accessor :unit, :unit_area, :dst, :status, :resolution, :unit_area_coast, :dst_coast
-    attr_accessor :origin
+    attr_accessor :raw
 
     def initialize(unit, unit_area, dst)
       @unit = unit

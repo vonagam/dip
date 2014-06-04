@@ -83,9 +83,7 @@ module Engine
       result.dst_coast = to_coast
       result.src_coast = from_coast if result.respond_to?(:src_coast)
 
-      order[:region] = region
-      order[:power] = power
-      result.origin = order
+      result.raw = { region: region, power: power, order: order }
 
       return result
     end

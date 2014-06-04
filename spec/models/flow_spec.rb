@@ -20,7 +20,7 @@ describe 'Flow' do
       )
     end
 
-    @game.state.orders.create({
+    @game.orders.create({
       side: @game.side_of( @users[power] ), 
       data: orders
     })

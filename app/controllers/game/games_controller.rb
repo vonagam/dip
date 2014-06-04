@@ -31,10 +31,8 @@ class GamesController < ApplicationController
   end
 
   def progress
-    puts Game.last.states.to_a.map{ |x| x.orders.size }
     game = Game.find params[:id]
     game.progress!
-    puts Game.last.states.to_a.map{ |x| x.orders.size }
     head :ok
   end
 
