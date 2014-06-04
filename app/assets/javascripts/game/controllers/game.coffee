@@ -2,7 +2,7 @@ class controller.Game
   constructor: ( data )->
     @id = data.id
     
-    @websockets = new WebSocketRails 'localhost:3000/websocket'
+    @websockets = new WebSocketRails window.location.host + '/websocket'
     @channel = @websockets.subscribe data.id
 
     @chat = new view.Chat this, data.messages
