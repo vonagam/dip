@@ -77,5 +77,3 @@ namespace :things_going do
     run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} bin/delayed_job restart"
   end
 end
-
-after 'deploy', 'things_going:restart'
