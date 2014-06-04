@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/gregbell/active_admin.git
-  revision: b8f7ca02902987ae7a108ffe799f31f2c1628c6e
+  revision: 3d7605f82706c8e107852f44c61ba6d8e9f2100d
   specs:
     activeadmin (1.0.0.pre)
       arbre (~> 1.0)
@@ -130,9 +130,9 @@ GEM
     hike (1.2.3)
     hiredis (0.5.2)
     i18n (0.6.9)
-    inherited_resources (1.4.1)
+    inherited_resources (1.5.0)
       has_scope (~> 0.6.0.rc)
-      responders (~> 1.0.0.rc)
+      responders (~> 1.0)
     jbuilder (2.0.7)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -207,7 +207,7 @@ GEM
     redis (3.0.7)
     redis-objects (0.9.1)
       redis (>= 3.0.2)
-    responders (1.0.0)
+    responders (1.1.0)
       railties (>= 3.2, < 5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
