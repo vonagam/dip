@@ -1,8 +1,10 @@
 class controller.Game
   constructor: ( data )->
     @id = data.id
+
+    host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
     
-    @websockets = new WebSocketRails window.location.host + '/websocket'
+    @websockets = new WebSocketRails host + '/websocket'
     @channel = @websockets.subscribe data.id
 
     @chat = new view.Chat this, data.messages
