@@ -38,7 +38,7 @@ actions = new Actions
         'keydown': (e)->
           return support.turn true if e.which == 83
           return move.turn true if e.which == 77
-          return actions.turn false if e.which == 32
+          return actions.turn false if e.which == 32 || e.which == 27
 
           if e.which == 72
             unit = g.get_unit_in g.map.data('[unit_select]')
@@ -130,8 +130,12 @@ support_select = new g.SelectingState
   selecting:->
     possibles = $()
     unit = g.get_unit_in actions.selected
+
     for neighbour in unit.neighbours()
       area = g.state.get_area neighbour
+
+      continue unless unit.can_go area.type()
+
       for from, order of area.targeting
         continue if from == unit.area.name
         possibles = possibles.add g.map.find("##{from}")

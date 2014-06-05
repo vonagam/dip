@@ -46,3 +46,7 @@ class model.Unit
 
   neighbours: ->
     regions[@area.name][@sub_area]
+
+  can_go: ( area_type )->
+    log area_type
+    !((@type == 'army' && area_type == 'water') || (@type == 'fleet' && area_type == 'land'))
