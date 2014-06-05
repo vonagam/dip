@@ -5,13 +5,12 @@ class model.Unit
     @status = if @dislodged then 'dislodged' else 'unit'
     @area[@status] = this
 
-  attach: ->
     @coords = @area.coords @sub_area
-
     if @dislodged
       offset = @coords.dif( @areas( @dislodged ).coords() ).norm()
       @coords = @coords.sum( offset.scale(14) )
 
+  attach: ->
     @view = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
     @view.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+@type
 
