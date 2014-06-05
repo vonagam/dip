@@ -36,6 +36,13 @@ class GamesController < ApplicationController
     head :ok
   end
 
+  def destroy
+    if current_user && current_user.login == 'vonagam'
+      Game.find( params[:id] ).destroy
+    end
+    head :ok
+  end
+
   private
 
   def game_params 
