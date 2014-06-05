@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_filter :auth_user!, only: [ :create ]
+  before_filter :auth_user!, only: [ :create, :destroy ]
 
   def index
   end
@@ -17,7 +17,11 @@ class GamesController < ApplicationController
   end
 
   def destroy
-    Game.find( params[:id] ).destroy!
+    game = Game.find params[:id] 
+
+    if current_user == game.creator || current_user.login == 'vonagam'
+      game.destroy!
+    end
  
     redirect_to action: :index, status: 303
   end
@@ -33,17 +37,6 @@ class GamesController < ApplicationController
   def progress
     game = Game.find params[:id]
     game.progress!
-    head :ok
-  end
-
-  def destroy
-    if current_user
-      game = Game.find params[:id] 
-
-      if current_user == game.creator || current_user.login == 'vonagam'
-        game.destroy
-      end
-    end
     head :ok
   end
 
