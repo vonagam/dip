@@ -1,6 +1,8 @@
 class State
   include Mongoid::Document
 
+  attr_accessor :gamestate
+
   field :data, type: Hash
   field :date, type: Integer
   field :end_at, type: Time
@@ -45,13 +47,15 @@ class State
     _type.demodulize
   end
 
-  def parse_orders( gamestate, what = nil )
+  def parse_orders( what = nil )
     what ||= game.orders.all
-    Engine::Parser::Order.new( gamestate ).parse_orders what, type
+    @gamestate ||= get_gamestate
+    
+    Engine::Parser::Order.new( @gamestate ).parse_orders what, type
   end
 
   def get_gamestate
-    Engine::Parser::State.new.to_state data
+    @gamestate = Engine::Parser::State.new.to_state data
   end
 
   def create_next_state( areas_states )
@@ -60,7 +64,12 @@ class State
   end
 
   def process
-    areas_states, adjudicated_orders = resolve get_gamestate
+    areas_states, adjudicated_orders = map_adjudicator.send( 
+      self.class.resolve, 
+      get_gamestate, 
+      parse_orders, 
+      is_fall?
+    )
 
     update_orders adjudicated_orders
 
@@ -68,9 +77,15 @@ class State
 
     return next_state.save if someone_win?( areas_states )
 
-    next_state._type = 'State::'+next_state_type( areas_states )
+    sc = self.class
+    while nc = sc.next_state_class( is_fall? ) 
+      break unless nc.allow_orders( map_info, areas_states ).empty?
+      sc = nc
+    end
 
-    next_state.next_date! if next_state._type == 'State::Move'
+    next_state._type = nc.name
+
+    next_state.next_date! if nc == State::Move
 
     next_state.save
 
@@ -109,8 +124,7 @@ class State
   end
 
   def update_orderable( areas_states )
-    orderable = Set.new
-    allow_orders orderable, areas_states
+    orderable = self.class.allow_orders map_info, areas_states
 
     game.sides.each do |side|
       side.update_attributes! orderable: orderable.include?(side.power.to_sym)
@@ -119,45 +133,37 @@ class State
 end
 
 class State::Move < State
-  def resolve( gamestate )
-    map_adjudicator.resolve!( gamestate, parse_orders( gamestate ), is_fall? )
+  def self.resolve
+    :resolve!
   end
-  def next_state_type( areas_states )
-    if areas_states.dislodges.not_empty?
-      'Retreat'
-    else
-      is_fall? ? 'Supply' : 'Move'
-    end
+  def self.next_state_class( is_fall )
+    State::Retreat
   end
-  def allow_orders( orderable, areas_states )
-    areas_states.each do |abbr, area|
-      orderable.add( area.unit.nationality ) if area.unit
-    end
+  def self.allow_orders( map_info, areas_states )
+    areas_states.map{ |abbr, area| area.unit.try :nationality }
   end
 end
 
 class State::Retreat < State
-  def resolve( gamestate )
-    map_adjudicator.resolve_retreats!( gamestate, parse_orders( gamestate ), is_fall? )
+  def self.resolve
+    :resolve_retreats!
   end
-  def next_state_type( areas_states )
-    is_fall? ? 'Supply' : 'Move'
+  def self.next_state_class( is_fall )
+    is_fall ? State::Supply : State::Move
   end
-  def allow_orders( orderable, areas_states )
-    areas_states.dislodges.each do |abbr, dislodge|
-      orderable.add( dislodge.unit.nationality ) if dislodge.unit
-    end
+  def self.allow_orders( map_info, areas_states )
+    areas_states.dislodges.map{ |abbr, dislodge| dislodge.unit.nationality }
   end
 end
 
 class State::Supply < State
-  def resolve( gamestate )
-    map_adjudicator.resolve_builds!( gamestate, parse_orders( gamestate ) )
+  def self.resolve
+    :resolve_builds!
   end
-  def next_state_type( areas_states )
-    'Move'
+  def self.next_state_class( is_fall )
+    State::Move
   end
-  def allow_orders( orderable, areas_states )
+  def self.allow_orders( map_info, areas_states )
     powers = {}
 
     supply_centers = map_info.supply_centers
@@ -176,6 +182,6 @@ class State::Supply < State
       end
     end
 
-    orderable.merge powers.select{ |power, supply| supply != 0 }.keys
+    powers.select{ |power, supply| supply != 0 }.keys
   end
 end
