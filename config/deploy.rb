@@ -6,7 +6,7 @@ set :application, 'dip'
 
 set :rails_env, 'production'
 #set :domain, 'mkonin@137.117.230.217'
-set :domain, 'mkonin@185.4.75.151'
+set :domain, 'vonagam@185.4.75.151'
 set :deploy_to, "/var/www/#{application}"
 set :use_sudo, false
 set :unicorn_conf, "#{deploy_to}/current/config/unicorn.rb"
@@ -15,7 +15,6 @@ set :normalize_asset_timestamps, false
 set :keep_releases, 5
 
 set :rvm_ruby_string, 'ruby-2.0.0-p247'
-
 
 set :scm, :git
 set :repository, 'https://github.com/vonagam/dip.git'
@@ -62,18 +61,14 @@ end
 
 namespace :things_going do
   task :start do
-    run "cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} websocket_rails:start_server"
     run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} bin/delayed_job start"
   end
 
   task :stop do
-    run "cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} websocket_rails:stop_server"
     run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} bin/delayed_job stop"
   end
 
   task :restart do
-    run "cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} websocket_rails:stop_server"
-    run "cd #{deploy_to}/current && bundle exec rake RAILS_ENV=#{rails_env} websocket_rails:start_server"
     run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} bin/delayed_job restart"
   end
 end
