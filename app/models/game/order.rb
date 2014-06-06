@@ -18,7 +18,7 @@ class Order
   validate :parsable, on: :create
   def parsable
     state = game.state
-    state.parse_orders state.get_gamestate, [self]
+    state.parse_orders [self]
   #rescue
   #  errors.add :data, 'Not parsable'
   end

@@ -518,7 +518,7 @@ module Engine
       return state, @retreats.orders
     end
 
-    def resolve_builds!(state, unchecked_builds)
+    def resolve_builds!(state, unchecked_builds, adjust=false)
       validator = Validator.new(state, @map, unchecked_builds, [Build])
       @builds, invalid_builds = validator.validate_orders(false)
 
