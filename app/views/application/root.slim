@@ -1,5 +1,7 @@
 #application_root.page
 
+  div Hello Server
+
   .container
     = simple_form_for User.new,
       url: session_path('user', format: :json),
