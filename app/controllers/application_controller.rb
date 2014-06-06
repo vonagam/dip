@@ -20,4 +20,8 @@ class ApplicationController < ActionController::Base
   def auth_user!
     redirect_to root_path unless user_signed_in?
   end
+
+  def find_game
+    @game = Game.find params[:game_id]
+  end
 end

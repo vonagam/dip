@@ -1,8 +1,6 @@
 class State
   include Mongoid::Document
 
-  attr_accessor :gamestate
-
   field :data, type: Hash
   field :date, type: Integer
   field :end_at, type: Time
@@ -11,33 +9,9 @@ class State
   embedded_in :game
 
   delegate :map, to: :game
-  delegate :info, :adjudicator, to: :map, prefix: true
+  delegate :count_units, :count_supplies, to: :class
 
-  after_create :state_changing
-
-  MINUTES = { 'Move' => 4, 'Retreat' => 2, 'Supply' => 3 }
-
-  def state_changing
-    return if game.status == 'waiting'
-
-    WebsocketRails[game.id.to_s].trigger 'state'
-
-    text = "#{date/2}.#{date%2}:#{type}"
-    game.messages.create from: '=', public: true, text: text
-
-    if type != 'State'
-      #end_at = MINUTES[type].minutes.from_now
-      end_at = 1.minutes.from_now
-      update_attributes! end_at: end_at
-      RestClient
-      .delay( run_at: end_at )
-      .get( "http://#{APP_HOST}/games/#{game.id}/progress" )
-    end
-  end
- 
-  def next_date!
-    self.date += 1
-  end
+  after_create :send_websocket
 
   def is_fall?
     date % 2 == 1
@@ -49,59 +23,62 @@ class State
 
   def parse_orders( what = nil )
     what ||= game.orders.all
-    @gamestate ||= get_gamestate
     
-    Engine::Parser::Order.new( @gamestate ).parse_orders what, type
-  end
-
-  def get_gamestate
-    @gamestate = Engine::Parser::State.new.to_state data
-  end
-
-  def create_next_state( areas_states )
-    state_parser = Engine::Parser::State.new areas_states
-    game.states.build data: state_parser.to_hash, date: date
+    Engine::Parser::Order.new( gamestate ).parse_orders what, type
   end
 
   def process
-    areas_states, adjudicated_orders = map_adjudicator.send( 
-      self.class.resolve, 
-      get_gamestate, 
+    @areas_states, adjudicated_orders = map.adjudicator.send( 
+      self.class::RESOLVE_METHOD, 
+      gamestate, 
       parse_orders, 
       is_fall?
     )
 
     update_orders adjudicated_orders
 
-    next_state = create_next_state areas_states
+    next_state = create_next_state
 
-    return next_state.save if someone_win?( areas_states )
+    return next_state.save if someone_win?
 
     sc = self.class
     while nc = sc.next_state_class( is_fall? ) 
-      break unless nc.allow_orders( map_info, areas_states ).empty?
+      break unless nc.allow_orders( map, @areas_states ).empty?
       sc = nc
     end
 
     next_state._type = nc.name
-
     next_state.next_date! if nc == State::Move
 
     next_state.save
 
-    game.reload.state.update_orderable areas_states
+    update_sides nc
+
+    game.reload
   end
 
-  def someone_win?( parsed_data )
-    supply_centers = map_info.supply_centers
-    side_centers = {}
-    supply_centers.each do |abbrv, area|
-      owner = parsed_data[abbrv].owner
-      next if owner.nil?
-      side_centers[owner] ||= 0
-      side_centers[owner] += 1
-    end
-    side_centers.values.max > supply_centers.length / 2
+  def send_websocket
+    return if game.status == 'waiting'
+
+    WebsocketRails[game.id.to_s].trigger 'state'
+
+    text = "#{date/2}.#{date%2}:#{type}"
+    game.messages.create from: '=', public: true, text: text
+  end
+
+  protected
+ 
+  def next_date!
+    self.date += 1
+  end
+
+  def gamestate
+    @_gamestate || @_gamestate = Engine::Parser::State.new.to_state(data)
+  end
+
+  def create_next_state
+    state_parser = Engine::Parser::State.new @areas_states
+    game.states.build data: state_parser.to_hash, date: date
   end
 
   def update_orders( resolved_orders )
@@ -123,65 +100,90 @@ class State
     game.reload.orders.destroy_all
   end
 
-  def update_orderable( areas_states )
-    orderable = self.class.allow_orders map_info, areas_states
+  def update_sides( state_class )
+    orderable = state_class.allow_orders map, @areas_states
+
+    units = count_units @areas_states
+    supplies = count_supplies map.supply_centers, @areas_states
 
     game.sides.each do |side|
-      side.update_attributes! orderable: orderable.include?(side.power.to_sym)
+      p = side.power.to_sym
+
+      side.update_attributes!({
+        orderable: orderable.include?(p),
+        alive: units.include?(p) || supplies.include?(p)
+      })
     end
+  end
+
+  def someone_win?
+    supply_centers = map.supply_centers
+    power_supplies = self.class.count_supplies supply_centers, @areas_states
+
+    power_supplies.values.max > supply_centers.length / 2
+  end
+
+  def self.count_units( areas_states )
+    units = Hash.new { |h,k| h[k] = 0 }
+    areas_states.each do |abbrv, area|
+      if unit = area.unit
+        units[unit.nationality] += 1
+      end
+    end
+    areas_states.dislodges.each do |abbr, dislodge|
+      units[dislodge.unit.nationality] += 1
+    end
+    units
+  end
+
+  def self.count_supplies( supply_centers, areas_states )
+    supplies = Hash.new { |h,k| h[k] = 0 }
+    supply_centers.each do |abbrv, area|
+      if owner = areas_states[abbrv].owner
+        supplies[owner] += 1
+      end
+    end
+    supplies
   end
 end
 
+
 class State::Move < State
-  def self.resolve
-    :resolve!
-  end
+  RESOLVE_METHOD = :resolve!
+
   def self.next_state_class( is_fall )
     State::Retreat
   end
-  def self.allow_orders( map_info, areas_states )
+  def self.allow_orders( map, areas_states )
     areas_states.map{ |abbr, area| area.unit.try :nationality }
   end
 end
 
+
 class State::Retreat < State
-  def self.resolve
-    :resolve_retreats!
-  end
+  RESOLVE_METHOD = :resolve_retreats!
+
   def self.next_state_class( is_fall )
     is_fall ? State::Supply : State::Move
   end
-  def self.allow_orders( map_info, areas_states )
+  def self.allow_orders( map, areas_states )
     areas_states.dislodges.map{ |abbr, dislodge| dislodge.unit.nationality }
   end
 end
 
+
 class State::Supply < State
-  def self.resolve
-    :resolve_builds!
-  end
+  RESOLVE_METHOD = :resolve_builds!
+
   def self.next_state_class( is_fall )
     State::Move
   end
-  def self.allow_orders( map_info, areas_states )
-    powers = {}
+  def self.allow_orders( map, areas_states )
+    units = count_units areas_states
+    supplies = count_supplies map.supply_centers, areas_states
 
-    supply_centers = map_info.supply_centers
-
-    supply_centers.each do |abbrv, area|
-      if owner = areas_states[abbrv].owner
-        powers[owner] ||= 0
-        powers[owner] += 1
-      end
+    map.powers.map{ |p| p.to_sym }.select do |power|
+      units[power] != supplies[power]
     end
-
-    areas_states.each do |abbr, area|
-      if unit = area.unit
-        powers[unit.nationality] ||= 0
-        powers[unit.nationality] -= 1
-      end
-    end
-
-    powers.select{ |power, supply| supply != 0 }.keys
   end
 end

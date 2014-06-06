@@ -83,7 +83,7 @@ module Engine
 
       map.powers = yamlmap['Powers'].keys
 
-      map.starting_state = Parser::State.new().to_state({ 'Powers' => yamlmap['Powers'] })
+      map.initial_state = Parser::State.new().to_state({ 'Powers' => yamlmap['Powers'] })
       
       @maps[mapname] = map
     end

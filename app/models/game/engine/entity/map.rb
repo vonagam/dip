@@ -1,6 +1,6 @@
 module Engine
   class Map
-    attr_accessor :areas, :powers, :starting_state, :yaml_areas
+    attr_accessor :areas, :powers, :initial_state, :yaml_areas
 
     def initialize
       @areas = {}

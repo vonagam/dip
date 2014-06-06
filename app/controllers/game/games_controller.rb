@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
-  before_filter :auth_user!, only: [ :create, :destroy ]
+  before_filter :auth_user!, only: [ :create, :destroy, :start ]
+  before_filter :find_game, except: [ :index, :create ]
 
   def index
   end
@@ -11,32 +12,34 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find params[:id]
     @state = @game.state
     @side = @game.side_of current_user
   end
 
   def destroy
-    game = Game.find params[:id] 
-
-    if current_user == game.creator || current_user.login == 'vonagam'
-      game.destroy!
+    if @game.creator == current_user || current_user.login == 'vonagam'
+      @game.destroy!
     end
  
     redirect_to action: :index, status: 303
   end
 
   def start
-    game = Game.find params[:id]
-
-    game.progress! if game.status == 'waiting' && current_user == game.creator
+    if @game.status == 'waiting' && @game.creator == current_user
+      @game.progress!
+    end
     
     redirect_to action: :show, status: 303
   end
 
   def progress
-    game = Game.find params[:id]
-    game.progress!
+    valid_request = 
+    case @game
+      when Game::Manual then @game.creator == current_user
+      when Game::Sheduled then @game.secret == params[:secret]
+    end
+
+    @game.progress if valid_request
     head :ok
   end
 

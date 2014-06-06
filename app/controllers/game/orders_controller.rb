@@ -1,8 +1,8 @@
 class OrdersController < ApplicationController
   before_filter :auth_user!
+  before_filter :find_game
   
   def create
-    @game = Game.find params[:game_id]
     @state = @game.state
     @side = @game.side_of current_user
 

@@ -10,7 +10,7 @@ class Message
   embedded_in :game
 
   validates :text, :from, presence: true, on: :create
-  #validate :to_valid_powers, on: :create
+  validate :to_valid_powers, on: :create
 
   after_create :send_websocket
 

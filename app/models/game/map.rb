@@ -14,4 +14,6 @@ class Map
   def adjudicator
     Engine::Adjudicator.new info
   end
+
+  delegate :initial_state, :powers, :supply_centers, to: :info
 end

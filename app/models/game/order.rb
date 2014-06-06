@@ -6,25 +6,26 @@ class Order
   embedded_in :game
   belongs_to :side
 
-  validates :side_id, presence: true, uniqueness: true
+  validates :game, :side_id, presence: true, uniqueness: true
+  validates :side, presence: true, on: :create
+  validate :game_in_progress, :parsable, on: :create
 
-  validate :game_in_progress, on: :create
-  def game_in_progress
-    if game.status != 'started'
-      errors.add :state, 'Game not going'
-    end
+  def side
+    game.sides.find side_id
   end
-  
-  validate :parsable, on: :create
+
+  protected
+
   def parsable
     state = game.state
     state.parse_orders [self]
-  #rescue
-  #  errors.add :data, 'Not parsable'
+  rescue
+    errors.add :data, 'Not parsable'
   end
 
-  validates :side, presence: true, on: :create
-  def side
-    game.sides.find side_id
+  def game_in_progress
+    if game.status != 'started'
+      errors.add :state, 'game not going'
+    end
   end
 end
