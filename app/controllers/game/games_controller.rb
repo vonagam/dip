@@ -1,19 +1,22 @@
 class GamesController < ApplicationController
   before_filter :auth_user!, only: [ :create, :destroy, :start ]
-  before_filter :find_game, except: [ :index, :create ]
+  before_filter :find_game, except: [ :index, :new, :create ]
 
   def index
+  end
+
+  def show
+    @state = @game.state
+    @side = @game.side_of current_user
+  end
+
+  def new
   end
 
   def create
     new_game = current_user.created_games.create game_params
 
     respond_with new_game, location: game_path(new_game)
-  end
-
-  def show
-    @state = @game.state
-    @side = @game.side_of current_user
   end
 
   def destroy

@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/gregbell/active_admin.git
-  revision: 3d7605f82706c8e107852f44c61ba6d8e9f2100d
+  revision: 6e226154625485fea9a9ad915f082a8a0dc45400
   specs:
     activeadmin (1.0.0.pre)
       arbre (~> 1.0)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/vonagam/items.git
-  revision: 8c4f45786626a2067598c9db40cc98e105050c0e
+  revision: 1e46cd963b235238d5800595c1c1586eaad19edb
   specs:
     vonagam_items (0.0.1)
       coffee-rails
@@ -64,13 +64,15 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.2)
+    autoprefixer-rails (1.1.20140605)
+      execjs
     bcrypt (3.1.7)
     bourbon (3.2.3)
       sass (~> 3.2)
       thor
     bson (2.3.0)
     builder (3.1.4)
-    cancancan (1.8.1)
+    cancancan (1.8.2)
     capistrano (2.15.5)
       highline
       net-scp (>= 1.0.0)
@@ -204,7 +206,7 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.0.0)
-    redis (3.0.7)
+    redis (3.1.0)
     redis-objects (0.9.1)
       redis (>= 3.0.2)
     responders (1.1.0)
@@ -304,6 +306,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   activeadmin-mongoid!
+  autoprefixer-rails
   cancancan (~> 1.8)
   capistrano
   capybara

@@ -1,0 +1,12 @@
+#games_new.page.small
+  .back.container
+    a.button.grey href=root_path = t '.back'
+
+  .new.container
+    = simple_form_for Game.new, format: :json, remote: true do |f|
+      = f.input :name
+      = f.input :map, collection: Map.all, include_blank: false
+      = f.input :is_public
+      = f.input :powers_is_random
+      = f.input :timing_type
+      .field = f.button :button, class: 'yellow'

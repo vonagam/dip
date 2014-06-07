@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.1'
 gem 'mongoid'
 
+
 #front
 
 # hadlers
@@ -21,7 +22,9 @@ gem 'vonagam_items', github: 'vonagam/items' # path: '../items'
 gem 'simple_form'
 
 # various
+gem 'autoprefixer-rails'
 gem 'uglifier'
+
 
 #middle
 gem 'rails-i18n'
@@ -31,10 +34,11 @@ gem 'activeadmin',         github: 'gregbell/active_admin'
 gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
 
 gem 'websocket-rails'
+gem 'devise'
+
 
 #back
 gem 'cancancan', '~> 1.8'
-gem 'devise'
 
 gem 'rest-client'
 

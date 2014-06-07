@@ -1,8 +1,8 @@
 class Game
   include Mongoid::Document
 
+  field :name
   field :status, default: 'waiting'
-  field :description
   field :is_public, type: Boolean
   field :powers_is_random, type: Boolean
 
@@ -13,7 +13,8 @@ class Game
   embeds_many :messages
   embeds_many :orders
 
-  validates :map, :creator, presence: true
+  validates :name, :map, :creator, presence: true
+  validates :name, uniqueness: true
 
   after_create :create_initial_state, :add_creator_side
 
@@ -84,7 +85,17 @@ end
 
 
 class Game::Manual < Game
+  validate :validate_privacy
+
   def start_timer
+  end
+
+  protected
+
+  def validate_privacy
+    if is_public
+      errors.add :is_public, 'cannot be public without timing'
+    end
   end
 end
 

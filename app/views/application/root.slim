@@ -1,24 +1,22 @@
-#application_root.page
+#application_root.page.small
 
-  .container
-    = simple_form_for User.new,
-      url: session_path('user', format: :json),
-      remote: true,
-      html: { 'data-resource' => 'user' } do |f|
+  - if user_signed_in?
+    .actions.container
+      a.button.red href=destroy_user_session_path = t '.sign_out'
+      a.button.green href=new_game_path Create game
+      a.button.yellow Create sandbox
 
-      = f.input :login
-      = f.input :password
+  - else
+    .form.container = render 'sign_form'
 
-      = f.hidden_field :remember_me, value: 1
+  .rules.container 
+    a.button.blue Diplomacy Rules
 
-      = f.button :button, t('.sign_in'), class: 'green',
-        'data-url' => session_path('user', format: :json)
-      .or = t '.or'
-      = f.button :button, t('.sign_up'), class: 'yellow',
-        'data-url' => registration_path('user', format: :json)
-
-  coffee:
-    $('#application_root form .button').on 'mousedown', ->
-      q = $ this
-      url = q.attr 'data-url'
-      q.closest('form').attr 'action', url
+  .games.container
+    .plate Games
+    .statuses
+      a.button.green Waiting
+      a.button.yellow Going
+      a.button.red Finished
+    .index.green
+      .table Asd

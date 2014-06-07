@@ -1,0 +1,36 @@
+$input
+  pad 5
+  bac clr white
+  brd 2 hsl(0,0,85)
+  box-shadow inset 0px 0px 0px 1000px white
+
+.input.select
+  cur pnt
+
+$input_types = select string password
+for $input_type in $input_types
+  .input.{$input_type}
+    @extend $element
+    @extend $input
+
+.label
+  @extend $element
+  cur pnt
+
+$boolean_types = boolean checkbox
+for $boolean_type in $boolean_types
+  .input.{$boolean_type}
+    dis non
+
+    + .label:before 
+      dis inl-blo
+      ver bas
+      hei 1em
+      wid 1em
+      mar r 5
+      txt hei 1em ali cen
+      bac clr white
+      brd 2 solid hsl(0,0,85)
+      con "\00a0"
+    &:checked + .label:before
+      con "\2714"
