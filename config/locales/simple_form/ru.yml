@@ -15,6 +15,9 @@ ru:
       message:
         text: Сообщение
         to: Кому
+    hints:
+      game:
+        name: 'от 5 до 20 английских букв, цифр, знаков _ или -'
 
   helpers:
     submit:

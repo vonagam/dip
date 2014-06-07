@@ -2,21 +2,14 @@
 
   - if user_signed_in?
     .actions.container
+
       a.button.red href=destroy_user_session_path = t '.sign_out'
       a.button.green href=new_game_path Create game
-      a.button.yellow Create sandbox
 
   - else
-    .form.container = render 'sign_form'
+    = render 'sign_form'
 
   .rules.container 
     a.button.blue Diplomacy Rules
 
-  .games.container
-    .plate Games
-    .statuses
-      a.button.green Waiting
-      a.button.yellow Going
-      a.button.red Finished
-    .index.green
-      .table Asd
+  = render 'games_table'

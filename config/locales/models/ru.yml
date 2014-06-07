@@ -40,7 +40,24 @@ ru:
 
     attributes:
       game:
+        name: Название
         map: Карта
+        is_public: Публичная игра
+        powers_is_random: Случайные страны
+        time_mode: Временной режим
       side:
         user: Игрок
         power: Страна
+
+  const:
+    game/sheduled:
+      time_modes:
+        sixty_seconds: 60 секунд
+        five_four_three: '3,4,5 минут'
+        half_day: Полдни
+        twenty_four_hours: 24 часа
+        manual: Ручной режим
+
+    map:
+      name:
+        Standart: Классическая

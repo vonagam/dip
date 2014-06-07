@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/vonagam/items.git
-  revision: 1e46cd963b235238d5800595c1c1586eaad19edb
+  revision: b54735dcbb01d7c87d3582fcb8f755d9869cb0fd
   specs:
     vonagam_items (0.0.1)
       coffee-rails
@@ -113,7 +113,7 @@ GEM
       eventmachine (>= 1.0.0.beta.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
-    execjs (2.1.0)
+    execjs (2.2.0)
     factory_girl (4.4.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.4.1)
@@ -135,7 +135,7 @@ GEM
     inherited_resources (1.5.0)
       has_scope (~> 0.6.0.rc)
       responders (~> 1.0)
-    jbuilder (2.0.7)
+    jbuilder (2.0.8)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (3.1.0)
@@ -158,6 +158,9 @@ GEM
       moped (~> 2.0.0.rc1)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
+    mongoid_slug (3.2.1)
+      mongoid (> 3.0)
+      stringex (~> 2.0)
     moped (2.0.0.rc1)
       bson (~> 2.2)
       connection_pool (~> 2.0)
@@ -265,6 +268,7 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
+    stringex (2.5.2)
     stylus (1.0.1)
       execjs
       stylus-source
@@ -319,6 +323,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   mongoid
+  mongoid_slug
   net-ssh (~> 2.7.0)
   quiet_assets
   rack

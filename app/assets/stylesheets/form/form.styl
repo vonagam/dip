@@ -2,8 +2,8 @@ form.form
   txt ali cen
   pad t 10
 
-  > .field
-    mar t 0 b 10
+  .field
+    mar b 10
 
     > .input
       txt ali cen
@@ -12,8 +12,28 @@ form.form
       dis blo
       txt ali l
 
-  .buttons
-    mar t 20
-
   .button
-    mar b 10
+    mar y 10
+
+    + .button
+      mar t 0
+
+  .collection
+    .item + .item
+      mar t 5
+
+  .hint
+    txt siz 0.6875em
+    hei 0
+    opa 0
+    transition height 0.5s, opacity 0.5s, color 0.5s
+
+  :focus + .hint
+    hei 1em
+    opa 1
+
+  :invalid + .hint
+    txt clr hsl(0,50,50)
+
+  :valid + .hint
+    txt clr hsl(120,50,50) 

@@ -40,6 +40,8 @@ gem 'devise'
 #back
 gem 'cancancan', '~> 1.8'
 
+gem 'mongoid_slug'
+
 gem 'rest-client'
 
 gem 'delayed_job_mongoid'

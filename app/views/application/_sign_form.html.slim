@@ -1,14 +1,14 @@
-= simple_form_for User.new,
-  url: session_path('user', format: :json),
-  remote: true,
-  html: { 'data-resource' => 'user' } do |f|
+.form.container 
+  = simple_form_for User.new,
+    url: session_path('user', format: :json),
+    remote: true,
+    html: { 'data-resource' => 'user' } do |f|
 
-  = f.input :login
-  = f.input :password
+    = f.hidden_field :remember_me, value: 1
 
-  = f.hidden_field :remember_me, value: 1
+    = f.input :login
+    = f.input :password
 
-  .buttons
     = f.button :button, t('.sign_in'), class: 'green',
       'data-url' => session_path('user', format: :json)
     = f.button :button, t('.sign_up'), class: 'yellow',

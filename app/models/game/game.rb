@@ -1,10 +1,20 @@
 class Game
   include Mongoid::Document
+  include Mongoid::Slug
+
+  TIME_MODES = { 
+    'sixty_seconds' => 1,
+    'five_four_three' => { move: 5, retreat: 3, supply: 4 },
+    'half_day' => 720,
+    'twenty_four_hours' => 1440,
+    'manual' => nil
+  }
 
   field :name
   field :status, default: 'waiting'
   field :is_public, type: Boolean
   field :powers_is_random, type: Boolean
+  field :time_mode
 
   belongs_to :map
   belongs_to :creator, class_name: 'User'
@@ -13,10 +23,13 @@ class Game
   embeds_many :messages
   embeds_many :orders
 
-  validates :name, :map, :creator, presence: true
-  validates :name, uniqueness: true
+  validates :name, :map, :creator, :time_mode, presence: true
+  validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
+  validates :time_mode, inclusion: { in: TIME_MODES.keys }
 
   after_create :create_initial_state, :add_creator_side
+
+  slug { |game| game.name }
 
   def state
     states.last
@@ -101,14 +114,8 @@ end
 
 
 class Game::Sheduled < Game
-  TYPES = ['Move','Retreat','Supply']
 
-  field :secret
-  field :states_durations, type: Hash
-
-  validate :validate_durations
-
-  after_create :fill_secret
+  field :secret, default: ->{ SecureRandom.hex(8) }
 
   def start_timer
     return if game_lefted?
@@ -124,33 +131,8 @@ class Game::Sheduled < Game
 
   protected
 
-  def validate_durations
-    if states_durations.keys.length != 3
-      errors.add :states_durations, 'wrong number of states types'
-      return
-    end
-
-    if ( states_durations.keys - Game::Sheduled::TYPES ).not_empty?
-      errors.add :states_durations, 'not all types specified'
-      return
-    end
-
-    states_durations.each do |type, duration|
-      if duration.not_is?(Integer)
-        errors.add :states_durations, 'not integer'
-      end
-      if duration < 0 || duration > 1440
-        errors.add :states_durations, 'must be between 1 and 1440 minutes'
-      end
-    end
-  end
-
-  def fill_secret
-    self.update_attribute :secret, SecureRandom.hex(8)
-  end
-
   def game_lefted?
-    return unless states.count > 3
+    return false unless states.count > 3
 
     last_three_states = states.desc(:_id).limit(3).skip(1).to_a
 

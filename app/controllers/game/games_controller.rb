@@ -14,7 +14,12 @@ class GamesController < ApplicationController
   end
 
   def create
-    new_game = current_user.created_games.create game_params
+    create_params = game_params
+    create_params[:creator] = current_user
+
+    game_class = create_params[:duration_mode] == 'manual' ? Game::Manual : Game::Sheduled
+
+    new_game = game_class.create create_params
 
     respond_with new_game, location: game_path(new_game)
   end
@@ -49,6 +54,6 @@ class GamesController < ApplicationController
   private
 
   def game_params 
-    params.require(:game).permit!
+    params.require(:game).permit :name, :map, :is_public, :powers_is_random, :time_mode
   end
 end

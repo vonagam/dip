@@ -22,6 +22,6 @@ class ApplicationController < ActionController::Base
   end
 
   def find_game
-    @game = Game.find params[:game_id]
+    @game = Game.find( params[:id] || params[:game_id] )
   end
 end

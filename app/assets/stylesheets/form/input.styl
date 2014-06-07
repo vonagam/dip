@@ -1,36 +1,50 @@
-$input
-  pad 5
+.input
+  @extend $element
+
+  pad 0.3125em
+  brd 0.125em hsl(0,0,85) rds 0
+  txt hei 1.25em
+
+  $height = @line-height + 2 * ( @padding + @border-width )
+  hei $height min $height
+
   bac clr white
-  brd 2 hsl(0,0,85)
-  box-shadow inset 0px 0px 0px 1000px white
+  sha ins 0 0 0 1000 white
 
-.input.select
-  cur pnt
-
-$input_types = select string password
-for $input_type in $input_types
-  .input.{$input_type}
-    @extend $element
-    @extend $input
 
 .label
   @extend $element
-  cur pnt
 
-$boolean_types = boolean checkbox
-for $boolean_type in $boolean_types
-  .input.{$boolean_type}
-    dis non
+  &[for]
+    cur pnt
 
-    + .label:before 
+
+.label[type="radio"], .input[type="checkbox"]
+  dis non
+
+  + .label
+    pad l 1.5625em
+
+    &:before
       dis inl-blo
-      ver bas
       hei 1em
       wid 1em
-      mar r 5
+      brd 0.125em solid hsl(0,0,85)
+      mar l -1.5625em r 0.3125em
       txt hei 1em ali cen
       bac clr white
-      brd 2 solid hsl(0,0,85)
       con "\00a0"
-    &:checked + .label:before
-      con "\2714"
+
+  &:checked + .label:before
+    con "\2714"
+
+.label[type="radio"] 
+  + .label:before
+    brd rds 50%
+  &:checked + .label
+    cur def
+    
+
+.input.select
+  cur pnt
+  -webkit-appearance none

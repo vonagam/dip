@@ -10,7 +10,15 @@ html
     #background.layer
       .grey.layer
 
-    #main.layout 
+    #main.layout
+      - if user_signed_in? || action_name != 'root'
+        .menu.container
+          - if user_signed_in?
+            .login = current_user.login
+
+          - if action_name != 'root'
+            a.button.grey href=root_path = t '.root'
+
       == yield
 
       #wait.layer: .content

@@ -41,8 +41,8 @@ SimpleForm.setup do |config|
 
     ## Inputs
     b.use :label_input
-    b.use :hint,  wrap_with: { tag: :span, class: :hint }
-    b.use :error, wrap_with: { tag: :span, class: :error }
+    b.use :hint,  wrap_with: { tag: :div, class: :hint }
+    b.use :error, wrap_with: { tag: :div, class: :error }
   end
 
   # The default wrapper to be used by the FormBuilder.
@@ -54,16 +54,10 @@ SimpleForm.setup do |config|
   #   nested: label > input
   config.boolean_style = :inline
 
-  # Default class for buttons
-  config.button_class = 'button'
-
   # Method used to tidy up errors. Specify any Rails Array method.
   # :first lists the first message for each field.
   # Use :to_sentence to list all errors for each field.
   # config.error_method = :first
-
-  # Default tag used for error notification helper.
-  config.error_notification_tag = :div
 
   # CSS class to add for error notification helper.
   config.error_notification_class = 'alert alert-error'
@@ -77,28 +71,8 @@ SimpleForm.setup do |config|
   # Series of attempts to detect a default value method for collection.
   # config.collection_value_methods = [ :id, :to_s ]
 
-  # You can wrap a collection of radio/check boxes in a pre-defined tag, defaulting to none.
-  # config.collection_wrapper_tag = nil
-
-  # You can define the class to use on all collection wrappers. Defaulting to none.
-  config.collection_wrapper_class = 'collection'
-
-  # You can wrap each item in a collection of radio/check boxes with a tag,
-  # defaulting to :span. Please note that when using :boolean_style = :nested,
-  # SimpleForm will force this option to be a label.
-  # config.item_wrapper_tag = :span
-
-  # You can define a class to use in all item wrappers. Defaulting to none.
-  # config.item_wrapper_class = nil
-
   # How the label text should be generated altogether with the required text.
   config.label_text = lambda { |label, required| label }
-
-  # You can define the class to use on all labels. Default is nil.
-  config.label_class = 'label'
-
-  # You can define the class to use on all forms. Default is simple_form.
-  config.form_class = 'form'
 
   # You can define which elements should obtain additional classes
   # config.generate_additional_classes_for = [:wrapper, :label, :input]
@@ -115,16 +89,6 @@ SimpleForm.setup do |config|
 
   # Collection of methods to detect if a file type was given.
   # config.file_methods = [ :mounted_as, :file?, :public_filename ]
-
-  # Custom mappings for input types. This should be a hash containing a regexp
-  # to match as key, and the input type that will be used when the field name
-  # matches the regexp as value.
-  config.input_mappings = { 
-    /(?:terms|remember_me)/ => :boolean,
-    /description/ => :text,
-    /text/ => :text,
-    /(?:\b|_)is(?:\b|_)/ => :boolean
-  }
 
   # Custom wrappers for input types. This should be a hash containing an input
   # type as key and the wrapper that will be used for all inputs with specified type.
@@ -145,6 +109,41 @@ SimpleForm.setup do |config|
   # Cache SimpleForm inputs discovery
   # config.cache_discovery = !Rails.env.development?
 
-  # Default class for inputs
-  config.input_class = 'input'
+
+  # Custom mappings for input types. This should be a hash containing a regexp
+  # to match as key, and the input type that will be used when the field name
+  # matches the regexp as value.
+  config.input_mappings = { 
+    /(?:terms|remember_me)/ => :boolean,
+    /(?:description|text)/ => :text,
+    /(?:\b|_)is(?:\b|_)/ => :boolean
+  }
+
+
+  # You can wrap each item in a collection of radio/check boxes with a tag,
+  # defaulting to :span. Please note that when using :boolean_style = :nested,
+  # SimpleForm will force this option to be a label.
+
+  # You can wrap a collection of radio/check boxes in a pre-defined tag, defaulting to none.
+  # Default tag used for error notification helper.
+
+  config.collection_wrapper_tag = :div
+  config.item_wrapper_tag = :div
+  config.error_notification_tag = :div
+
+
+  # You can define the class to use on all collection wrappers. Defaul = nil
+  # You can define a class to use in all item wrappers. Defaul = nil
+  # You can define the class to use on all labels. Default = nil
+  # You can define the class to use on all forms. Default = simple_form
+  # Default class for inputs = nil
+  # Default class for buttons = nil
+  # + fields in wrappers config
+  
+  config.collection_wrapper_class = :collection
+  config.item_wrapper_class = :item
+  config.label_class = :label
+  config.form_class = :form
+  config.input_class = :input
+  config.button_class = :button
 end

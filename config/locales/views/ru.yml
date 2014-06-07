@@ -1,21 +1,19 @@
 ru:
   layouts:
     application:
-      games: Игры
-      sign_in: Войти
-      sign_out: Выйти
+      root: На главную
 
   application:
     root:
       sign_in: Войти
       or: или
       sign_up: Создать аккаунт
-
-  views:
-    game:
-      destroy: Отменить игру
-      participate: Принять участие
-      start: Запустить игру
+    games_table:
+      waiting: Ждущие
+      started: Идущие
+      finished: Старые
+      players: Игроков
+      time_mode: Режим
 
   games:
     show:

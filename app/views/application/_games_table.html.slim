@@ -1,0 +1,29 @@
+.games.container
+  .plate Games
+  .statuses
+    .button.green data-status='waiting' = t '.waiting'
+    .button.yellow data-status='started' = t '.started'
+    .button.grey data-status='finished' = t '.finished'
+  .index data-status='waiting'
+    .table
+      = table Game.where( is_public: true ) do |t|
+        - t.r { { 'class' => "game #{t.item.status}" } }
+        - t.d( :map ){ t "const.map.name.#{t.item.map.name}" }
+        - t.d( t('.time_mode') ){ t "const.game/sheduled.time_modes.#{t.item.time_mode}" }
+        - t.d t('.players')
+          a.link href=game_path( t.item )
+          = t.item.sides.count
+
+coffee:
+  page = $ '#application_root'
+  games = page.find '.games.container'
+
+  index = games.find '.index'
+
+  games.clicked '.statuses .button', (e)->
+    index.attr 'data-status', $(e.target).attr 'data-status'
+    return false
+
+  index.clicked '.game', ->
+    $(this).find('a')[0].click()
+    return
