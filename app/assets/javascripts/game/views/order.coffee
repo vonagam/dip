@@ -1,7 +1,8 @@
-class view.Order
-  constructor: ( @game )->
-    @view = g.page.find '.order.j_component'
-    @button = @view.find '.send'
+class view.Order extends view.Base
+  constructor: ( game )->
+    super game, 'order'
+
+    @button = @find '.send'
 
     @button.clicked ()=>
       orders = @game.state.collect_orders @game.user_side.power
@@ -10,20 +11,25 @@ class view.Order
         return
       return
 
-  update: ->
-    g.order_index.turn false
+
+  is_active: ->
+    @game.status == 'started' && 
+    @game.state.last &&
+    @game.user_side &&
+    @game.user_side.orderable
 
 
-    allow_experiment = @game.status == 'started' && @game.state.last
+  update: ( game_updated )->
+    return if game_updated
 
-    g.game_phase[@game.state.type()].turn true if allow_experiment
+    @update_status()
 
+    if @game.status == 'started' && @game.state.last
+      g.game_phase[@game.state.type()].turn true
+    else
+      g.order_index.turn false
 
-    allow_order = allow_experiment && @game.user_side && @game.user_side.orderable
-
-    @view.toggle allow_order
-
-    if allow_order
+    if @turned
       @button.removeClass 'green yellow'
       color = if @game.state.raw.orders then 'green' else 'yellow'
       @button.addClass color

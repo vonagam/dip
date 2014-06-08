@@ -8,18 +8,21 @@ class controller.Game
     @websockets = new WebSocketRails host + '/websocket'
     @channel = @websockets.subscribe data.id
 
-    @chat = new view.Chat this, data.messages
-    @history = new view.History this
-    @order = new view.Order this
-    @participation = new view.Participation this
-    @timer = new view.Timer this
+    @views = []
+    new view.Chat this, data.messages
+    new view.History this
+    new view.Order this
+    new view.Participation this
+    new view.Timer this
 
     @update data
 
     @channel.bind 'state', => @fetch()
     @channel.bind 'side', => @fetch()
 
+
   update: ( data )->
+    @raw_data = data
     @status = data.status
     @user_side = @get_user_side data.sides
 
@@ -43,11 +46,9 @@ class controller.Game
       @last.last = true
       @set_state @last
 
-    @chat.update data
-    @history.update true
-    @participation.update()
-    @timer.update()
+    @update_views false
     return
+
 
   set_state: ( state )->
     @state.detach() if @state
@@ -56,15 +57,21 @@ class controller.Game
 
     g.state = @state
 
-    @history.update()
-    @order.update()
+    @update_views false
 
     return
+
+
+  update_views: ( game_updated )->
+    view.update game_updated for view in @views
+    return
+
 
   get_user_side: ( sides )->
     for side in sides
       return side if side.current
     return null
+
 
   fetch: ->
     g.page.ajax 'get', "/games/#{@id}.json", {}, (game_data)=>

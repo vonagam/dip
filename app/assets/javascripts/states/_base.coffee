@@ -7,7 +7,6 @@ class state.Base
 
     @initials = hash.initials || {}
     @resets = hash.resets || {}
-
     @toggls = hash.toggls || {}
 
     @childs = []
@@ -45,11 +44,11 @@ class state.Base
     return
 
   toggle: (bool)->
+    if @initialized == false
+      @initialized = true
+      @set_variables @initials
+
     if bool
-      if @initialized == false
-        @initialized = true
-        @set_variables @initials
-      
       @set_variables @resets
     else
       child.turn false for child in @childs

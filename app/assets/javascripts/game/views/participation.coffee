@@ -1,12 +1,12 @@
-class view.Participation
-  constructor: ( @game )->
-    @view = g.page.find '.participation.j_component'
+class view.Participation extends view.Base
+  constructor: ( game )->
+    super game, 'participation'
 
-  update: ->
-    visible = @game.status == 'waiting'
 
-    @view.toggle visible
+  is_active: ->
+    @game.status == 'waiting'
 
-    #TODO Table
 
+  update: ( game_updated )->
+    @update_status() if game_updated
     return

@@ -1,8 +1,9 @@
-class view.History
-  constructor: ( @game )->
-    @view = g.page.find '.history.j_component'
-    @select = @view.find 'select'
-    @button = @view.find '.button'
+class view.History extends view.Base
+  constructor: ( game )->
+    super game, 'history'
+
+    @select = @find 'select'
+    @button = @find '.button'
 
     @select.on 'change', =>
       state = @find_state @select.val()
@@ -14,19 +15,26 @@ class view.History
       @game.set_state @game.last
       return
 
-  update: ( select_options = false )->
-    visible = @game.status != 'waiting'
 
-    @view.toggle visible
+  is_active: ->
+    @game.status != 'waiting'
 
-    if visible
-      if select_options
-        @select.empty()
-        for state in @game.states
-          @select.prepend @state_option state
 
+  update: ( game_updated )->
+    @update_status()
+
+    if @turned
+      @fill_select_options() if game_updated
       @button.toggle !@game.state.last
+    
     return
+
+
+  fill_select_options: ->
+    @select.empty()
+    @select.prepend @state_option state for state in @game.states
+    return
+
 
   state_option: ( state )->
     value = state.raw.id
@@ -35,6 +43,7 @@ class view.History
     season = state.raw.date % 2
     text = "#{year}.#{season}:#{state.type()}"
     "<option value=\"#{ value }\" #{ selected }>#{ text }</option>"
+
 
   find_state: ( id )->
     for state in @game.states
