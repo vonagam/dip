@@ -4,7 +4,7 @@ class Game
 
   TIME_MODES = { 
     'sixty_seconds' => 1,
-    'five_four_three' => { move: 5, retreat: 3, supply: 4 },
+    'five_four_three' => { move: 5, supply: 4, retreat: 3 },
     'half_day' => 720,
     'twenty_four_hours' => 1440,
     'manual' => nil
@@ -120,9 +120,7 @@ class Game::Sheduled < Game
   def start_timer
     return if game_lefted?
 
-    duration = states_durations[state.type]
-
-    end_at = duration.minutes.from_now
+    end_at = get_duration.minutes.from_now
       
     state.update_attribute :end_at, end_at
       
@@ -130,6 +128,12 @@ class Game::Sheduled < Game
   end
 
   protected
+
+  def get_duration
+    duration = TIME_MODES[ time_mode ]
+    duration = duration[ state.type.downcase.to_sym ] if duration.is_a?( Hash )
+    duration
+  end
 
   def game_lefted?
     return false unless states.count > 3

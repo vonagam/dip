@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/vonagam/items.git
-  revision: b54735dcbb01d7c87d3582fcb8f755d9869cb0fd
+  revision: 5e8a6a9a930fcaff88676026e0bac61b3f4da988
   specs:
     vonagam_items (0.0.1)
       coffee-rails

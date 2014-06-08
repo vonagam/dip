@@ -10,7 +10,7 @@ Diplomacy::Application.routes.draw do
 
     resources :states, only: [:show]
     resource :order, only: [:create]  
-    resource :side, only: [:new, :create]
+    resource :side, only: [:create]
     resources :messages, only: [:create, :index]
   end
 

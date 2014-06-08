@@ -1,8 +1,11 @@
+- content_for :body_id, 'games_show_layout'
+
 #games_show.page
   .menu.row
     = render 'games/show/participation'
     = render 'games/show/history'
     = render 'games/show/order'
+    = render 'games/show/manual'
     = render 'games/show/timer'
 
   .pils2
@@ -19,7 +22,20 @@
       = render 'games/show/chat'
 
 
-  javascript:
-    g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
-    map_resizing()
-    toggle_abbrs()
+javascript:
+  g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
+  map_resizing()
+  toggle_abbrs()
+
+coffee:
+  page = $ '#games_show'
+  left = page.find '> .pils2 > .left'
+  right = page.find '> .pils2 > .right'
+
+  difference = left.height() - right.height()
+
+  if difference > 0
+
+    chat_window = page.find '.chat .window'
+
+    chat_window.height chat_window.height() + difference

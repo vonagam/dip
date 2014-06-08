@@ -4,4 +4,4 @@
     a.button.red href=game_path(@game, format: :json) data-method='delete' = t'.delete'
 
   - unless @side
-    a.button.green href=new_game_side_path(@game) = t'.participate'
+    a.button.green href=game_side_path(@game) data-remote=true data-method='post' = t'.participate'

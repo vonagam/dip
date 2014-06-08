@@ -1,4 +1,7 @@
-body
+body > #main > .menu > .login
+  txt tra upp
+
+body#application_layout
   > #background
     pos fix
     bac img url('/images/home_guard_parade.jpg') siz cvr pos cen
@@ -17,7 +20,20 @@ body
       mar x aut
 
       > .login
-        txt tra upp
-
         + .button
           mar t 0.3125em
+
+    > .page
+      wid 17.5em 
+
+body#games_show_layout
+  > #main
+    > .menu
+      txt ali r hei 30*$u
+      > .login, > .button
+        dis inl-blo
+        wid aut
+
+      > .login
+        mar r 10*$u
+        

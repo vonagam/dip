@@ -8,7 +8,7 @@
     .table
       = table Game.where( is_public: true ) do |t|
         - t.r { { 'class' => "game #{t.item.status}" } }
-        - t.d( :map ){ t "const.map.name.#{t.item.map.name}" }
+        - t.d( t('mongoid.attributes.game.map') ){ t "const.map.name.#{t.item.map.name}" }
         - t.d( t('.time_mode') ){ t "const.game/sheduled.time_modes.#{t.item.time_mode}" }
         - t.d t('.players')
           a.link href=game_path( t.item )

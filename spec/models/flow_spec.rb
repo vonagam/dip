@@ -53,7 +53,12 @@ describe 'Flow' do
       @users[power] = create :user
     end
 
-    @game = Game::Manual.create creator: @users['Russia'], map: @map
+    @game = Game::Manual.create!({
+      name: 'game_name', 
+      time_mode: 'manual', 
+      creator: @users['Russia'], 
+      map: @map
+    })
 
     @users.each do |power, user|
       if power == 'Russia'

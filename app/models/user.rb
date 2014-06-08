@@ -36,6 +36,7 @@ class User
   # field :locked_at,       type: Time
 
   field :login, type: String
+  field :participated_games, type: Array, default: []
 
   has_many :created_games, class_name: 'Game', foreign_key: 'creator_id'
 
@@ -45,6 +46,10 @@ class User
 
   def side_in( game )
     game.side_of self
+  end
+
+  def get_participated_games
+    Game.find participated_games
   end
 
   def email_required? 

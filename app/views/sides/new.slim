@@ -5,7 +5,7 @@
 
   .select.container
     = simple_form_for Side.new, url: game_side_path(@game, format: :json),
-    remote: true, html:{'data-resource'=>'side'} do |f|
+    remote: true do |f|
     
       = f.input :power,
         collection: @game.available_powers.shuffle.unshift( 'Random' ),

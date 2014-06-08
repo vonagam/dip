@@ -1,6 +1,5 @@
 @import 'views/games/show/stats'
 @import 'views/games/show/chat'
-@import 'views/games/show/participation'
 @import 'views/games/show/history'
 @import 'views/games/show/timer'
 
@@ -16,7 +15,13 @@
     pad y 10
 
     > .j_component
-      pad x 20
+      pad l 20
+
+      .button
+        wid aut
+
+        + .button
+          mar l 10*$u
 
   > .pils2
     pos rel
@@ -35,6 +40,9 @@
 
     > .left
       pos rel
+
+      .container
+        sha non
 
       > .keep_ratio
         pos rel

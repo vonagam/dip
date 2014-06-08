@@ -1,7 +1,7 @@
 class view.Order
   constructor: ( @game )->
     @view = g.page.find '.order.j_component'
-    @button = @view.find '.button'
+    @button = @view.find '.send'
 
     @button.clicked ()=>
       orders = @game.state.collect_orders @game.user_side.power

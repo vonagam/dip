@@ -17,7 +17,7 @@ class GamesController < ApplicationController
     create_params = game_params
     create_params[:creator] = current_user
 
-    game_class = create_params[:duration_mode] == 'manual' ? Game::Manual : Game::Sheduled
+    game_class = create_params[:time_mode] == 'manual' ? Game::Manual : Game::Sheduled
 
     new_game = game_class.create create_params
 
@@ -47,7 +47,8 @@ class GamesController < ApplicationController
       when Game::Sheduled then @game.secret == params[:secret]
     end
 
-    @game.progress if valid_request
+    @game.progress! if valid_request
+    
     head :ok
   end
 

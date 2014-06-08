@@ -6,7 +6,7 @@ class view.Timer
     @time = null
 
   update: ->
-    visible = @game.status == 'started'
+    visible = @game._type == 'Game::Sheduled' && @game.status == 'started'
 
     @view.toggle visible
 

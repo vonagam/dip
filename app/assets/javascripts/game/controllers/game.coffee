@@ -1,6 +1,7 @@
 class controller.Game
   constructor: ( data )->
     @id = data.id
+    @type = data._type
 
     host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
     

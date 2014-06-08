@@ -3,7 +3,7 @@
     bac clr white
     overflow-y scroll
     resize vertical
-    brd 2 hsl(0,0,85)
+    brd ($u*2) hsl(0,0,85)
 
     > .message
       pos rel
@@ -22,9 +22,4 @@
   #message_text
     txt hei inh siz 14
     hei min 3.6em
-
-/*
-    > .when
-      pos abs t 0.3em r 0.6em
-      txt clr hsl(0,0,70)
-*/
+    brd ($u*2*16/14)

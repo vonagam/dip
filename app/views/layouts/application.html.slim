@@ -6,7 +6,7 @@ html
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
-  body
+  body id=( content_for(:body_id) || 'application_layout' )
     #background.layer
       .grey.layer
 

@@ -39,12 +39,12 @@ class view.Chat
 
     @form.find('.field.message_to').toggle chat_is_private
 
-    if not chat_is_private
+    if chat_is_private
       select = @form.find 'select#message_to'
       select.empty()
       select.append '<option value></option>'
       for side in data.sides
-        continue if not side.alive
+        continue if !side.alive || side == @game.user_side
         power = side.power
         select.append "<option value=\"#{power}\">#{power}</option>"
 

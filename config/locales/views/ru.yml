@@ -22,8 +22,11 @@ ru:
         start: Начать игру
         participate: Принять участие
       order:
-        create: "%{side}<br>отдать приказы"
-        update: "%{side}<br>обновить приказы"
+        send: Отдать приказы
+      timer:
+        remain: До конца хода
+      manual:
+        progress: Следующий ход
       stats:
         statistic: Показатели
         power: Страна

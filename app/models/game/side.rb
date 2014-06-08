@@ -13,7 +13,8 @@ class Side
   validates :user, uniqueness: true, on: :create
   validate :game_is_waiting, on: :create
 
-  after_create :send_websocket
+  after_create :add_participated_game, :send_websocket
+  after_destroy :remove_participated_game, :send_websocket
 
   def order
     game.order_of self
@@ -21,8 +22,15 @@ class Side
 
   protected
 
+  def add_participated_game
+    user.push participated_games: id
+  end
+  def remove_participated_game
+    user.pull participated_games: id
+  end
+
   def send_websocket
-    WebsocketRails[game.id.to_s].trigger 'side'
+    WebsocketRails[game.id.to_s].trigger 'side', game.taken_powers
   end
   
   def game_is_waiting

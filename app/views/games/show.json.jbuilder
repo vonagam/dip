@@ -1,4 +1,4 @@
-json.extract! @game, :id, :status
+json.extract! @game, :id, :_type, :status
 
 json.sides @game.sides do |side|
   json.extract! side, :power, :alive, :orderable
