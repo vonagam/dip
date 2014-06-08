@@ -1,7 +1,6 @@
 require 'rvm/capistrano' # Для работы rvm
 require 'bundler/capistrano' # Для работы bundler. При изменении гемов bundler автоматически обновит все гемы на сервере, чтобы они в точности соответствовали гемам разработчика.
 
-
 set :application, 'dip'
 
 set :rails_env, 'production'
@@ -70,5 +69,11 @@ namespace :things_going do
 
   task :restart do
     run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} bin/delayed_job restart"
+  end
+end
+
+namespace :raki do
+  task :drop do
+    run "cd #{deploy_to}/current && RAILS_ENV=#{rails_env} rake db:drop"
   end
 end
