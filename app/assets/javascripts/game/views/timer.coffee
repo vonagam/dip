@@ -1,18 +1,25 @@
-class view.Timer
-  constructor: ( @game )->
-    @view = g.page.find '.timer.j_component'
-    @time_place = @view.children '.remain'
+class view.Timer extends view.Base
+  constructor: ( game )->
+    super game, 'timer'
+
+    @time_place = @find '.remain'
     @timer_id = null
     @time = null
 
-  update: ->
-    visible = @game._type == 'Game::Sheduled' && @game.status == 'started'
 
-    @view.toggle visible
+  is_active: ->
+    @game._type == 'Game::Sheduled' && @game.status == 'started'
+
+
+  update: ( game_updated )->
+    return unless game_updated
+
+    @update_status()
 
     clearInterval @timer_id
 
-    if visible
+    if @turned
+
       @time = Date.parse @game.last.raw.end_at
 
       @show_remain()
@@ -22,6 +29,7 @@ class view.Timer
       , 1000
 
     return
+
 
   show_remain: ->
     remain = @time - new Date().getTime()
