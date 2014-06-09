@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
-  before_filter :auth_user!
-  before_filter :find_game
+  before_action :authenticate_user!
+  load_resource :game
+  authorize_resource through: :game
   
   def create
     @state = @game.state
@@ -12,10 +13,14 @@ class OrdersController < ApplicationController
     if order = @game.order_of( @side )
       order.update_attributes! data: create_params[:data]
     else
-      @game.orders.create create_params.merge side: @side
+      order = @game.orders.create create_params.merge side: @side
     end
 
-    render 'games/show'
+    if order.errors.not_empty?
+      respond_with order
+    else
+      render 'games/show'
+    end
   end
 
   private

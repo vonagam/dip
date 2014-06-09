@@ -1,7 +1,2 @@
 .participation.j_component
-  - if @game.creator == current_user
-    a.button.green href=start_game_path(@game, format: :json) = t'.start'
-    a.button.red href=game_path(@game, format: :json) data-method='delete' = t'.delete'
-
-  - unless @side
-    a.button.green href=game_side_path(@game) data-remote=true data-method='post' = t'.participate'
+  a.button.green href=game_side_path(@game) data-remote=true data-method='post' = t'.participate'

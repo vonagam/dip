@@ -13,8 +13,8 @@ class Side
   validates :user, uniqueness: true, on: :create
   validate :game_is_waiting, on: :create
 
-  after_create :add_participated_game, :send_websocket
-  after_destroy :remove_participated_game, :send_websocket
+  after_create :add_participated_game, :websockets
+  after_destroy :remove_participated_game, :websockets
 
   def order
     game.order_of self
@@ -29,7 +29,8 @@ class Side
     user.pull participated_games: id
   end
 
-  def send_websocket
+  def websockets
+    WebsocketRails["#{game.id}_#{power}"].make_private if power
     WebsocketRails[game.id.to_s].trigger 'side', game.taken_powers
   end
   

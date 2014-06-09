@@ -1,12 +1,12 @@
-json.extract! @game, :id, :_type, :status
+json.extract! @game, :id, :time_mode, :status, :powers_is_random, :is_public 
 
 json.sides @game.sides do |side|
   json.extract! side, :power, :alive, :orderable
   json.user side.user.login
 
-  if @side == side
-    json.current true
-  end
+  json.user_side true if @side == side
+
+  json.creator true if @game.creator == side.user
 end
 
 json.states @game.states do |state|

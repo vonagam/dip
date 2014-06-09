@@ -1,18 +1,20 @@
 class view.Chat extends view.Base
-  constructor: ( game, messages )->
-    super game, 'chat'
+  constructor: ( game, data )->
+    super game, 'chat', true
 
     @window = @find '.window'
     @form = @find 'form'
 
     @form.on 'ajax:success', ->  $(this).find('#message_text').val('')
 
-    for message in messages.reverse()
+    for message in data.messages.reverse()
       @add_message message
 
     @game.channel.bind 'message', ( message )=>
       @add_message message
       return
+
+    @private = false
 
 
   update: ( game_updated )->
@@ -30,11 +32,14 @@ class view.Chat extends view.Base
       @form.hide()
       return
 
-    if user_side && user_side.power && @private_channel == undefined
-      @private_channel = @game.websockets.subscribe_private "#{@game.id}_#{user_side.power}"
-      @private_channel.bind 'message', ( message )=>
-        @add_message message
-        return
+    if @game.side_channel
+      unless @private
+        @private = true
+        @game.side_channel.bind 'message', ( message )=>
+          @add_message message
+          return
+    else
+      @private = false
 
     chat_is_private = @game.status == 'started' && @game.last.raw.date % 2 == 0
 
@@ -44,7 +49,7 @@ class view.Chat extends view.Base
       select = @form.find 'select#message_to'
       select.empty()
       select.append '<option value></option>'
-      for side in @game.raw.sides
+      for side in @game.raw_data.sides
         continue unless side.alive && side != @game.user_side
         power = side.power
         select.append "<option value=\"#{power}\">#{power}</option>"

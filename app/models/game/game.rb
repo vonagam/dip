@@ -15,6 +15,7 @@ class Game
   field :is_public, type: Boolean
   field :powers_is_random, type: Boolean
   field :time_mode
+  field :secret, default: ->{ SecureRandom.hex(8) }
 
   belongs_to :map
   belongs_to :creator, class_name: 'User'
@@ -26,6 +27,7 @@ class Game
   validates :name, :map, :creator, :time_mode, presence: true
   validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
+  validate :if_manual_then_private
 
   after_create :create_initial_state, :add_creator_side
 
@@ -87,6 +89,12 @@ class Game
 
   protected
 
+  def if_manual_then_private
+    if time_mode == 'manual' && is_public 
+      errors.add :is_public, 'manual cannot be public'
+    end
+  end
+
   def create_initial_state
     start_state = Engine::Parser::State.new map.initial_state
     State::Move.create game: self, data: start_state.to_hash, date: 0
@@ -94,31 +102,9 @@ class Game
   def add_creator_side
     sides.create user: creator
   end
-end
-
-
-class Game::Manual < Game
-  validate :validate_privacy
 
   def start_timer
-  end
-
-  protected
-
-  def validate_privacy
-    if is_public
-      errors.add :is_public, 'cannot be public without timing'
-    end
-  end
-end
-
-
-class Game::Sheduled < Game
-
-  field :secret, default: ->{ SecureRandom.hex(8) }
-
-  def start_timer
-    return if game_lefted?
+    return if game_lefted? || time_mode == 'manual'
 
     end_at = get_duration.minutes.from_now
       
@@ -126,8 +112,6 @@ class Game::Sheduled < Game
       
     RestClient.delay( run_at: end_at ).get "http://#{APP_HOST}/games/#{id}/progress", secret: secret
   end
-
-  protected
 
   def get_duration
     duration = TIME_MODES[ time_mode ]

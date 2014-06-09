@@ -1,14 +1,15 @@
 class view.Timer extends view.Base
-  constructor: ( game )->
-    super game, 'timer'
+  constructor: ( game, data )->
+    if data.time_mode != 'manual'
+      super game, 'timer'
 
-    @time_place = @find '.remain'
-    @timer_id = null
-    @time = null
+      @time_place = @find '.remain'
+      @timer_id = null
+      @time = null
 
 
   is_active: ->
-    @game._type == 'Game::Sheduled' && @game.status == 'started'
+    @game.status == 'started'
 
 
   update: ( game_updated )->
@@ -44,3 +45,10 @@ class view.Timer extends view.Base
     
     @time_place.html "#{ if minutes > 0 then minutes + ':' else ''}#{seconds}"
     return
+
+
+  turn: ( bool )->
+    super
+
+    if bool == false
+      clearInterval @timer_id

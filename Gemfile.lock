@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/gregbell/active_admin.git
-  revision: 6e226154625485fea9a9ad915f082a8a0dc45400
+  revision: 4f445b51c22b12af2cdde57fe2ce9835c32ef88e
   specs:
     activeadmin (1.0.0.pre)
       arbre (~> 1.0)
@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/vonagam/items.git
-  revision: 5e8a6a9a930fcaff88676026e0bac61b3f4da988
+  revision: 8d83d1f1667ec6b19b44b1db8f61e109fa964fb9
   specs:
     vonagam_items (0.0.1)
       coffee-rails
@@ -144,7 +144,7 @@ GEM
     jquery-ui-rails (4.2.1)
       railties (>= 3.2.16)
     json (1.8.1)
-    kaminari (0.15.1)
+    kaminari (0.16.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     mail (2.5.4)
@@ -221,7 +221,7 @@ GEM
     rspec-expectations (3.0.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
-    rspec-mocks (3.0.0)
+    rspec-mocks (3.0.1)
       rspec-support (~> 3.0.0)
     rspec-rails (3.0.1)
       actionpack (>= 3.0)
@@ -284,6 +284,8 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
+    turbolinks (2.2.2)
+      coffee-rails
     tzinfo (0.3.39)
     uglifier (2.5.0)
       execjs (>= 0.3.0)
@@ -338,6 +340,7 @@ DEPENDENCIES
   simple_form
   slim-rails
   stylus
+  turbolinks
   uglifier
   vonagam_items!
   websocket-rails

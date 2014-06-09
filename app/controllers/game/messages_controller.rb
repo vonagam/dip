@@ -1,36 +1,30 @@
 class MessagesController < ApplicationController
-  before_filter :auth_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create]
+  load_resource :game
+  load_and_authorize_resource through: :game, only: [:create]
   
   def create
-    game = Game.find params[:game_id]
-    state = game.state
+    state = @game.state
 
-    from = 
-    if game.status == 'waiting'
-      current_user.login
-    else
-      game.side_of(current_user).power
-    end
+    from = @game.status == 'waiting' ? current_user.login : @game.side_of(current_user).power
 
-    is_public = game.status != 'started' || state.is_fall?
+    is_public = @game.status != 'started' || state.is_fall?
 
     create_params = message_params.merge from: from, public: is_public
 
-    create_params.delete(:to) if is_public
+    create_params.delete :to if is_public
 
-    message = game.messages.build create_params
+    message = @game.messages.build create_params
 
     message.save
 
-    respond_with message, location: game_path(game)
+    respond_with message, location: game_path(@game)
   end
 
   def index
-    game = Game.find params[:game_id]
+    m = @game.messages.or({ public: true })
 
-    m = game.messages.or({ public: true })
-
-    if user_signed_in? && side = game.side_of( current_user )
+    if user_signed_in? && side = @game.side_of( current_user )
       m = m.or({ to: side.power }, { from: side.power })
     end
 

@@ -5,21 +5,26 @@ ru:
 
   application:
     root:
-      sign_in: Войти
-      or: или
-      sign_up: Создать аккаунт
-    games_table:
-      waiting: Ждущие
-      started: Идущие
-      finished: Старые
-      players: Игроков
-      time_mode: Режим
+      rules: Правила игры
+      actions:
+        sign_out: Выйти
+        create_game: Создать игру
+      sign:
+        in: Войти
+        up: Создать аккаунт
+      games_table:
+        waiting: Ждущие
+        started: Идущие
+        finished: Старые
+        players: Игроков
+        time_mode: Режим
 
   games:
     show:
-      participation:
+      control:
         delete: Удалить игру
         start: Начать игру
+      participation:
         participate: Принять участие
       order:
         send: Отдать приказы
@@ -32,7 +37,7 @@ ru:
         power: Страна
         supplies: Снабжение
         units: Войска
-      state:
+      history:
         year: "%{year}г %{season} %{type}"
         season:
           spring: Весна

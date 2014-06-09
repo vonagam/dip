@@ -2,6 +2,7 @@
 
 #games_show.page
   .menu.row
+    = render 'games/show/control'
     = render 'games/show/participation'
     = render 'games/show/history'
     = render 'games/show/order'
@@ -23,7 +24,7 @@
 
 
 javascript:
-  g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
+  g_initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
   map_resizing()
   toggle_abbrs()
 

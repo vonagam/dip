@@ -1,15 +1,12 @@
 #application_root.page
 
   - if user_signed_in?
-    .actions.container
-
-      a.button.red href=destroy_user_session_path = t '.sign_out'
-      a.button.green href=new_game_path Create game
+    = render 'application/root/actions'
 
   - else
-    = render 'sign_form'
+    = render 'application/root/sign'
 
   .rules.container 
-    a.button.blue Diplomacy Rules
+    a.button.blue = t '.rules'
 
-  = render 'games_table'
+  = render 'application/root/games_table'

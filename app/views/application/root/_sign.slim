@@ -1,4 +1,4 @@
-.form.container 
+.sign.container 
   = simple_form_for User.new,
     url: session_path('user', format: :json),
     remote: true,
@@ -9,9 +9,9 @@
     = f.input :login
     = f.input :password
 
-    = f.button :button, t('.sign_in'), class: 'green',
+    = f.button :button, t('.in'), class: 'green',
       'data-url' => session_path('user', format: :json)
-    = f.button :button, t('.sign_up'), class: 'yellow',
+    = f.button :button, t('.up'), class: 'yellow',
       'data-url' => registration_path('user', format: :json)
 
 coffee:

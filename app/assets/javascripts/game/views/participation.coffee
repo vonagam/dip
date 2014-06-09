@@ -4,7 +4,7 @@ class view.Participation extends view.Base
 
 
   is_active: ->
-    @game.status == 'waiting'
+    @game.status == 'waiting' && @game.user_side == null
 
 
   update: ( game_updated )->

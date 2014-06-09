@@ -17,6 +17,7 @@ gem 'jbuilder'
 # assets
 gem 'jquery-rails'
 gem 'vonagam_items', github: 'vonagam/items' # path: '../items'
+gem 'turbolinks'
 
 # helpers
 gem 'simple_form'
@@ -34,10 +35,10 @@ gem 'activeadmin',         github: 'gregbell/active_admin'
 gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
 
 gem 'websocket-rails'
-gem 'devise'
 
 
 #back
+gem 'devise'
 gem 'cancancan', '~> 1.8'
 
 gem 'mongoid_slug'

@@ -11,6 +11,7 @@ class view.History extends view.Base
       return
 
     @button.clicked ()=>
+      log 1
       @select.val @game.last.raw.id
       @game.set_state @game.last
       return

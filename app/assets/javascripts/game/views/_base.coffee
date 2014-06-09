@@ -1,9 +1,10 @@
 class view.Base extends state.Base
-  constructor: ( @game, component_class )->
+  constructor: ( @game, @component_class, permanent = false )->
     super()
     @game.views.push this
-    @view = g.page.find ".#{component_class}.j_component"
-    @toggls.view = target: @view, class: 'active'
+    @view = g.page.find ".#{@component_class}.j_component"
+    @toggls.status = target: @view, class: 'active'
+    @turn true if permanent
 
 
   update_status: ->
@@ -13,3 +14,4 @@ class view.Base extends state.Base
 
   find: ( selector )->
     @view.find selector
+

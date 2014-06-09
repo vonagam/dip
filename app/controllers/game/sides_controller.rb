@@ -1,6 +1,6 @@
 class SidesController < ApplicationController
-  before_filter :auth_user!
-  before_filter :find_game
+  before_action :authenticate_user!
+  load_resource :game
    
   def create
     params = side_params.merge user: current_user
@@ -17,7 +17,6 @@ class SidesController < ApplicationController
   private
 
   def side_params 
-    #params.require(:side).permit :power
-    {}
+    params.require(:side).permit :power
   end
 end

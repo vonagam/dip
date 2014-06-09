@@ -1,8 +1,17 @@
 class GamesController < ApplicationController
-  before_filter :auth_user!, only: [ :create, :destroy, :start ]
-  before_filter :find_game, except: [ :index, :new, :create ]
+  before_action :authenticate_user!, only: [ :create, :destroy, :start ]
+  load_resource except: [ :index, :new, :create ]
+  load_and_authorize_resource only: [ :destroy, :start ]
 
   def index
+  end
+
+  def new
+  end
+
+  def create
+    new_game = Game.create game_params.merge( creator: current_user )
+    respond_with new_game
   end
 
   def show
@@ -10,41 +19,22 @@ class GamesController < ApplicationController
     @side = @game.side_of current_user
   end
 
-  def new
-  end
-
-  def create
-    create_params = game_params
-    create_params[:creator] = current_user
-
-    game_class = create_params[:time_mode] == 'manual' ? Game::Manual : Game::Sheduled
-
-    new_game = game_class.create create_params
-
-    respond_with new_game, location: game_path(new_game)
-  end
-
   def destroy
-    if @game.creator == current_user || current_user.login == 'vonagam'
-      @game.destroy!
-    end
- 
+    @game.destroy!
     redirect_to action: :index, status: 303
   end
 
   def start
-    if @game.status == 'waiting' && @game.creator == current_user
-      @game.progress!
-    end
-    
+    @game.progress!
     redirect_to action: :show, status: 303
   end
 
   def progress
     valid_request = 
-    case @game
-      when Game::Manual then @game.creator == current_user
-      when Game::Sheduled then @game.secret == params[:secret]
+    if @game.time_mode == 'manual'
+      @game.creator == current_user
+    else
+      @game.secret == params[:secret]
     end
 
     @game.progress! if valid_request

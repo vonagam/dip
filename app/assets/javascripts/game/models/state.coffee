@@ -55,7 +55,6 @@ class model.State
   attach: ->
     @read_data()
 
-    @fill_stats()
     area.attach() for name, area of @areas
     power.attach() for name, power of @powers
 
@@ -63,7 +62,6 @@ class model.State
     return
 
   detach: ->
-    g.stats.empty()
     area.detach() for name, area of @areas
     power.detach() for name, power of @powers
 
@@ -82,17 +80,6 @@ class model.State
 
   get_area: ( area )->
     @areas[ area.split('_')[0] ]
-
-  fill_stats: ->
-    tr = $ '<tr><td class="power"></td><td class="supplies"></td><td class="units"></td></tr>'
-
-    for name, power of @powers
-      ptr = tr.clone()
-      ptr.addClass name
-      ptr.children('.power').html name
-      ptr.children('.units').html power.units.length
-      ptr.children('.supplies').html power.supplies().length
-      ptr.appendTo g.stats
 
   type: ->
     @raw.type

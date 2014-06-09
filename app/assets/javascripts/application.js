@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require turbolinks
 //= require websocket_rails/main
 //= require vonagam_items/basic
 //= require vonagam_items/ruby_regexp_fix
