@@ -10,11 +10,19 @@ class Game
     'manual' => nil
   }
 
+  CHAT_MODES = {
+    'public' => true,
+    'private' => false,
+    'rotation' => proc{ |game| game.state.is_fall? },
+    'both' => nil
+  }
+
   field :name
   field :status, default: 'waiting'
   field :is_public, type: Boolean
   field :powers_is_random, type: Boolean
   field :time_mode
+  field :chat_mode
   field :secret, default: ->{ SecureRandom.hex(8) }
 
   belongs_to :map
@@ -24,9 +32,10 @@ class Game
   embeds_many :messages
   embeds_many :orders
 
-  validates :name, :map, :creator, :time_mode, presence: true
+  validates :name, :map, :creator, :time_mode, :chat_mode, presence: true
   validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
+  validates :chat_mode, inclusion: { in: CHAT_MODES.keys }
   validate :if_manual_then_private
 
   after_create :create_initial_state, :add_creator_side
@@ -54,6 +63,11 @@ class Game
   end
   def available_powers
     powers - taken_powers
+  end
+
+  def chat_is_public?
+    answer = CHAT_MODES[ chat_mode ]
+    answer.is_a?( Proc ) ? answer.call( self ) : answer
   end
 
   def progress!

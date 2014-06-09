@@ -16,7 +16,7 @@ gem 'jbuilder'
 
 # assets
 gem 'jquery-rails'
-gem 'vonagam_items', github: 'vonagam/items' # path: '../items'
+gem 'vonagam_items', github: 'vonagam/items' # path: '../items' # 
 gem 'turbolinks'
 
 # helpers

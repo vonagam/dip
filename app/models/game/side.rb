@@ -23,10 +23,10 @@ class Side
   protected
 
   def add_participated_game
-    user.push participated_games: id
+    user.push participated_games: game.id
   end
   def remove_participated_game
-    user.pull participated_games: id
+    user.pull participated_games: game.id
   end
 
   def websockets

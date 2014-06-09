@@ -8,11 +8,15 @@
         include_blank: false,
         label_method: proc{ |map| t "const.map.name.#{map.name}" }
 
-
       = f.input :time_mode,
         as: :radios,
         collection: Game::TIME_MODES.keys,
         label_method: proc{ |mode| t "const.game/sheduled.time_modes.#{mode}" }
+
+      = f.input :chat_mode,
+        as: :radios,
+        collection: Game::CHAT_MODES.keys,
+        label_method: proc{ |mode| t "const.game/sheduled.chat_modes.#{mode}" }
 
       .centrator
         = f.input :is_public

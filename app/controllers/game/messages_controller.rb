@@ -4,17 +4,13 @@ class MessagesController < ApplicationController
   load_and_authorize_resource through: :game, only: [:create]
   
   def create
-    state = @game.state
+    p = message_params
 
-    from = @game.status == 'waiting' ? current_user.login : @game.side_of(current_user).power
+    p[:from] = @game.status == 'waiting' ? current_user.login : @game.side_of(current_user).power
 
-    is_public = @game.status != 'started' || state.is_fall?
+    p[:public] = @game.status != 'started' || @game.chat_is_public?
 
-    create_params = message_params.merge from: from, public: is_public
-
-    create_params.delete :to if is_public
-
-    message = @game.messages.build create_params
+    message = @game.messages.build p
 
     message.save
 

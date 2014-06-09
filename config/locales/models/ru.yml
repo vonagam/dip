@@ -45,6 +45,8 @@ ru:
         is_public: Публичная игра
         powers_is_random: Случайные страны
         time_mode: Временной режим
+        chat_mode: Режим чата
+        sides: Стороны
       side:
         user: Игрок
         power: Страна
@@ -57,6 +59,11 @@ ru:
         half_day: Полдни
         twenty_four_hours: 24 часа
         manual: Ручной режим
+      chat_modes:
+        public: Всегда публичный
+        private: Всегда приватный
+        rotation: Чередование
+        both: Выбор игрока
 
     map:
       name:

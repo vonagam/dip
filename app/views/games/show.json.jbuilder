@@ -1,4 +1,12 @@
-json.extract! @game, :id, :time_mode, :status, :powers_is_random, :is_public 
+json.extract! @game, 
+  :id, 
+  :time_mode,
+  :chat_mode,
+  :status,
+  :powers_is_random,
+  :is_public
+
+json.chat_is_public @game.chat_is_public?
 
 json.sides @game.sides do |side|
   json.extract! side, :power, :alive, :orderable

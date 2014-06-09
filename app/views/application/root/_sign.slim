@@ -1,21 +1,65 @@
-.sign.container 
-  = simple_form_for User.new,
-    url: session_path('user', format: :json),
-    remote: true,
-    html: { 'data-resource' => 'user' } do |f|
+.sign
+  .in.container
+    = simple_form_for User.new,
+      url: session_path('user', format: :json), remote: true do |f|
 
-    = f.hidden_field :remember_me, value: 1
+      = f.hidden_field :remember_me, value: 1
 
-    = f.input :login
-    = f.input :password
+      .close
 
-    = f.button :button, t('.in'), class: 'green',
-      'data-url' => session_path('user', format: :json)
-    = f.button :button, t('.up'), class: 'yellow',
-      'data-url' => registration_path('user', format: :json)
+      .fields
+        = f.input :login, hint: false
+        = f.input :password
+
+      = f.button :button, t('.in'), class: 'green'
+
+  .up.container
+    = simple_form_for User.new,
+      url: registration_path('user', format: :json), remote: true do |f|
+
+      .close
+
+      .fields
+        = f.input :login
+        = f.input :password
+
+      = f.button :button, t('.up'), class: 'yellow'
 
 coffee:
-  $('#application_root form .button').on 'mousedown', ->
+  sign = $ '#application_root .sign'
+
+
+  .clicked 'form > .button', ->
     q = $ this
-    url = q.attr 'data-url'
-    q.closest('form').attr 'action', url
+    form = q.closest 'form'
+
+    return if form.hasClass 'opened'
+    
+    toggle_form sign.find('form').not(form), false
+    toggle_form form, true
+
+    form.find('.user_login > .input').focus()
+
+    q.prop disabled: true
+    setTimeout ( -> q.prop disabled: false ), 300
+
+    return false
+
+
+  .clicked 'form > .close', ->
+    $(this).closest('form').removeClass 'opened'
+    return false
+
+
+  toggle_form = ( form, bool )->
+    form.toggleClass 'opened', bool
+    inputs = form.find 'input.input'
+    inputs.each ->
+      q = $ this
+      if bool
+        q.attr 'id', q.data 'id' if q.data 'id'
+      else
+        q.data 'id', q.attr 'id'
+        q.removeAttr 'id'
+      return
+    return

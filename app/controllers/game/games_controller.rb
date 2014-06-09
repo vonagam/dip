@@ -45,6 +45,6 @@ class GamesController < ApplicationController
   private
 
   def game_params 
-    params.require(:game).permit :name, :map, :is_public, :powers_is_random, :time_mode
+    params.require(:game).permit :name, :map, :is_public, :powers_is_random, :time_mode, :chat_mode
   end
 end

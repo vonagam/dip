@@ -15,7 +15,7 @@ ru:
       games_table:
         waiting: Ждущие
         started: Идущие
-        finished: Старые
+        finished: Завершенные
         players: Игроков
         time_mode: Режим
 

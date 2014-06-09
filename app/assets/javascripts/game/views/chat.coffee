@@ -41,18 +41,20 @@ class view.Chat extends view.Base
     else
       @private = false
 
-    chat_is_private = @game.status == 'started' && @game.last.raw.date % 2 == 0
+    chat_is_private = @game.status == 'started' && !@game.raw_data.chat_is_public
 
     @form.find('.field.message_to').toggle chat_is_private
 
     if chat_is_private
       select = @form.find 'select#message_to'
       select.empty()
-      select.append '<option value></option>'
+
+      def_option = if @game.raw_data.chat_mode == 'both' then 'Public' else ''
+      select.append @side_option def_option
+      
       for side in @game.raw_data.sides
         continue unless side.alive && side != @game.user_side
-        power = side.power
-        select.append "<option value=\"#{power}\">#{power}</option>"
+        select.append @side_option side.power
 
     return
 
@@ -73,6 +75,8 @@ class view.Chat extends view.Base
 
   side_span: ( side )->
     "<span class='#{side}'>#{side}</span>"
+  side_option: ( side )->
+    "<option value='#{side}'>#{side}</option>"
 
 
   time_format: ( created_at )->

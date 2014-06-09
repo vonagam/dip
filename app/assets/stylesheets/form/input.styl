@@ -1,15 +1,14 @@
 .input
   @extend $element
 
-  pad 0.3125em
-  brd 0.125em hsl(0,0,85) rds 0
+  pad 5*$u
   txt hei 1.25em
 
-  $height = @line-height + 2 * ( @padding + @border-width )
+  $height = @line-height + 2 * @padding
   hei $height min $height
 
   bac clr white
-  sha ins 0 0 0 1000 white
+  box-shadow inset 0px 0px 0px 2px hsl(0,0,85), inset 0px 0px 0px 1000px white 
 
 
 .label
@@ -23,14 +22,14 @@
   dis non
 
   + .label
-    pad l 1.5625em
+    pad l 25*$u
 
     &:before
       dis inl-blo
       hei 1em
       wid 1em
-      brd 0.125em solid hsl(0,0,85)
-      mar l -1.5625em r 0.3125em
+      brd 2px solid hsl(0,0,85)
+      mar l -25*$u r 5*$u
       txt hei 1em ali cen
       bac clr white
       con "\00a0"

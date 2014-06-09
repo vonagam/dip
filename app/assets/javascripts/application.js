@@ -21,3 +21,4 @@
 //= require_tree ./states
 //= require game
 //= require_tree ./views
+//= require page_change
