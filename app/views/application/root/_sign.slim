@@ -1,6 +1,6 @@
 .sign
   .in.container
-    = simple_form_for User.new,
+    = simple_form_for User.new, html: { id: 'sign_in' },
       url: session_path('user', format: :json), remote: true do |f|
 
       = f.hidden_field :remember_me, value: 1
@@ -14,7 +14,7 @@
       = f.button :button, t('.in'), class: 'green'
 
   .up.container
-    = simple_form_for User.new,
+    = simple_form_for User.new, html: { id: 'sign_up' },
       url: registration_path('user', format: :json), remote: true do |f|
 
       .close
@@ -43,11 +43,14 @@ coffee:
     q.prop disabled: true
     setTimeout ( -> q.prop disabled: false ), 300
 
+    window.location.hash = form.attr 'id'
+
     return false
 
 
   .clicked 'form > .close', ->
     $(this).closest('form').removeClass 'opened'
+    window.location.hash = ''
     return false
 
 
@@ -63,3 +66,10 @@ coffee:
         q.removeAttr 'id'
       return
     return
+
+  if window.location.hash
+    find = $ window.location.hash
+
+    if find.length && find.is 'form'
+      log 123
+      find.find('button').trigger 'mousedown'
