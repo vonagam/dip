@@ -1,0 +1,34 @@
+.games.container
+  .close
+  
+  .button.sezam.grey = t '.games'
+
+  .cave
+    .filters
+      .filter data-filter='status'
+        .icon.status
+        select.input
+          option value='' = t '.any'
+          - Game::STATUSES.each do |status|
+            option value=status = t "const.game.statuses.#{status}"
+      .filter data-filter='time_mode'
+        .icon.time_mode
+        select.input
+          option value='' = t '.any'
+          - Game::TIME_MODES.keys.each do |time_mode|
+            option value=time_mode = t "const.game.time_modes.#{time_mode}"
+      .filter data-filter='chat_mode'
+        .icon.chat_mode
+        select.input
+          option value='' = t '.any'
+          - Game::CHAT_MODES.keys.each do |chat_mode|
+            option value=chat_mode = t "const.game.chat_modes.#{chat_mode}"
+
+    .table
+      .thead
+        .td.status: .icon.status
+        .td.time_mode: .icon.time_mode
+        .td.chat_mode: .icon.chat_mode
+        .td.sides: .icon.sides
+      .tbody
+      .tfooter

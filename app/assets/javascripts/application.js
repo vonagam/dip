@@ -18,7 +18,8 @@
 //= require vonagam_items/ruby_regexp_fix
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
+//
 //= require_tree ./states
-//= require game
-//= require_tree ./views
-//= require page_change
+//= require_tree ./treetable
+//= require views/application/root
+//= require views/games/show

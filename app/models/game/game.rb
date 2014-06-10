@@ -17,6 +17,8 @@ class Game
     'both' => nil
   }
 
+  STATUSES = %w( waiting started finished )
+
   field :name
   field :status, default: 'waiting'
   field :is_public, type: Boolean

@@ -1,12 +1,50 @@
-@import 'views/application/root/games_table'
-@import 'views/application/root/sign'
+@import 'views/application/root/forms'
+@import 'views/application/root/new_game'
+@import 'views/application/root/login'
+@import 'views/application/root/games'
 
 #application_root
   txt ali cen
 
   > .container
+    pos rel
+    
+    &.disabled
+      dis non
 
-    > .button
+    &.enabled
+      dis blo
 
-      + .button
-        mar t $u*10
+    .cave, .fields
+      hei 0
+      ovr hid
+      opa 0
+      tra opacity 0.5s
+
+    > .close
+      pos abs t 0 r -30
+      hei 30
+      wid 30
+      txt ali cen
+      bac clr hsl(0,0,0)
+      txt clr white siz 20 hei 30
+      vis hid
+      cur pnt
+      &:after
+        con 'x'
+
+    > .button.sezam
+      transition color 0.5s, background-color 0.5s
+
+    &.opened
+      .cave, .fields
+        hei aut
+        ovr ini
+        opa 1
+
+      > .close
+        vis vis
+
+      > .button.sezam
+        txt clr black sha non
+        bac clr tra

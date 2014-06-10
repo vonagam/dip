@@ -1,7 +1,7 @@
 - content_for :body_id, 'games_show_layout'
 
 #games_show.page
-  .menu.row
+  .menu.container.row
     = render 'games/show/control'
     = render 'games/show/participation'
     = render 'games/show/history'
@@ -24,9 +24,7 @@
 
 
 javascript:
-  g_initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
-  map_resizing()
-  toggle_abbrs()
+  g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
 
 coffee:
   page = $ '#games_show'

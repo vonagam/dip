@@ -1,10 +1,11 @@
 body > #main > .menu > .login
   txt tra upp
 
-body#application_layout
-  > #background
+body#application_root_layout
+  #background
     pos fix
     bac img url('/images/home_guard_parade.jpg') siz cvr pos cen
+    dis blo
 
     > .grey
       bac clr hsla(0,0,100,0.2)
@@ -13,23 +14,8 @@ body#application_layout
     box brd
     pad 20
 
-    > .menu
-      mar t -20
-      wid 280
-      txt ali cen
-      mar x aut
-
     > .page
       wid 280
 
 body#games_show_layout
-  > #main
-    > .menu
-      txt ali r hei 30
-      > .login, > .button
-        dis inl-blo
-        wid aut
-
-      > .login
-        mar r 10
-        
+  bac clr white        

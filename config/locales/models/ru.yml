@@ -52,7 +52,11 @@ ru:
         power: Страна
 
   const:
-    game/sheduled:
+    game:
+      statuses:
+        waiting: Ждущие
+        started: Идущие
+        finished: Завершенные
       time_modes:
         sixty_seconds: 60 секунд
         five_four_three: '3,4,5 минут'

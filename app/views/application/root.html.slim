@@ -1,14 +1,14 @@
+- content_for :body_id, 'application_root_layout'
+
+#background.layer
+  .grey.layer
+
 #application_root.page
+  = render 'application/root/login'
+  = render 'application/root/signs'
+  = render 'application/root/new_game'
+  = render 'application/root/rules'
+  = render 'application/root/games'
 
-  - if user_signed_in?
-    = render 'application/root/actions'
-
-  - else
-    = render 'application/root/sign'
-
-  .rules.container 
-    a.button.blue = t '.rules'
-
-  = render 'application/root/participated'
-
-  = render 'application/root/games_table'
+javascript:
+  r.initialize( #{ with_format(:json){ raw render template: 'application/root' } } );

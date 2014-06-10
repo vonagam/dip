@@ -5,19 +5,15 @@ ru:
 
   application:
     root:
-      rules: Правила игры
-      actions:
-        sign_out: Выйти
-        create_game: Создать игру
-      sign:
+      rules: 
+        rules: Правила
+      signs:
+        out: Выйти
         in: Войти
         up: Создать аккаунт
-      games_table:
-        waiting: Ждущие
-        started: Идущие
-        finished: Завершенные
-        players: Игроков
-        time_mode: Режим
+      games:
+        games: Игры
+        any: Любой
 
   games:
     show:
