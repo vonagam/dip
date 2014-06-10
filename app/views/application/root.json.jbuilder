@@ -1,4 +1,4 @@
-games = Game.where( public: true ).to_a
+games = Game.where( is_public: true ).to_a
 
 if user_signed_in?
   json.user do
