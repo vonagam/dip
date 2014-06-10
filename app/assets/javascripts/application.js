@@ -19,7 +19,6 @@
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
 //
-//= require_tree ./states
-//= require_tree ./treetable
+//= require_tree ./global
 //= require views/application/root
 //= require views/games/show

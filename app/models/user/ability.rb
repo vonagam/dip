@@ -4,8 +4,16 @@ class Ability
   def initialize( user )
     user ||= User.new
 
-    can :destroy, Game, creator_id: user.id
     can :start, Game, creator_id: user.id, status: 'waiting'
+
+    can :destroy, Game do |game|
+      if game.creator_id == user.id
+        case game.status
+        when 'waiting' then true
+        when 'started' then game.time_mode == 'manual' || game.game_lefted?
+        end
+      end
+    end
 
     can :create, Message do |message|
       message.game.status == 'waiting' || participate_in( message.game, user )

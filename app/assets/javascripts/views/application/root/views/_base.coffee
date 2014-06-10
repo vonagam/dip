@@ -11,7 +11,7 @@ class r.view.Base extends state.Base
         @turn true
       return
 
-    @view.find('.close').clicked =>
+    @view.find('.closer').clicked =>
       if @turned == true
         @turn false
       return

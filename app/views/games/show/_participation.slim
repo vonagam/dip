@@ -1,2 +1,23 @@
 .participation.j_component
-  a.button.green href=game_side_path(@game) data-remote=true data-method='post' = t'.participate'
+  .button.green = t '.participate'
+
+  .button.yellow = t '.change_power'
+
+  a.button.red href=game_side_path(@game) data-remote=true data-method='delete' 
+    = t '.cancel'
+
+  .new_side.layer
+    .content.container
+      .closer
+      
+      = simple_form_for Side.new, url: game_side_path(@game, format: :json),
+        remote: true, data: { no_redirect: true } do |f|
+        
+        = f.input :power,
+          collection: @game.powers.shuffle.unshift( 'Random' ),
+          value_method: Proc.new{ |x| x == 'Random' ? nil : x },
+          include_blank: false
+
+        .field.powers_is_random = t '.powers_is_random'
+
+        = f.button :button

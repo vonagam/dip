@@ -22,6 +22,9 @@ ru:
         start: Начать игру
       participation:
         participate: Принять участие
+        cancel: Отменить участие
+        change_power: Изменить страну
+        powers_is_random: Страны будут распределены случайно
       order:
         send: Отдать приказы
       timer:

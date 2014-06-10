@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
     create_params[:data] = JSON.parse create_params[:data]
 
     if order = @game.order_of( @side )
-      order.update_attributes! data: create_params[:data]
+      order.update_attributes data: create_params[:data]
     else
       order = @game.orders.create create_params.merge side: @side
     end

@@ -34,6 +34,8 @@ class Game
   embeds_many :messages
   embeds_many :orders
 
+  delegate :progress_game_url, to: 'Rails.application.routes.url_helpers'
+
   validates :name, :map, :creator, :time_mode, :chat_mode, presence: true
   validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
@@ -96,11 +98,14 @@ class Game
     start_timer
   end
 
-  def randomize_sides
-    available = available_powers
-    sides.select{ |s| s.power.blank? }.each do |side|
-      side.update_attributes power: available.shuffle!.pop
-    end
+  def start_timer( force = false )
+    return if time_mode == 'manual' || ( !force && game_lefted? )
+
+    end_at = get_duration.minutes.from_now
+      
+    state.update_attribute :end_at, end_at
+
+    RestClient.delay( run_at: end_at ).get progress_game_url( self, secret: secret )
   end
 
   protected
@@ -119,20 +124,17 @@ class Game
     sides.create user: creator
   end
 
-  def start_timer
-    return if game_lefted? || time_mode == 'manual'
-
-    end_at = get_duration.minutes.from_now
-      
-    state.update_attribute :end_at, end_at
-      
-    RestClient.delay( run_at: end_at ).get "http://#{APP_HOST}/games/#{id}/progress", secret: secret
-  end
-
   def get_duration
     duration = TIME_MODES[ time_mode ]
     duration = duration[ state.type.downcase.to_sym ] if duration.is_a?( Hash )
     duration
+  end
+
+  def randomize_sides
+    available = available_powers
+    sides.select{ |s| s.power.blank? }.each do |side|
+      side.update_attributes power: available.shuffle!.pop
+    end
   end
 
   def game_lefted?

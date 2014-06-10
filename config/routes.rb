@@ -1,16 +1,17 @@
 Diplomacy::Application.routes.draw do
+  default_url_options host: Rails.env.production? ? 'dip.kerweb.ru' : 'localhost:3000'
   
   devise_for :users
 
-  resources :games, only: [:index, :new, :create, :show, :destroy] do
+  resources :games, only: [:create, :show, :destroy] do
     member do
       get 'start'
       get 'progress'
+      get 'continue'
     end
 
-    resources :states, only: [:show]
     resource :order, only: [:create]  
-    resource :side, only: [:create]
+    resource :side, only: [:create, :destroy]
     resources :messages, only: [:create, :index]
   end
 

@@ -13,7 +13,9 @@ class Side
   validates :user, uniqueness: true, on: :create
   validate :game_is_waiting, on: :create
 
+  before_validation :delete_power_if_powers_random, on: [:create, :update]
   after_create :add_participated_game, :websockets
+  after_update :websockets
   after_destroy :remove_participated_game, :websockets
 
   def order
@@ -21,6 +23,10 @@ class Side
   end
 
   protected
+
+  def delete_power_if_powers_random
+    self.power = nil if game.status == 'waiting' && game.powers_is_random
+  end
 
   def add_participated_game
     user.push participated_games: game.id
@@ -31,7 +37,7 @@ class Side
 
   def websockets
     WebsocketRails["#{game.id}_#{power}"].make_private if power
-    WebsocketRails[game.id.to_s].trigger 'side', game.taken_powers
+    WebsocketRails[game.id.to_s].trigger 'side', self
   end
   
   def game_is_waiting

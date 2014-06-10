@@ -21,17 +21,8 @@
       opa 0
       tra opacity 0.5s
 
-    > .close
-      pos abs t 0 r -30
-      hei 30
-      wid 30
-      txt ali cen
-      bac clr hsl(0,0,0)
-      txt clr white siz 20 hei 30
-      vis hid
-      cur pnt
-      &:after
-        con 'x'
+    > .closer
+      dis non
 
     > .button.sezam
       transition color 0.5s, background-color 0.5s
@@ -42,9 +33,10 @@
         ovr ini
         opa 1
 
-      > .close
-        vis vis
+      > .closer
+        dis blo
 
       > .button.sezam
         txt clr black sha non
         bac clr tra
+        cur def

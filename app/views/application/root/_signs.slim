@@ -3,7 +3,7 @@
 
 
 .sign_in.container
-  .close
+  .closer
   = simple_form_for User.new, data: { no_redirect: true },
     url: session_path('user', format: :json), remote: true do |f|
 
@@ -17,7 +17,7 @@
 
 
 .sign_up.container
-  .close
+  .closer
   = simple_form_for User.new, data: { no_redirect: true },
     url: registration_path('user', format: :json), remote: true do |f|
 

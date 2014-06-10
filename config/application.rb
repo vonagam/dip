@@ -8,8 +8,6 @@ require 'sprockets/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
 
-APP_HOST = Rails.env.production? ? 'dip.kerweb.ru' : 'localhost:3000'
-
 module Diplomacy
   class Application < Rails::Application
     %w( models controllers ).each do |folder|

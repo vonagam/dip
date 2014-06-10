@@ -3,15 +3,22 @@ class SidesController < ApplicationController
   load_resource :game
    
   def create
-    params = side_params.merge user: current_user
-    params.delete :power if @game.powers_is_random
-    side = @game.sides.create params
-    respond_with @game, location: game_path(@game)
+    if side = @game.side_of( current_user )
+      side.update_attributes side_params
+    else
+      side = @game.sides.create side_params.merge user: current_user
+    end
+
+    if side.errors.not_empty?
+      respond_with side
+    else
+      respond_with nil, location: game_path(@game)
+    end
   end
 
   def destroy
-    @game.side_of( current_user ).destroy unless current_user == game.creator
-    respond_with nil, location: game_path(@game)
+    @game.side_of( current_user ).destroy unless @game.creator == current_user 
+    head :ok
   end
 
   private
