@@ -43,3 +43,5 @@ class g.model.Order.Build extends g.model.Order.Base
     j = super
     j['unit'] = @unit.type
     return j
+
+  to_string: -> 'B'

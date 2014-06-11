@@ -32,3 +32,6 @@ class g.model.Order.Move extends g.model.Order.Base
     j = super
     j['to'] = @to
     return j
+
+  to_string: ->
+    "M -> #{@to}"

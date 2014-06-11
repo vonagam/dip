@@ -25,3 +25,6 @@ class g.model.Order.Convoy extends g.model.Order.Base
     j['from'] = @from
     j['to'] = @to
     return j
+
+  to_string: ->
+    "C #{@from} -> #{@to}"

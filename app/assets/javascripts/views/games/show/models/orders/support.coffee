@@ -36,3 +36,6 @@ class g.model.Order.Support extends g.model.Order.Base
     j['from'] = @from
     j['to'] = @to
     return j
+
+  to_string: ->
+    "S #{@from}#{ if @to != @from then ' -> '+@to else '' }"

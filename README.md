@@ -15,8 +15,11 @@
 - Show orders for finished states
 - Style private and public messages in chat
 - Create chat message when side changed
+- Show all messages after end of game
 
 ### Global
 - Localize errors
 - Add english locale (in future)
 - Write tests
+- Admin
+- Css basic and powers colors in one file

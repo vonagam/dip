@@ -31,7 +31,7 @@ json.states @game.states do |state|
 end
 
 select = [{ public: true }]
-select.push( { to: @side.power }, { from: @side.power } )if @side
+select.push( { to: @side.power }, { from: @side.power } ) if @side
 messages = @game.messages.or(*select).desc(:created_at).limit(50).to_a
 
 json.messages messages do |message|

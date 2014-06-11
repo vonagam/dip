@@ -16,3 +16,5 @@ class g.model.Order.Disband extends g.model.Order.Base
       'transform': "translate(#{coords.x},#{coords.y})"
 
     return cross
+
+  to_string: -> 'D'

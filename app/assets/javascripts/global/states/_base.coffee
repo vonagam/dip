@@ -96,6 +96,10 @@ class state.Base
       if toggl['prop']
         target.prop toggl['prop'], bool
 
+      if toggl['data']
+        for name, thing of toggl['data']
+          target.data name, if bool then Base.get_thing_value(toggl.target) else null
+
       if toggl['bind']
         for e, fun of toggl['bind']
 

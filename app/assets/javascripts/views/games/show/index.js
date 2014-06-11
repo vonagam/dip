@@ -7,8 +7,4 @@
 //= require_tree ./views
 //= require_tree ./utilities
 
-//= require ./states/select
-//= require ./states/index
-//= require ./states/move
-//= require ./states/retreat
-//= require ./states/supply
+//= require_tree ./states
