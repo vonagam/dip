@@ -11,11 +11,8 @@
 ### Game
 - Continue game after it being left
 - Show full game info
-- Show user login
-- Show user side
 - Key bindings (chat and state selector)
 - Show orders for finished states
-- Back to root button
 - Style private and public messages in chat
 
 ### Global

@@ -6,32 +6,26 @@ class g.view.History extends g.view.Base
     @controls = @find '.controls'
 
     presses_info =
-      back_all: [ '.back.all', (x)->0 ]
-      back_one: [ '.back.one', (x)->x-1 ]
-      forward_one: [ '.forward.one', (x)->x+1 ]
-      forward_all: [ '.forward.all', (x)->game.last.raw.date ]
+      '.back.all': (x)-> 0
+      '.back.one': (x)-> x-1
+      '.forward.one': (x)-> x+1
+      '.forward.all': (x)-> game.last.raw.date
 
-    for press_info in presses_info
-      press = @controls.find press_info[0]
-      press.clicked ()=>
-        state = @find_state_by_date press_info[1] @game.state.raw.date
+    create_listener = ( listener )=>
+      =>
+        state = @find_state_by_date listener @game.state.raw.date
+        @select.val state.raw.id
         @game.set_state state
-        return
+        return false
 
+    for selector, listener of presses_info
+      @controls.find(selector).clicked create_listener listener
+      @controls.clicked -> false
 
     @select.on 'change', =>
       state = @find_state @select.val()
       @game.set_state state unless state.attached
       return
-
-    @controls.clicked '.control', (e)=>
-
-    ###
-    @button.clicked ()=>
-      @select.val @game.last.raw.id
-      @game.set_state @game.last
-      return
-    ###
 
 
   is_active: ->
@@ -43,7 +37,9 @@ class g.view.History extends g.view.Base
 
     if @turned
       @fill_select_options() if game_updated
-      #@button.toggle !@game.state.last
+
+      @controls.find('.back').toggleClass 'hidden', @game.state.raw.date == 0
+      @controls.find('.forward').toggleClass 'hidden', @game.state.last
     
     return
 

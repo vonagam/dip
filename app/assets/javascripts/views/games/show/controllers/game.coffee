@@ -83,7 +83,7 @@ class g.controller.Game extends BP.Controller
 
   is_left: ->
     return false if @raw_data.time_mode == 'manual' || @states.length < 4
-    @last.last.raw.end_at == null
+    @last.raw.end_at == null
 
 
 
