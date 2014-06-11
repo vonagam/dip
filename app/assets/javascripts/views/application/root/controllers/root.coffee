@@ -1,18 +1,16 @@
-class r.controller.Root
-  constructor: ( data )->
+class r.controller.Root extends BP.Controller
+  constructor: ( page_arguments )->
+    super r, '/?format=json'
+
+    data = page_arguments[0]
 
     @crsf_meta = $ 'meta[name="csrf-token"]'
 
     @radio = new state.Radio
 
-    @views = []
-    for container in [ 
-      'SignOut', 'SignIn', 'SignUp'
-      'NewGame', 'Rules', 'Games'
-      'Login'
-    ]
-      view = new r.view[container] this, data
-      @views[container] = view
+    @add_views data
+
+    for name, view of @views
       @radio.add [view]
 
     @update data
@@ -23,16 +21,4 @@ class r.controller.Root
     @update_views data
 
     @crsf_meta.attr 'content', data.crsf
-    return
-
-
-  update_views: ( data )->
-    view.update data for name, view of @views
-    return
-
-
-  fetch: ->
-    r.page.ajax 'get', '/?format=json', {}, (data)=>
-      @update data
-      return
     return

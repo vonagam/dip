@@ -3,8 +3,22 @@
 @import 'views/application/root/login'
 @import 'views/application/root/games'
 
+#application_root_layout
+  > #main
+    box brd
+    pad 20
+
+    > #background
+      pos fix
+      bac img url('/images/home_guard_parade.jpg') siz cvr pos cen
+      dis blo
+
+      > .grey
+        bac clr hsla(0,0,100,0.2)
+
 #application_root
   txt ali cen
+  wid 280
 
   > .container
     pos rel
@@ -30,7 +44,7 @@
     &.opened
       .cave, .fields
         hei aut
-        ovr ini
+        ovr vis
         opa 1
 
       > .closer

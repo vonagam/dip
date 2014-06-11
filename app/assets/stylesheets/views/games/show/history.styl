@@ -1,9 +1,34 @@
 #games_show
   .history.j_component
     > .input
+      dis blo
       pad y 0
-      hei 30 min ini
-      wid aut
+      hei 30 min 30
 
-    > .button
-      mar l 10
+    > .controls
+      dis blo
+
+      > .control
+        hei 26
+        txt hei 26
+        wid 25%
+        txt ali cen
+        cur pnt
+
+        &:hover
+          bac clr hsl(0,0,90)
+        &:active
+          bac clr hsl(0,0,80)
+
+        > .press
+          dis inl-blo
+          ver mid
+          wid 18
+          hei 18
+          bac img url('/play.png')
+
+        &.all > .press
+            bac pos -18 0
+
+        &.back > .press
+            transform scaleX(-1)

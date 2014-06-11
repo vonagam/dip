@@ -1,9 +1,7 @@
-class r.view.Base extends state.Base
+class r.view.Base extends BP.View
   constructor: ( @root, @container_class, permanent = false )->
-    super()
-
-    @view = r.page.find ".#{@container_class}.container"
-
+    super @root, @container_class, ".#{@container_class}.container"
+ 
     @toggls.status = target: @view, class: 'opened'
 
     @view.find('.form .button, .sezam').clicked =>

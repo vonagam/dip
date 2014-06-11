@@ -19,6 +19,10 @@
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
 //
-//= require_tree ./global
+//= require global/jquery_html_hash
+//= require global/regexp_fix_turbolinks
+//= require_tree ./global/states
+//= require_tree ./global/big_page
+//
 //= require views/application/root
 //= require views/games/show

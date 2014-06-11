@@ -2,13 +2,11 @@
 class state.Family extends state.Base
   after_child_toggled: (child, bool)->
     return true if super
-    return if @turned == false
+    return unless @turned && bool == false
 
-    if bool == false
+    for child in @childs
+      return if child.turned
 
-      for child in @childs
-        return if child.turned == true
-
-      @turn false
+    @turn false
 
     return

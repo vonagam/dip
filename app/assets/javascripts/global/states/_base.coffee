@@ -25,6 +25,9 @@ class state.Base
   turn: (bool)->
     return if @turned == bool
 
+    if typeof bool != 'boolean'
+      log 'state turn: not boolean bool'
+
     @turned = bool
 
     return if @parent && @parent.before_child_toggled this, bool

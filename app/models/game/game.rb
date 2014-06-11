@@ -99,7 +99,7 @@ class Game
   end
 
   def start_timer( force = false )
-    return if time_mode == 'manual' || ( !force && game_lefted? )
+    return if time_mode == 'manual' || ( !force && is_left? )
 
     end_at = get_duration.minutes.from_now
       
@@ -137,8 +137,8 @@ class Game
     end
   end
 
-  def game_lefted?
-    return false unless states.count > 3
+  def is_left?
+    return false if states.count < 4
 
     last_three_states = states.desc(:_id).limit(3).skip(1).to_a
 

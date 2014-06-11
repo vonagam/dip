@@ -1,13 +1,7 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, only: [ :create, :destroy, :start ]
-  load_resource except: [ :index, :new, :create ]
+  before_action :authenticate_user!, except: [ :show, :progress ]
+  load_resource except: [ :create ]
   load_and_authorize_resource only: [ :destroy, :start ]
-
-  def index
-  end
-
-  def new
-  end
 
   def create
     new_game = Game.create game_params.merge( creator: current_user )
@@ -21,12 +15,13 @@ class GamesController < ApplicationController
 
   def destroy
     @game.destroy!
-    redirect_to action: :index, status: 303
+    redirect_to root_path, status: 303
   end
 
   def start
     @game.progress!
-    redirect_to action: :show, status: 303
+    show
+    render :show
   end
 
   def progress

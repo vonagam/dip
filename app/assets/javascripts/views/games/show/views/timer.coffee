@@ -9,7 +9,7 @@ class g.view.Timer extends g.view.Base
 
 
   is_active: ->
-    @game.status == 'started'
+    @game.status == 'started' && !@game.is_left
 
 
   update: ( game_updated )->

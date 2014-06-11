@@ -1,36 +1,33 @@
-@import 'views/games/show/chat'
-@import 'views/games/show/history'
-@import 'views/games/show/participation'
-@import 'views/games/show/stats'
-@import 'views/games/show/timer'
-
-@import 'views/games/show/map/map'
-@import 'views/games/show/map/countries'
-@import 'views/games/show/map/orders'
-
-#main.layout > .menu.game_show
-  txt ali r
-
 #games_show
   dis blo
 
   .j_component
     dis non
     &.active
-      dis ini
+      dis inl-blo
+      ver t
 
   > .menu
-    hei 50
+    hei 66
     pad y 10
+    txt hei 46
 
-    > .j_component
-      pad l 20
-
+    .j_component
+      wid 150
       .button
-        wid aut
-
+        wid 150
         + .button
           mar l 10
+
+    > .left
+      > .active
+        mar r 20
+
+    > .right
+      pos abs t 10 r 10
+
+      > .active
+        mar l 20
 
   > .pils2
     pos rel
@@ -44,9 +41,6 @@
 
     > .left
       pos rel
-
-      .container
-        sha non
 
       > .keep_ratio
         pos rel
@@ -65,12 +59,25 @@
         pos abs b 0 l 0 z 2
         txt ali cen
         mar 0
-        brd 0
         cur pnt
         txt clr black
+        sha non
 
         &.hidden
           txt clr hsl(0,0,60)
 
     > .right
       mar l 20
+
+
+@import 'views/games/show/map/map'
+@import 'views/games/show/map/countries'
+@import 'views/games/show/map/orders'
+
+@import 'views/games/show/actions'
+@import 'views/games/show/chat'
+@import 'views/games/show/history'
+@import 'views/games/show/participation'
+@import 'views/games/show/player'
+@import 'views/games/show/stats'
+@import 'views/games/show/timer'

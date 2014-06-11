@@ -1,24 +1,28 @@
-.chat
-  > .window
-    bac clr white
-    overflow-y scroll
-    resize vertical
-    brd 2 hsl(0,0,85)
+#games_show
+  .chat.j_component
+    &.active
+      dis blo
 
-    > .message
-      pos rel
-      txt siz 14
-      pad 0.3em 0.6em
+    > .window
+      bac clr white
+      overflow-y scroll
+      resize vertical
+      brd 2 hsl(0,0,85)
 
-      + .message
-        brd t 1 hsl(0,0,90)
+      > .message
+        pos rel
+        txt siz 14
+        pad 0.3em 0.6em
 
-      > .when, > .who, > .what
-        dis inl
+        + .message
+          brd t 1 hsl(0,0,90)
 
-      > .when
-        txt clr hsl(0,0,70) siz 10
+        > .when, > .who, > .what
+          dis inl
 
-  #message_text
-    txt hei inh siz 14
-    hei min 3.6em
+        > .when
+          txt clr hsl(0,0,70) siz 10
+
+    #message_text
+      txt hei inh siz 14
+      hei min 3.6em

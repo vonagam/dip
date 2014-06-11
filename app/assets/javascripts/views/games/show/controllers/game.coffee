@@ -1,7 +1,16 @@
-class g.controller.Game
-  constructor: ( data )->
+class g.controller.Game extends BP.Controller
+  constructor: ( page_arguments )->
+    data = page_arguments[0]
+
+    super g, "/games/#{data.id}.json"
+
     @id = data.id
     @type = data._type
+
+    g.map.find('[data-coords]').each ->
+      q = $ this
+      xy = q.attr('data-coords').split(',')
+      q.data 'coords', new Vector({ x: parseInt(xy[0]), y: parseInt(xy[1]) })
 
     host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
     @websockets = new WebSocketRails host + '/websocket'
@@ -12,14 +21,8 @@ class g.controller.Game
 
     @user_side = @get_user_side data.sides
 
-    @views = []
-    for view_component in [
-      'Chat', 'Stats'
-      'Control', 'Participation'
-      'History', 'Order'
-      'Manual', 'Timer'
-    ]
-      new g.view[view_component] this, data
+    @add_views data
+    new g.view._Actions @views
 
     @update data
 
@@ -72,22 +75,16 @@ class g.controller.Game
     return
 
 
-  update_views: ( game_updated )->
-    view.update game_updated for view in @views
-    return
-
-
   get_user_side: ( sides )->
     for side in sides
       return side if side.user_side
     return null
 
 
-  fetch: ->
-    g.page.ajax 'get', "/games/#{@id}.json", {}, (game_data)=>
-      @update game_data
-      return
-    return
+  is_left: ->
+    return false if @raw_data.time_mode == 'manual' || @states.length < 4
+    @last.last.raw.end_at == null
+
 
 
   toggle_webscokets: ( bool )->
@@ -95,4 +92,17 @@ class g.controller.Game
       @websockets.reconnect()
     else
       @websockets.disconnect()
+    return
+
+
+  page_stashed: ->
+    super
+    @toggle_webscokets false
+    return
+
+
+  page_restored: ->
+    super
+    @toggle_webscokets true
+    @fetch()
     return

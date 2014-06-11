@@ -1,10 +1,10 @@
 .participation.j_component
-  .button.green = t '.participate'
+  .button.green == t '.participate'
 
-  .button.yellow = t '.change_power'
+  .button.yellow == t '.change_power'
 
   a.button.red href=game_side_path(@game) data-remote=true data-method='delete' 
-    = t '.cancel'
+    == t '.cancel'
 
   .new_side.layer
     .content.container
@@ -18,6 +18,6 @@
           value_method: Proc.new{ |x| x == 'Random' ? nil : x },
           include_blank: false
 
-        .field.powers_is_random = t '.powers_is_random'
+        .field.powers_is_random == t '.powers_is_random'
 
         = f.button :button

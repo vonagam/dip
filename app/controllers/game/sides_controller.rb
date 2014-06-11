@@ -4,7 +4,7 @@ class SidesController < ApplicationController
    
   def create
     if side = @game.side_of( current_user )
-      side.update_attributes side_params
+      side.update_attributes side_params unless @game.creator == current_user
     else
       side = @game.sides.create side_params.merge user: current_user
     end

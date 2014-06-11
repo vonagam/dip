@@ -10,7 +10,7 @@ class g.view.Participation extends g.view.Base
 
       @thinked = false
 
-      @view.on 'ajax:success', (game_data)=>
+      @view.on 'ajax:success', =>
         @thinked = false
         return
 

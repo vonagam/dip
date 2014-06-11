@@ -1,8 +1,4 @@
 ru:
-  layouts:
-    application:
-      root: На главную
-
   application:
     root:
       rules: 
@@ -17,20 +13,25 @@ ru:
 
   games:
     show:
-      control:
-        delete: Удалить игру
-        start: Начать игру
+      root:
+        root: На <br> главную
+      actions:
+        actions: Действия
+      delete:
+        delete: Удалить <br> игру
+      start:
+        start: Начать <br> игру
       participation:
-        participate: Принять участие
-        cancel: Отменить участие
-        change_power: Изменить страну
+        participate: Принять <br> участие
+        cancel: Отменить <br> участие
+        change_power: Изменить <br> страну
         powers_is_random: Страны будут распределены случайно
       order:
-        send: Отдать приказы
+        send: Отдать <br> приказы
       timer:
-        remain: До конца хода
+        remain: Осталось
       manual:
-        progress: Следующий ход
+        progress: Следующий <br> ход
       stats:
         statistic: Показатели
         power: Страна

@@ -1,7 +1,11 @@
-class g.view.Control extends g.view.Base
+class g.view.Start extends g.view.Base
   constructor: ( game )->
     if game.user_side && game.user_side.creator
-      super game, 'control'
+      super game, 'start'
+
+      @view.on 'ajax:success', ( e, data )=>
+        @game.update data
+        return false
 
 
   is_active: ->

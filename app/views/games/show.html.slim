@@ -2,39 +2,32 @@
 
 #games_show.page
   .menu.container.row
-    = render 'games/show/control'
-    = render 'games/show/participation'
-    = render 'games/show/history'
-    = render 'games/show/order'
-    = render 'games/show/manual'
-    = render 'games/show/timer'
+    .left
+      = render 'games/show/actions'
+
+      = render 'games/show/history'
+
+      = render 'games/show/manual'
+      = render 'games/show/timer'
+
+      = render 'games/show/order'
+    
+    .right
+      = render 'games/show/player'
+      = render 'games/show/root'
+
 
   .pils2
 
     .left.container.pil
       = render 'games/show/stats'
-      .keep_ratio
-        = render 'games/show/map'
+      .keep_ratio = render 'games/show/map'
       .abbrs.container abbs
 
     .resizer
     
-    .right.pil.container
-      = render 'games/show/chat'
+    .right.pil.container = render 'games/show/chat'
 
 
 javascript:
   g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
-
-coffee:
-  page = $ '#games_show'
-  left = page.find '> .pils2 > .left'
-  right = page.find '> .pils2 > .right'
-
-  difference = left.height() - right.height()
-
-  if difference > 0
-
-    chat_window = page.find '.chat .window'
-
-    chat_window.height chat_window.height() + difference

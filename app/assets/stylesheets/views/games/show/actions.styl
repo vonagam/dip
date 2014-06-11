@@ -1,0 +1,35 @@
+#games_show
+  .actions.j_component
+    pos rel z 5
+
+    bac clr hsl(0,0,100)
+
+    tra box-shadow 0.5s
+
+    > .button
+      hei 46
+      txt hei 32
+      transition color 0.5s, background-color 0.5s
+
+    &.opened, &:hover
+      sha 0 0 0 5 hsla(0,0,0,0.2)
+
+      > .button
+        txt clr black sha non
+        bac clr tra
+        cur def
+
+      > .list
+        dis blo
+
+    > .list
+      pad 10 b 0
+      dis non
+
+      > .j_component
+        &.active
+          dis blo
+
+        > .button
+          wid 130
+          mar 0 b 10

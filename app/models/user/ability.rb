@@ -10,7 +10,7 @@ class Ability
       if game.creator_id == user.id
         case game.status
         when 'waiting' then true
-        when 'started' then game.time_mode == 'manual' || game.game_lefted?
+        when 'started' then game.time_mode == 'manual' || game.is_left?
         end
       end
     end
