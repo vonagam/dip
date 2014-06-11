@@ -42,9 +42,7 @@ describe 'Flow' do
     expect( @game.state.data['Powers'][power.to_s]['Units'].include?(unit) ).to be bool
   end
 
-  it '#no_error' do
-    #start
-
+  before :each do
     @map = Map.find_by name: 'Standart'
 
     @users = {}
@@ -53,9 +51,10 @@ describe 'Flow' do
       @users[power] = create :user
     end
 
-    @game = Game::Manual.create!({
+    @game = Game.create!({
       name: 'game_name', 
-      time_mode: 'manual', 
+      time_mode: 'manual',
+      chat_mode: 'both', 
       creator: @users['Russia'], 
       map: @map
     })
@@ -67,7 +66,10 @@ describe 'Flow' do
         @game.sides.create power: power, user: user
       end
     end
+  end
 
+  it '#no_error' do
+    #start
     progress!
 
 
@@ -152,5 +154,33 @@ describe 'Flow' do
 
     expect( powers.any?{|x| x.blank?} ).to be false
     expect( powers.uniq.length == powers.length ).to be true
+  end
+
+  it 'retreat' do
+    progress!
+
+    @game.state.update_attributes!({
+      data: {
+        "Embattled"=>[:sev], 
+        "Powers"=>{
+          "Russia"=>{"Units"=>["Amos", "Fstp_sc", "Asev-rum"], "Areas"=>[:mos, :sev, :stp, :lvn, :fin]}, 
+          "Germany"=>{"Units"=>["Asev", "Aukr", "Fkie", "Amun"], "Areas"=>[:ukr, :kie, :rum, :mun, :gal, :boh, :sil, :pru, :ber, :ruh]}, 
+          "Austria"=>{"Units"=>["Abud", "Ftri"], "Areas"=>[:bud, :tri, :vie, :tyr]}, 
+          "Turkey"=>{"Units"=>["Asmy", "Acon", "Fank"], "Areas"=>[:smy, :con, :ank, :syr, :arm]}, 
+          "Italy"=>{"Units"=>["Arom", "Aven", "Fnap"], "Areas"=>[:rom, :ven, :nap, :pie, :tus, :apu]}, 
+          "France"=>{"Units"=>["Apar", "Amar", "Fbre"], "Areas"=>[:par, :mar, :bre, :gas, :pic, :bur]}, 
+          "England"=>{"Units"=>["Aliv", "Flon", "Fedi"], "Areas"=>[:liv, :lon, :edi, :cly, :yor, :wal]}
+        }
+      }, 
+      date: 12, 
+      end_at: nil, 
+      resulted_orders: {}, 
+      _type: "State::Retreat"
+    })
+
+    @game.reload
+    @game.progress!
+
+    puts @game.reload.state.data
   end
 end

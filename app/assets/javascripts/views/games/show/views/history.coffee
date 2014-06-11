@@ -9,18 +9,18 @@ class g.view.History extends g.view.Base
       '.back.all': (x)-> 0
       '.back.one': (x)-> x-1
       '.forward.one': (x)-> x+1
-      '.forward.all': (x)-> game.last.raw.date
+      '.forward.all': (x)-> game.states.indexOf game.last
 
     create_listener = ( listener )=>
       =>
-        state = @find_state_by_date listener @game.state.raw.date
+        state = @game.states[ listener @game.states.indexOf @game.state ]
         @select.val state.raw.id
         @game.set_state state
         return false
 
     for selector, listener of presses_info
       @controls.find(selector).clicked create_listener listener
-      @controls.clicked -> false
+    @controls.clicked -> false
 
     @select.on 'change', =>
       state = @find_state @select.val()

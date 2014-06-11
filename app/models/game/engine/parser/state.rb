@@ -22,20 +22,21 @@ module Engine
             if $4
               @gamestate.dislodges[area] = DislodgeTuple.new unit, $4.to_sym
             else
-              @gamestate[area] = AreaState.new nil, unit, $3
+              @gamestate[area].unit = unit
+              @gamestate[area].coast = $3
             end
           end
         end
 
         state['Areas'].each do |land|
-          ( @gamestate[land.to_sym] ||= AreaState.new ).owner = power_s
+          @gamestate[land.to_sym].owner = power_s
         end
 
       end
 
       if data.has_key?( 'Embattled' )
         data['Embattled'].each do |land|
-          ( @gamestate[land.to_sym] ||= AreaState.new ).embattled = true
+          @gamestate[land.to_sym].embattled = true
         end
       end
 
@@ -43,28 +44,27 @@ module Engine
     end
 
     def to_hash
-      data = {}
+      data = { Powers: Hash.new { |h,k| h[k] = Parser::State.empty_power } }
 
-      powers = {}
+      powers = data[:Powers]
+
       @gamestate.each do |name, area|
         if unit = area.unit
-          ( powers[unit.nationality] ||= Parser::State.empty_power )[:Units] <<
+          powers[unit.nationality][:Units] <<
           unit_to_string( unit, "#{name}#{area.coast}" )
         end
         if area.owner
-          ( powers[area.owner] ||= Parser::State.empty_power )[:Areas] << name
+          powers[area.owner][:Areas] << name
         end
       end
 
       unless @gamestate.dislodges.empty?
         @gamestate.dislodges.each do |name, dislodge|
-          ( powers[dislodge.unit.nationality] ||= [] )[:Units] <<
+          powers[dislodge.unit.nationality][:Units] <<
           dislodge_to_string( name, dislodge )
         end
         data[:Embattled] = @gamestate.embattled
       end
-
-      data[:Powers] = powers
 
       data
     end
