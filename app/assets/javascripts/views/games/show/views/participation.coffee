@@ -8,9 +8,12 @@ class g.view.Participation extends g.view.Base
       @cancel = @find '> .button.red'
       @popup = @find '> .new_side'
 
+      @popup.hide()
+      @popup.appendTo doc.find '#main.layout'
+
       @thinked = false
 
-      @view.on 'ajax:success', =>
+      @view.add( @popup ).on 'ajax:success', =>
         @thinked = false
         return
 
