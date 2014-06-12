@@ -16,6 +16,7 @@
 - Style private and public messages in chat
 - Create chat message when side changed
 - Show all messages after end of game
+- Cache map size
 
 ### Global
 - Localize errors

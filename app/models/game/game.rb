@@ -78,9 +78,9 @@ class Game
     return if status == 'finished'
 
     if status == 'waiting'
-      randomize_sides
-
       update_attributes! status: 'started'
+
+      randomize_sides
 
       state.send_websocket
       start_timer

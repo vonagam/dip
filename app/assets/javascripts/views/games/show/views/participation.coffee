@@ -1,5 +1,5 @@
 class g.view.Participation extends g.view.Base
-  constructor: ( game )->
+  constructor: ( game, data )->
     unless game.user_side && game.user_side.creator
       super game, 'participation'
 
@@ -31,7 +31,7 @@ class g.view.Participation extends g.view.Base
         @popup.fadeOut 500
         return
 
-      if @game.powers_is_random
+      if data.powers_is_random
         @change.remove()
         @popup.find('.field.side_power').remove()
       else
@@ -71,7 +71,7 @@ class g.view.Participation extends g.view.Base
     .html button.html()
     .attr class: button.attr 'class'
 
-    unless @game.powers_is_random
+    unless @game.raw_data.powers_is_random
       select = @popup.find '.side_power > select'
       select.children('[disabled]').prop 'disabled', false
 

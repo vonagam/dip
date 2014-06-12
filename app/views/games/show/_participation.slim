@@ -18,6 +18,9 @@
           value_method: Proc.new{ |x| x == 'Random' ? nil : x },
           include_blank: false
 
-        .field.powers_is_random == t '.powers_is_random'
+        .field.powers_is_random 
+          == t '.powers_is_random'
+
+          = f.hidden_field :power, value: ''
 
         = f.button :button

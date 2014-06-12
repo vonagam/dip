@@ -16,11 +16,19 @@ class Ability
     end
 
     can :create, Message do |message|
-      message.game.status == 'waiting' || participate_in( message.game, user )
+      message.game.status == 'waiting' || 
+      participate_in( message.game, user )
     end
 
     can :create, Order do |order|
-      order.game.status == 'started' && participate_in( order.game, user )
+      order.game.status == 'started' && 
+      participate_in( order.game, user )
+    end
+
+    can [:create, :update, :delete], Side do |side|
+      side.game.status == 'waiting' && 
+      side.user_id == user.id  && 
+      side.game.creator_id != user.id
     end
 
 

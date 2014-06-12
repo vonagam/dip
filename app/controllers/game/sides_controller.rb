@@ -1,10 +1,11 @@
 class SidesController < ApplicationController
   before_action :authenticate_user!
   load_resource :game
+  authorize_resource through: :game
    
   def create
     if side = @game.side_of( current_user )
-      side.update_attributes side_params unless @game.creator == current_user
+      side.update_attributes side_params
     else
       side = @game.sides.create side_params.merge user: current_user
     end
@@ -17,13 +18,13 @@ class SidesController < ApplicationController
   end
 
   def destroy
-    @game.side_of( current_user ).destroy unless @game.creator == current_user 
+    @game.side_of( current_user ).destroy
     head :ok
   end
 
   private
 
-  def side_params 
+  def side_params
     params.require(:side).permit :power
   end
 end
