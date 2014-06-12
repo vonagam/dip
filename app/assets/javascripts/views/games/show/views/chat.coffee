@@ -4,14 +4,23 @@ class g.view.Chat extends g.view.Base
 
     @window = @find '.window'
     @form = @find 'form'
+    @select = @form.find '.message_to > .input'
+    @textarea = @form.find '.message_text > .input'
 
-    @form.on 'ajax:success', ->  $(this).find('#message_text').val('')
+    @form.on 'ajax:success', =>  @textarea.val ''
 
     @game.channel.bind 'message', ( message )=>
       @add_message message
       return
 
     @private = false
+
+    @keybindings = (e)=>
+      if e.shiftKey && @textarea.is(':focus')
+        @form.submit() if e.which == 13
+        @move_select_value 'prev' if e.which == 38
+        @move_select_value 'next' if e.which == 40
+      return
 
 
   fill: ( messages )->
@@ -48,16 +57,17 @@ class g.view.Chat extends g.view.Base
 
     @form.find('.field.message_to').toggle chat_is_private
 
+    doc[if chat_is_private then 'on' else 'off'] 'keydown', @keybindings
+
     if chat_is_private
-      select = @form.find 'select#message_to'
-      select.empty()
+      @select.empty()
 
       def_option = if @game.raw_data.chat_mode == 'both' then 'Public' else ''
-      select.append @side_option def_option
+      @select.append @side_option def_option
       
       for side in @game.raw_data.sides
         continue unless side.alive && side != @user_side
-        select.append @side_option side.power
+        @select.append @side_option side.power
 
     return
 
@@ -85,6 +95,15 @@ class g.view.Chat extends g.view.Base
 
   time_format: ( created_at )->
     (new Date(created_at)).toTimeString().replace(/^(\S+)\s+.+$/, "$1")
+
+
+  move_select_value: ( method )->
+    options = @select.children()
+    if options.length > 1
+      selected = options.filter ':selected'
+      move_to = selected[ method ]()
+      @select.val move_to.val() if move_to.length > 0
+    return
 
 
 message_template = $("

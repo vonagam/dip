@@ -11,15 +11,11 @@ class g.model.Unit
       @coords = @coords.sum( offset.scale(14) )
 
   attach: ->
-    @view = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
-    @view.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#'+@type
+    klass = "unit #{@power.name} #{ (@dislodged && 'dislodged') || '' }"
 
-    @view = $ @view
+    @view = g.svgs.get @type, klass, @coords
 
     @view
-    .attr
-      'class': "unit #{@power.name} #{ (@dislodged && 'dislodged') || '' }"
-      'transform': "translate(#{@coords.x},#{@coords.y})"
     .data 'model': this
     .appendTo @area.view()
 

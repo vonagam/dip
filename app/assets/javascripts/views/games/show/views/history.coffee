@@ -12,7 +12,8 @@ class g.view.History extends g.view.Base
       '.forward.all': (x)-> game.states.indexOf game.last
 
     create_listener = ( listener )=>
-      =>
+      (e)=>
+        return if $(e.target).closest('.control').is('.hidden')
         state = @game.states[ listener @game.states.indexOf @game.state ]
         @select.val state.raw.id
         @game.set_state state
@@ -26,6 +27,15 @@ class g.view.History extends g.view.Base
       state = @find_state @select.val()
       @game.set_state state unless state.attached
       return
+
+    @toggls.doc =
+      target: doc
+      bind:
+        keydown: (e)=>
+          if e.shiftKey
+            @controls.find('.back.one').trigger 'mousedown' if e.which == 37
+            @controls.find('.forward.one').trigger 'mousedown' if e.which == 39
+          return
 
 
   is_active: ->

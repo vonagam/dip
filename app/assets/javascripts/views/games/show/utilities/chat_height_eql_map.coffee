@@ -1,4 +1,6 @@
 g.utility.chat_height_eql_map = ->
+  return
+
   left = g.page.find '> .pils2 > .left'
   right = g.page.find '> .pils2 > .right'
 

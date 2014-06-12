@@ -26,18 +26,7 @@ class g.model.Order.Build extends g.model.Order.Base
     return
 
   create_visualization: ->
-    circle = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
-    circle.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#build'
-  
-    circle = $ circle
-
-    coords = @unit.coords
-
-    circle.attr 
-      'class': @view_class_name()
-      'transform': "translate(#{coords.x},#{coords.y})"
-
-    return circle
+    g.svgs.get 'build', @view_class_name(), @unit.coords
 
   to_json: ->
     j = super

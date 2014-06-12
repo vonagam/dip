@@ -29,6 +29,9 @@
     
     .right.pil.container = render 'games/show/chat'
 
+div
+  = @game.messages.to_a.to_json
+
 
 javascript:
   g.initialize( 

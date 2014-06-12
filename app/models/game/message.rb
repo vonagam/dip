@@ -19,12 +19,14 @@ class Message
 
   def delete_to_if_public
     self.to = nil if is_public
+    true
   end
 
   def check_status_if_choosable
     if is_public.nil? && game.chat_is_public?.nil?
       self.is_public = to == 'Public'
     end
+    true
   end
 
   def send_websocket
