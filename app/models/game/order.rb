@@ -6,9 +6,10 @@ class Order
   embedded_in :game
   belongs_to :side
 
-  validates :game, :side_id, presence: true, uniqueness: true
-  validates :side, presence: true, on: :create
-  validate :game_in_progress, :parsable, on: :create
+  attr_readonly :user_id
+
+  validates :side_id, presence: true, uniqueness: true, on: :create
+  validate :game_in_progress, :parsable
 
   def side
     game.sides.find side_id

@@ -36,7 +36,7 @@ class Game
 
   delegate :progress_game_url, to: 'Rails.application.routes.url_helpers'
 
-  validates :name, :map, :creator, :time_mode, :chat_mode, presence: true
+  validates :name, :is_public, :powers_is_random, :time_mode, :chat_mode, :map, :creator, presence: true
   validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
   validates :chat_mode, inclusion: { in: CHAT_MODES.keys }

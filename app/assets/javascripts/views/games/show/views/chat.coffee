@@ -1,14 +1,11 @@
 class g.view.Chat extends g.view.Base
-  constructor: ( game, data )->
+  constructor: ( game )->
     super game, 'chat', true
 
     @window = @find '.window'
     @form = @find 'form'
 
     @form.on 'ajax:success', ->  $(this).find('#message_text').val('')
-
-    for message in data.messages.reverse()
-      @add_message message
 
     @game.channel.bind 'message', ( message )=>
       @add_message message
@@ -17,16 +14,22 @@ class g.view.Chat extends g.view.Base
     @private = false
 
 
+  fill: ( messages )->
+    @window.empty()
+    @add_message message for message in messages.reverse()
+    return
+
+
   update: ( game_updated )->
     return unless game_updated
 
-    user_side = @game.user_side
+    @user_side = @game.user_side
 
     form_is_available =
       switch @game.status
         when 'waiting' then true
-        when 'started' then user_side && user_side.alive
-        when 'finished' then user_side
+        when 'started' then @user_side && @user_side.alive
+        when 'finished' then @user_side
 
     if not form_is_available
       @form.hide()
@@ -53,7 +56,7 @@ class g.view.Chat extends g.view.Base
       select.append @side_option def_option
       
       for side in @game.raw_data.sides
-        continue unless side.alive && side != @game.user_side
+        continue unless side.alive && side != @user_side
         select.append @side_option side.power
 
     return
@@ -63,10 +66,11 @@ class g.view.Chat extends g.view.Base
     scroll = (@window[0].scrollHeight - @window.scrollTop()) <= @window.outerHeight() #innerHeight
 
     message_template.clone().html_hash
-      when: @time_format message.created_at
-      who: @side_span message.from
-      what: message.text
-    .addClass if message.public then 'public' else 'private'
+      created_at: @time_format message.created_at
+      from: @side_span message.from
+      to: @side_span message.to
+      text: message.text
+    .addClass if message.is_public then 'public' else 'private'
     .appendTo @window
 
     @window.scrollTop @window[0].scrollHeight if scroll
@@ -74,7 +78,7 @@ class g.view.Chat extends g.view.Base
 
 
   side_span: ( side )->
-    "<span class='#{side}'>#{side}</span>"
+    "<span class='side #{side} #{side == @user_side.power}'>#{side}</span>"
   side_option: ( side )->
     "<option value='#{side}'>#{side}</option>"
 
@@ -84,9 +88,10 @@ class g.view.Chat extends g.view.Base
 
 
 message_template = $("
-  <div class='message'>
-    <div class='when'></div>
-    <div class='who'></div>
-    <div class='what'></div>
-  </div>
+<div class='message'>
+<div class='created_at'></div>
+<div class='from'></div>
+<div class='to'></div>
+<div class='text'></div>
+</div>
 ")

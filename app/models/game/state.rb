@@ -63,7 +63,7 @@ class State
     WebsocketRails[game.id.to_s].trigger 'state'
 
     text = "#{date/2}.#{date%2}:#{type}"
-    game.messages.create from: '=', public: true, text: text
+    game.messages.create from: 'Dip', is_public: true, text: text
   end
 
   protected

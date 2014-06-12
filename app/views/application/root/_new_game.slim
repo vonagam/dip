@@ -21,24 +21,7 @@
         label_method: proc{ |mode| t "const.game.chat_modes.#{mode}" }
 
       .centrator
-        = f.input :is_public
-        = f.input :powers_is_random
+        = f.input :is_public, required: false
+        = f.input :powers_is_random, required: false
 
     = f.button :button, class: 'green'
-
-  coffee:
-    form = $ '.new_game.container #new_game'
-    durations = form.find '[name="game[time_mode]"]'
-    is_public = form.find '.field.game_is_public'
-
-    durations.on 'change', ->
-      choosen = durations.filter ':checked'
-
-      public_possible = choosen.val() != 'manual'
-
-      is_public.toggle public_possible
-
-      unless public_possible
-        is_public.find('input').prop 'checked', false
-
-      return

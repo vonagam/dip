@@ -31,4 +31,7 @@
 
 
 javascript:
-  g.initialize( #{ with_format(:json){ raw render template: 'games/show' } } )
+  g.initialize( 
+    #{ with_format(:json){ raw render template: 'games/show' } },
+    #{ with_format(:json){ raw render template: 'messages/index' } }
+  )

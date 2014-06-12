@@ -1,6 +1,7 @@
 class g.controller.Game extends BP.Controller
   constructor: ( page_arguments )->
     data = page_arguments[0]
+    messages = page_arguments[1]
 
     super g, "/games/#{data.id}.json"
 
@@ -25,6 +26,8 @@ class g.controller.Game extends BP.Controller
     new g.view._Actions @views
 
     @update data
+    
+    @views.chat.fill messages
 
 
   update: ( data )->

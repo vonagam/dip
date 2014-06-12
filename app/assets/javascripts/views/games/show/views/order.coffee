@@ -5,9 +5,19 @@ class g.view.Order extends g.view.Base
     @button = @find '.send'
 
     @button.clicked ()=>
-      orders = @game.state.collect_orders @game.user_side.power
-      @button.ajax 'post', @button.data('url'), { order: { data: JSON.stringify(orders) } }, (game_data)=>
-        @game.update game_data
+      state = @game.state
+      power = @game.user_side.power
+      orders = state.collect_orders power
+
+      @button.ajax 'post', @button.data('url'), { order: { data: JSON.stringify(orders) } }, (order)=>
+        if state.last
+          state.raw.orders = {}
+          state.raw.orders[ power ] = order.data
+
+          if state.attached
+            state.reset()
+            @update false
+
         return
       return
 

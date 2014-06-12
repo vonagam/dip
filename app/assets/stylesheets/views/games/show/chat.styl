@@ -17,11 +17,27 @@
         + .message
           brd t 1 hsl(0,0,90)
 
-        > .when, > .who, > .what
+        > .created_at, > .from, > .to, > .text
           dis inl
 
-        > .when
-          txt clr hsl(0,0,70) siz 10
+        > .to:after, > .to:before, > .created_at
+          txt clr hsl(0,0,70)
+
+        > .to > .true, > .from > .true
+          dis non
+
+        > .to:after
+          con ' :'
+
+        > .created_at
+          txt siz 10
+
+        &.private > .to:before
+          con '> '
+          
+        &.public > .to > .side
+          dis non
+
 
     #message_text
       txt hei inh siz 14

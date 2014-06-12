@@ -26,9 +26,11 @@ module Diplomacy
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    locale = Rails.env.test? ? :en : :ru
+
     config.i18n.enforce_available_locales = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :ru
-    config.i18n.locale = :ru
+    config.i18n.default_locale = locale
+    config.i18n.locale = locale
   end
 end

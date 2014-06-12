@@ -30,14 +30,6 @@ json.states @game.states do |state|
   json.orders orders
 end
 
-select = [{ public: true }]
-select.push( { to: @side.power }, { from: @side.power } ) if @side
-messages = @game.messages.or(*select).desc(:created_at).limit(50).to_a
-
-json.messages messages do |message|
-  json.extract! message, :from, :to, :created_at, :public, :text
-end
-
 if user_signed_in?
   json.login current_user.login
 end

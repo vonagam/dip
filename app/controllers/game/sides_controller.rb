@@ -1,28 +1,26 @@
 class SidesController < ApplicationController
   before_action :authenticate_user!
   load_resource :game
+  before_action :find_side
   authorize_resource through: :game
    
   def create
-    if side = @game.side_of( current_user )
-      side.update_attributes side_params
-    else
-      side = @game.sides.create side_params.merge user: current_user
-    end
+    @side.update_attributes side_params
 
-    if side.errors.not_empty?
-      respond_with side
-    else
-      respond_with nil, location: game_path(@game)
-    end
+    respond_with @side, location: game_path(@game)
   end
 
   def destroy
-    @game.side_of( current_user ).destroy
+    @side.destroy
+    
     head :ok
   end
 
   private
+
+  def find_side
+    @side = @game.side_of( current_user ) || @game.sides.build( user: current_user )
+  end
 
   def side_params
     params.require(:side).permit :power

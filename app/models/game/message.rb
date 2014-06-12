@@ -2,7 +2,7 @@ class Message
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 
-  field :public, type: Boolean
+  field :is_public, type: Boolean
   field :to
   field :from
   field :text
@@ -18,12 +18,12 @@ class Message
   protected
 
   def delete_to_if_public
-    self.to = nil if is_public?
+    self.to = nil if is_public
   end
 
   def check_status_if_choosable
-    if public.nil? && game.chat_is_public?.nil?
-      self.public = to == 'Public'
+    if is_public.nil? && game.chat_is_public?.nil?
+      self.is_public = to == 'Public'
     end
   end
 
@@ -31,7 +31,7 @@ class Message
     game_id = game.id.to_s
 
     channels =
-    if is_public?
+    if is_public
       [game_id]
     else
       [from,to].map{ |side| "#{game_id}_#{side}" }
@@ -43,7 +43,7 @@ class Message
   end
 
   def to_valid_powers
-    return if is_public?
+    return if is_public
 
     error = 
     if to.blank?
@@ -55,12 +55,5 @@ class Message
     end
 
     errors.add :to, error if error
-  end
-
-  def is_public?
-    self.public
-  end
-  def is_private?
-    !is_public?
   end
 end

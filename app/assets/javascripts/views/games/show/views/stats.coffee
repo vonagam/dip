@@ -11,11 +11,12 @@ class g.view.Stats extends g.view.Base
     @body.empty()
 
     for name, power of @game.state.powers
-      ptr = @tr.clone()
-      ptr.addClass name
-      ptr.children('.power').html name
-      ptr.children('.units').html power.units.length
-      ptr.children('.supplies').html power.supplies().length
-      ptr.appendTo @body
+      @tr.clone()
+      .addClass name
+      .html_hash
+        power: name
+        units: power.units.length
+        supplies: power.supplies().length
+      .appendTo @body
 
     return

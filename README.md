@@ -12,11 +12,10 @@
 - Continue game after it being left
 - Show full game info
 - Key bindings (chat and state selector)
-- Show orders for finished states
-- Style private and public messages in chat
 - Create chat message when side changed
 - Show all messages after end of game
 - Cache map size
+- Chat load old messages
 
 ### Global
 - Localize errors

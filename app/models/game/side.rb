@@ -7,13 +7,15 @@ class Side
 
   embedded_in :game
   belongs_to :user
-  
-  validates :game, :user, presence: true
-  validates :power, inclusion: {in: proc{|s| s.game.powers}}, allow_blank: true, on: :create
-  validates :user, uniqueness: true, on: :create
-  validate :game_is_waiting, on: :create
 
-  before_validation :delete_power_if_powers_random, on: [:create, :update]
+  attr_readonly :user_id
+  
+  before_validation :delete_power_if_powers_random
+  
+  validates :user_id, presence: true, uniqueness: true, on: :create
+  validates :power, inclusion: {in: proc{|s| s.game.powers}}, allow_blank: true
+  validate :game_has_space, on: :create
+
   after_create :add_participated_game, :websockets
   after_update :websockets
   after_destroy :remove_participated_game, :websockets
@@ -23,6 +25,12 @@ class Side
   end
 
   protected
+
+  def game_has_space
+    if game.powers.size == game.sides.count
+      errors.add :data, 'Game is filled'
+    end
+  end
 
   def delete_power_if_powers_random
     self.power = nil if game.status == 'waiting' && game.powers_is_random
@@ -38,11 +46,5 @@ class Side
   def websockets
     WebsocketRails["#{game.id}_#{power}"].make_private if power
     WebsocketRails[game.id.to_s].trigger 'side', self
-  end
-  
-  def game_is_waiting
-    if game.status != 'waiting'
-      errors.add :game, 'Game already start'
-    end
   end
 end
