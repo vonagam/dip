@@ -13,7 +13,6 @@
 - Show full game info
 - Create chat message when side changed
 - Show all messages after end of game
-- Chat load old messages
 
 ### Global
 - Add english locale (in future)

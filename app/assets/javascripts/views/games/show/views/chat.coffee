@@ -2,6 +2,10 @@ class g.view.Chat extends g.view.Base
   constructor: ( game )->
     super game, 'chat', true
 
+    @all = false
+    @private = false
+    @offset = null
+
     @window = @find '.window'
     @form = @find 'form'
     @select = @form.find '.message_to > .input'
@@ -10,10 +14,8 @@ class g.view.Chat extends g.view.Base
     @form.on 'ajax:success', =>  @textarea.val ''
 
     @game.channel.bind 'message', ( message )=>
-      @add_message message
+      @add_new_message message
       return
-
-    @private = false
 
     @keybindings = (e)=>
       if e.shiftKey && @textarea.is(':focus')
@@ -22,10 +24,30 @@ class g.view.Chat extends g.view.Base
         @move_select_value 'next' if e.which == 40
       return
 
+    @window.on 'scroll', (e)=>
+      @fetch() if @window.scrollTop() < 20
+      return
+
+
+  fetch: ->
+    return if @all
+
+    @window.ajax 'get', 
+      "/games/#{@game.id}/messages" 
+      offset: @offset
+      ( messages )=>
+        @fill messages
+        return
+    
+    return
+
 
   fill: ( messages )->
-    @window.empty()
-    @add_message message for message in messages.reverse()
+    @add_olg_messages messages
+
+    @offset = messages[ messages.length - 1 ].created_at if messages.length > 0
+    @all = true if messages.length < 100
+
     return
 
 
@@ -48,7 +70,7 @@ class g.view.Chat extends g.view.Base
       unless @private
         @private = true
         @game.side_channel.bind 'message', ( message )=>
-          @add_message message
+          @add_new_message message
           return
     else
       @private = false
@@ -72,18 +94,33 @@ class g.view.Chat extends g.view.Base
     return
 
 
-  add_message: ( message )->
-    scroll = (@window[0].scrollHeight - @window.scrollTop()) <= @window.outerHeight() #innerHeight
+  add_olg_messages: ( messages )->
+    scroll_top = @window.scrollTop()
+    inner_height = @window[0].scrollHeight
 
-    message_template.clone().html_hash
-      created_at: @time_format message.created_at
-      from: @side_span message.from
-      to: @side_span message.to
-      text: message.text
-    .addClass if message.is_public then 'public' else 'private'
-    .appendTo @window
+    @add_message message, 'prepend' for message in messages
+    
+    @window.scrollTop scroll_top + @window[0].scrollHeight - inner_height
+    return
 
+
+  add_new_message: ( message )->
+    scroll = (@window[0].scrollHeight - @window.scrollTop()) <= @window.outerHeight()
+    @add_message message, 'append'
     @window.scrollTop @window[0].scrollHeight if scroll
+    return
+
+
+
+  add_message: ( message, method )->
+    @window[method](
+      message_template.clone().html_hash
+        created_at: @time_format message.created_at
+        from: @side_span message.from
+        to: @side_span message.to
+        text: message.text
+      .addClass if message.is_public then 'public' else 'private'
+    )
     return
 
 
