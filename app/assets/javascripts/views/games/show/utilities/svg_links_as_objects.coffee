@@ -18,7 +18,7 @@ g.svgs.fill = ->
 g.svgs.get = (name, klass, coords)->
   g.svgs[name].clone().attr
     class: klass
-    transform: "translate(#{coords.x},#{coords.y})"
+    transform: "translate(#{coords.to_s()})"
 
 g.utility.svg_links_as_objects = ->
   centers = g.map.find '.center'

@@ -19,8 +19,10 @@
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
 //
+//= require global/cookie
 //= require global/jquery_html_hash
 //= require global/regexp_fix_turbolinks
+//= require global/vector_to_string
 //= require_tree ./global/states
 //= require_tree ./global/big_page
 //

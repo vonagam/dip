@@ -99,9 +99,11 @@ module Engine
 
     def apply_builds!(builds, map)
       powers = {}
+
       map.powers.each do |power|
         powers[power.to_sym] = { supplies: 0, units: [] }
       end
+
       self.each do |abbrv, area_state|
         if area_state.owner && map.areas[abbrv].supply_center
           powers[ area_state.owner ][:supplies] += 1
@@ -120,13 +122,17 @@ module Engine
           if power[:supplies] > power[:units].size
             set_area_unit b.unit_area, b.unit
             power[:units] << b.unit_area
+            next
           end
         else
           if power[:units].size > power[:supplies]
             set_area_unit b.unit_area, nil
             power[:units].delete b.unit_area
+            next
           end 
         end
+
+        b.fail
       end
 
       powers.each do |power, stat|

@@ -84,13 +84,13 @@ class State
   def update_orders( resolved_orders )
     powers = {}
 
-    resolved_orders.each do |resolver_order|
-      raw = resolver_order.raw
+    resolved_orders.each do |resolved_order|
+      raw = resolved_order.raw
       order = raw[:order]
       power = raw[:power]
       region = raw[:region]
 
-      order['result'] = resolver_order.resolution_readable
+      order['result'] = resolved_order.resolution_readable
 
       ( powers[power] ||= {} )[region] = order
     end

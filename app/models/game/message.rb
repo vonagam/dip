@@ -49,11 +49,11 @@ class Message
 
     error = 
     if to.blank?
-      'message to no one'
+      :no_one
     elsif to == from
-      'message to yourself'
+      :yourself
     elsif game.alive_powers.not_include?(to)
-      'not alive power'
+      :not_alive
     end
 
     errors.add :to, error if error

@@ -27,6 +27,8 @@ class Actions extends state.Radio
     @turn false
     return
 
+
+
 actions = new Actions
   toggls:
     selected:
@@ -39,17 +41,48 @@ actions = new Actions
           return support.turn true if e.which == 83
           return move.turn true if e.which == 77
           return actions.turn false if e.which == 32 || e.which == 27
+          return hold() if e.which == 72
+          return
 
-          if e.which == 72
-            unit = g.get_unit_in g.map.data('[unit_select]')
-            g.set_order unit, 'Hold'
-            actions.turn false
-            return
+    order_type:
+      target: '.order_type.j_component'
+      class: 'active'
+      bind:
+        mousedown: 
+          '[data-order]': (e)->
+            l = {}
+            l.q = $ this
+            l.fixo = { move: move, support: support }
+            l.type = l.q.data 'order'
+            if l.state = l.fixo[l.type]
+              l.state.turn true
+            else
+              hold()
+            return false
+    order_types:
+      target: '.order_type.j_component [data-order]'
+      bind:
+        'choosen:on': ->
+          $(this).choosen 'deactive'
+          return
+
+
+# Hold order
+hold = ->
+  unit = g.get_unit_in g.map.data('[unit_select]')
+  g.set_order unit, 'Hold'
+  actions.turn false
+  return
+
 
 # Move order
 move = new state.List
   resets:
     convoy: undefined
+  toggls:
+    button:
+      target: '.order_type [data-order="move"]'
+      trigger: 'choosen'
 
 move.after_list_end = ->
   return true unless g.map.data '[move_select]'
@@ -116,6 +149,11 @@ move_select = new g.SelectingState
 
 # Support order
 support = new state.List
+  toggls:
+    button:
+      target: '.order_type [data-order="support"]'
+      trigger: 'choosen'
+
 support.after_list_end = ->
   return true unless g.map.data '[move_select]'
 

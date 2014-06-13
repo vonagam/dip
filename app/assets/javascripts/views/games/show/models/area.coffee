@@ -22,24 +22,17 @@ class g.model.Area
     .data 'model', this
 
     if @embattled and not @unit
-      coords = @coords()
+      g.svgs.get 'embattled', 'embattled', @coords()
+      .appendTo view
 
-      star = document.createElementNS 'http://www.w3.org/2000/svg', 'use'
-      star.setAttributeNS 'http://www.w3.org/1999/xlink', 'href', '#embattled'
-
-      star = $ star
-
-      star.attr
-        'class': "embattled"
-        'transform': "translate(#{coords.x},#{coords.y})"
-      
-      star.appendTo view
+    return
 
   detach: ->
     @view()
     .removeAttr 'class'
     .data 'model', null
     .find('.embattled').remove()
+    return
 
   region: ->
     regions[@name]

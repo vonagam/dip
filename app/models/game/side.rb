@@ -28,7 +28,7 @@ class Side
 
   def game_has_space
     if game.powers.size == game.sides.count
-      errors.add :data, 'Game is filled'
+      errors.add :game, :filled
     end
   end
 

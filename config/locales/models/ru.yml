@@ -23,20 +23,30 @@ ru:
   mongoid:
     models:
       game:
-        one: Игра
-        few: Игры
-        many: Игр
+        one:   Игра
+        few:   Игры
+        many:  Игр
         other: Игры
       side:
-        one: Сторона
-        few: Стороны
-        many: Сторон
+        one:   Сторона
+        few:   Стороны
+        many:  Сторон
         other: Сторон
       user:
-        one: Пользователь
-        few: Пользователя
-        many: Пользователей
+        one:   Пользователь
+        few:   Пользователя
+        many:  Пользователей
         other: Пользователей
+      order:
+        one:   Приказ
+        few:   Приказа
+        many:  Приказов
+        other: Приказы
+      message:
+        one:   Сообщение
+        few:   Сообщения
+        many:  Сообщений
+        other: Сообщения
 
     attributes:
       game:
@@ -50,6 +60,29 @@ ru:
       side:
         user: Игрок
         power: Страна
+
+    errors:
+      models:
+        game:
+          attributes:
+            is_public:
+              cant_be_manual: Не может быть публичной и в ручном режиме
+        side:
+          attributes:
+            game:
+              filled: Нет свободных мест
+        order:
+          attributes:
+            data:
+              not_parsable: Не удается считать приказы
+            game:
+              not_going: Не в активном состоянии
+        message:
+          attributes:
+            to:
+              no_one: Не указан адресат
+              yourself: Самому себе
+              not_alive: Сторона выбыла из игры
 
   const:
     game:

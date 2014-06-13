@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Flow' do
 
@@ -53,13 +53,7 @@ describe 'Flow' do
         @users[power] = create :user
       end
 
-      @game = Game.create!({
-        name: 'game_name', 
-        time_mode: 'manual',
-        chat_mode: 'both', 
-        creator: @users['Russia'], 
-        map: @map
-      })
+      @game = create :game, creator: @users['Russia']
 
       @users.each do |power, user|
         if power == 'Russia'
@@ -161,6 +155,34 @@ describe 'Flow' do
       @game.progress!
 
       puts @game.reload.state.data
+    end
+
+    it 'supply' do
+      progress!
+
+      @game.state.update_attributes!({
+        data: {
+          "Powers"=>{
+            "Russia"=>{"Units"=>["Amos", "Asev", "Awar", "Fstp_sc"], "Areas"=>[:mos, :sev, :war, :stp, :lvn, :fin]}, 
+            "Austria"=>{"Units"=>["Aukr", "Avie", "Fgre", "Abud", "Atri", "Aser"], "Areas"=>[:ukr, :vie, :gre, :bud, :tri, :ser, :bul, :rum, :alb, :gal, :boh, :tyr]}, 
+            "Turkey"=>{"Units"=>["Asmy", "Acon", "Fank"], "Areas"=>[:smy, :con, :ank, :syr, :arm]}, 
+            "Italy"=>{"Units"=>["Arom", "Aven", "Fnap"], "Areas"=>[:rom, :ven, :nap, :pie, :tus, :apu]}, 
+            "France"=>{"Units"=>["Apar", "Amar", "Fbre"], "Areas"=>[:par, :mar, :bre, :gas, :pic, :bur]}, 
+            "England"=>{"Units"=>["Aliv", "Flon", "Fedi"], "Areas"=>[:liv, :lon, :edi, :cly, :yor, :wal]}, 
+            "Germany"=>{"Units"=>["Aber", "Amun", "Fkie"], "Areas"=>[:ber, :mun, :kie, :ruh, :pru, :sil]}
+          }
+        }, 
+        date: 9, 
+        end_at: nil, 
+        resulted_orders: {}, 
+        _type: "State::Supply"
+      })
+
+      make_orders 'Austria', rum: [:Build, :army], bul: [:Build, :army]
+
+      progress!
+
+      puts @game.reload.states.first.resulted_orders
     end
   end
 

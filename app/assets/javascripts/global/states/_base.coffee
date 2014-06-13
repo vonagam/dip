@@ -100,15 +100,24 @@ class state.Base
         for name, thing of toggl['data']
           target.data name, if bool then Base.get_thing_value(toggl.target) else null
 
+      on_off = if bool then 'on' else 'off'
+      
       if toggl['bind']
-        for e, fun of toggl['bind']
+        for e, thing of toggl['bind']
 
-          if typeof fun == 'function'
-            filter = null
+          if typeof thing == 'function'
+            target[ on_off ]( e, thing )
           else
-            filter = fun[0]
-            fun = fun[1]
+            for filter, fun of thing
+              target[ on_off ]( e, filter, fun )
 
-          target[ if bool then 'on' else 'off' ]( e, filter, fun )
+      if toggl['trigger']
+        thing = toggl['trigger']
+
+        if typeof thing == 'string'
+          target.trigger "#{thing}:#{on_off}"
+        else
+          for e in thing
+            target.trigger "#{e}:#{on_off}"
 
     return

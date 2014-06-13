@@ -112,7 +112,7 @@ class Game
 
   def if_manual_then_private
     if time_mode == 'manual' && is_public 
-      errors.add :is_public, 'manual cannot be public'
+      errors.add :is_public, :cant_be_manual
     end
   end
 

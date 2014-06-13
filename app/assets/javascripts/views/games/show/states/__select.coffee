@@ -11,11 +11,14 @@ class g.SelectingState extends state.Base
     type = @select_marking.match /^\[(.+)\]$/
     if type.length then toggl.attr = type[1] else toggl.class = @select_marking
 
+    litener = {}
+    litener[ @select_marking ] = @select_click_handler
+
     @toggls.possible = toggl
     @toggls.container = 
       target: @select_container
       bind: 
-        'mousedown': [ @select_marking, @select_click_handler ]
+        mousedown: litener
 
   toggle: (bool)->
     return true if super

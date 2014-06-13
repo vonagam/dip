@@ -13,11 +13,9 @@
 - Show full game info
 - Create chat message when side changed
 - Show all messages after end of game
-- Cache map size
 - Chat load old messages
 
 ### Global
-- Localize errors
 - Add english locale (in future)
 - Write tests
 - Admin

@@ -21,12 +21,12 @@ class Order
     state = game.state
     state.parse_orders [self]
   rescue
-    errors.add :data, 'Not parsable'
+    errors.add :data, :not_parsable
   end
 
   def game_in_progress
     if game.status != 'started'
-      errors.add :state, 'game not going'
+      errors.add :game, :not_going
     end
   end
 end
