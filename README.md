@@ -11,7 +11,6 @@
 ### Game
 - Continue game after it being left
 - Show full game info
-- Key bindings (chat and state selector)
 - Create chat message when side changed
 - Show all messages after end of game
 - Cache map size
