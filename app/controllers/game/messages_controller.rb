@@ -17,7 +17,7 @@ class MessagesController < ApplicationController
 
   def index
     @side = @game.side_of current_user
-    @offest = params[:offset]
+    @offset = params[:offset]
   end
 
   private
