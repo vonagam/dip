@@ -9,7 +9,7 @@
         .icon.status
         select.input
           option value='' = t '.any'
-          - Game::STATUSES.each do |status|
+          - Game::STATUS.each do |status|
             option value=status = t "const.game.statuses.#{status}"
       .filter data-filter='time_mode'
         .icon.time_mode

@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/davidsevcik/mongoid-enum.git
+  revision: d51f63b436896b387068e6db211ad61eccf0b855
+  specs:
+    mongoid-enum (0.1.1)
+      mongoid (~> 4.0.0.beta1)
+
+GIT
   remote: git://github.com/elia/activeadmin-mongoid.git
   revision: 9b1858441acb1f118e07f04381ed107afee575c8
   branch: rails4
@@ -216,9 +223,9 @@ GEM
       railties (>= 3.2, < 5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    rspec-core (3.0.0)
+    rspec-core (3.0.1)
       rspec-support (~> 3.0.0)
-    rspec-expectations (3.0.0)
+    rspec-expectations (3.0.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.0.0)
     rspec-mocks (3.0.1)
@@ -287,7 +294,7 @@ GEM
     turbolinks (2.2.2)
       coffee-rails
     tzinfo (0.3.39)
-    uglifier (2.5.0)
+    uglifier (2.5.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
     warden (1.2.3)
@@ -325,6 +332,7 @@ DEPENDENCIES
   jbuilder
   jquery-rails
   mongoid
+  mongoid-enum!
   mongoid_slug
   net-ssh (~> 2.7.0)
   quiet_assets

@@ -64,8 +64,8 @@ class g.view.Chat extends g.view.Base
     form_is_available =
       switch @game.status
         when 'waiting' then true
-        when 'started' then @user_side && @user_side.alive
-        when 'finished' then @user_side
+        when 'going' then @user_side && @user_side.status != 'lost'
+        when 'ended' then @user_side
 
     if not form_is_available
       @form.hide()
@@ -82,7 +82,7 @@ class g.view.Chat extends g.view.Base
 
     @toggle_keybindings.turn form_is_available
 
-    chat_is_private = @game.status == 'started' && !@game.raw_data.chat_is_public
+    chat_is_private = @game.status == 'going' && !@game.raw_data.chat_is_public
 
     @form.find('.field.message_to').toggle chat_is_private
 
@@ -93,8 +93,8 @@ class g.view.Chat extends g.view.Base
       @select.append @side_option def_option
       
       for side in @game.raw_data.sides
-        continue unless side.alive && side != @user_side
-        @select.append @side_option side.power
+        if ( side.status == 'fighting' || side.status == 'draw' ) && side != @user_side
+          @select.append @side_option side.power
 
     return
 

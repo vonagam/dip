@@ -4,7 +4,7 @@ class g.view.OldOrder extends g.view.Base
 
 
   is_active: ->
-    !@game.state.last || @game.status == 'finished'
+    !@game.state.last || @game.status == 'ended'
 
 
   update: ( game_updated )->

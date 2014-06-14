@@ -23,7 +23,7 @@ class g.view.Order extends g.view.Base
 
 
   is_active: ->
-    @game.status == 'started' && 
+    @game.status == 'going' && 
     @game.state.last &&
     @game.user_side &&
     @game.user_side.orderable
@@ -34,7 +34,7 @@ class g.view.Order extends g.view.Base
 
     @update_status()
 
-    if @game.status == 'started' && @game.state.last
+    if @game.status == 'going' && @game.state.last
       g.game_phase[@game.state.type()].turn true
     else
       g.order_index.turn false

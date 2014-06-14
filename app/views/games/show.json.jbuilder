@@ -8,8 +8,12 @@ json.extract! @game,
 
 json.chat_is_public @game.chat_is_public?
 
+if user_signed_in?
+  json.login current_user.login
+end
+
 json.sides @game.sides do |side|
-  json.extract! side, :power, :alive, :orderable
+  json.extract! side, :power, :status, :orderable
   json.user side.user.login
 
   json.user_side true if @side == side
@@ -28,8 +32,4 @@ json.states @game.states do |state|
   end
     
   json.orders orders
-end
-
-if user_signed_in?
-  json.login current_user.login
 end

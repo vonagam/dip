@@ -36,8 +36,8 @@ class r.view.Games extends r.view.Base
 
       if a.status != b.status
         return -1 if a.status == 'waiting'
-        return 1 if a.status == 'finished'
-        return -1 if b.status == 'finished'
+        return 1 if a.status == 'ended'
+        return -1 if b.status == 'ended'
 
       return 0
 

@@ -23,7 +23,7 @@ describe SidesController do
   end
 
   it 'not waiting' do
-    ['started','finished'].each do |status|
+    [:going,:ended].each do |status|
       @game.update_attributes status: status
 
       expect{ send_side_create }

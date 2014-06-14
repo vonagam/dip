@@ -6,9 +6,9 @@ class MessagesController < ApplicationController
   def create
     p = message_params
 
-    p[:from] = @game.status == 'waiting' ? current_user.login : @game.side_of(current_user).power
+    p[:from] = @game.waiting? ? current_user.login : @game.side_of(current_user).power
 
-    p[:is_public] = @game.status != 'started' || @game.chat_is_public?
+    p[:is_public] = @game.not_going? || @game.chat_is_public?
 
     message = @game.messages.create p
 

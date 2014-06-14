@@ -58,7 +58,7 @@ class State
   end
 
   def send_websocket
-    return if game.status == 'waiting'
+    return if game.waiting?
 
     WebsocketRails[game.id.to_s].trigger 'state'
 
@@ -106,13 +106,14 @@ class State
     units = count_units @areas_states
     supplies = count_supplies map.supply_centers, @areas_states
 
-    game.sides.each do |side|
+    game.alive_sides.each do |side|
       p = side.power.to_sym
 
-      side.update_attributes!({
-        orderable: orderable.include?(p),
-        alive: units.include?(p) || supplies.include?(p)
-      })
+      if units.include?(p) || supplies.include?(p)
+        side.update_attributes! orderable: orderable.include?(p)
+      else
+        side.update_attributes! orderable: false, status: :lose
+      end
     end
   end
 

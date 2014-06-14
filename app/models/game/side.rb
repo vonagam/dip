@@ -1,10 +1,9 @@
 class Side
   include Mongoid::Document
+  include Mongoid::Enum
 
   field :power
-  field :alive, type: Boolean, default: true
-  field :surrender, type: Boolean, default: false
-  field :draw, type: Boolean, default: false
+  enum :status, [:fighting, :draw, :surrendered, :lost, :won]
   field :orderable, type: Boolean, default: true
 
   embedded_in :game
@@ -35,7 +34,7 @@ class Side
   end
 
   def delete_power_if_powers_random
-    self.power = nil if game.status == 'waiting' && game.powers_is_random
+    self.power = nil if game.waiting? && game.powers_is_random
   end
 
   def add_participated_game

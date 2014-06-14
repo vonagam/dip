@@ -1,6 +1,7 @@
 class Game
   include Mongoid::Document
   include Mongoid::Slug
+  include Mongoid::Enum
 
   TIME_MODES = { 
     'sixty_seconds' => 1,
@@ -17,16 +18,14 @@ class Game
     'both' => nil
   }
 
-  STATUSES = %w( waiting started finished )
-
   field :name
-  field :status, default: 'waiting'
+  enum :status, [:waiting, :going, :ended]
   field :is_public, type: Boolean
-  field :powers_is_random, type: Boolean
+  field :secret, default: ->{ SecureRandom.hex(8) }
+  field :ended_by
   field :time_mode
   field :chat_mode
-  field :secret, default: ->{ SecureRandom.hex(8) }
-  field :finished_by
+  field :powers_is_random, type: Boolean
 
   belongs_to :map
   belongs_to :creator, class_name: 'User'
@@ -57,6 +56,10 @@ class Game
     orders.find_by side: side
   end
 
+  def alive_sides
+    sides.fighting.to_a + sides.draw.to_a
+  end
+
   def powers
     map.powers
   end
@@ -64,7 +67,7 @@ class Game
     sides.only(:power).all.collect!(&:power)
   end
   def alive_powers
-    sides.where(alive: true).only(:power).all.collect!(&:power)
+    sides.fighting.only(:power).all.collect!(&:power)
   end
   def available_powers
     powers - taken_powers
@@ -76,10 +79,10 @@ class Game
   end
 
   def progress!
-    return if status == 'finished'
+    return if ended?
 
-    if status == 'waiting'
-      update_attributes! status: 'started'
+    if waiting?
+      going!
 
       randomize_sides
 
@@ -92,7 +95,7 @@ class Game
     state.process
 
     if state._type == 'State'
-      update_attributes status: 'finished', finished_by: 'win'
+      end_by 'win'
       return
     end
 
@@ -107,6 +110,10 @@ class Game
     state.update_attribute :end_at, end_at
 
     RestClient.delay( run_at: end_at ).get progress_game_url( self, secret: secret )
+  end
+
+  def end_by( reason )
+    update_attributes! status: :ended, ended_by: reason
   end
 
   protected

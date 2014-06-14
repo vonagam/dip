@@ -2,6 +2,10 @@ require 'rails_helper'
 
 describe 'Flow' do
 
+  def show_resulted
+    puts @game.states.desc(:_id).skip(1).limit(1).to_a.first.resulted_orders.to_json
+  end
+
   def make_orders( power, orders_data = {} )
     orders = {}
 
@@ -20,7 +24,7 @@ describe 'Flow' do
       )
     end
 
-    @game.orders.create({
+    @game.orders.create!({
       side: @game.side_of( @users[power] ), 
       data: orders
     })
@@ -70,9 +74,10 @@ describe 'Flow' do
 
 
       #1
-      make_orders 'Russia', war: [:Move, :gal]
+      make_orders 'Russia', stp: [:Move, :bot], war: [:Move, :gal] 
       make_orders 'Turkey', smy: [:Move, :syr], ank: [:Move, :smy]
       progress!
+      expect_unit 'Russia', 'Fbot'
       expect_unit 'Russia', 'Awar', false
       expect_unit 'Russia', 'Agal'
       expect_unit 'Turkey', 'Asyr'

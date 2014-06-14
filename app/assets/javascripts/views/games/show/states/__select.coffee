@@ -35,4 +35,4 @@ class g.SelectingState extends state.Base
 
     @turn false
 
-    return
+    return false

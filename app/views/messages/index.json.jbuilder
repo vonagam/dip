@@ -1,6 +1,6 @@
 messages = @game.messages
 
-if @game.status != 'finished'
+if @game.status != 'ended'
   select = [ { is_public: true } ]
   select.push({ to: @side.power }, { from: @side.power }) if @side
   messages = messages.or *select

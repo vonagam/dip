@@ -42,6 +42,7 @@ gem 'devise'
 gem 'cancancan', '~> 1.8'
 
 gem 'mongoid_slug'
+gem 'mongoid-enum', github: 'davidsevcik/mongoid-enum'
 
 gem 'rest-client'
 

@@ -25,7 +25,7 @@ class Order
   end
 
   def game_in_progress
-    if game.status != 'started'
+    unless game.going?
       errors.add :game, :not_going
     end
   end

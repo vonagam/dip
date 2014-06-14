@@ -7,15 +7,20 @@ class BuildArea
       current = q.data 'build'
       subs = q.children '[id]'
 
-      return @set_unit 1 if !current
+      set_to = (=>
+        return 1 unless current
+        return 0 if @area.type() == 'land'
+        return (current + 1)%3 if subs.length == 0
+        return 0 if current - 1 == subs.length
+        return undefined
+      )()
 
-      return @set_unit 0 if @area.type() == 'land'
+      if set_to != undefined
+        @set_unit set_to
+      else
+        @set_unit (current + 1), subs.eq(current - 1).attr('id').split('_')[1]
 
-      return @set_unit( (current + 1)%3 ) if subs.length == 0
-
-      return @set_unit 0 if current - 1 == subs.length
-
-      return @set_unit (current + 1), subs.eq(current - 1).attr('id').split('_')[1]
+      return false 
 
     @view
     .attr 'build', true
@@ -55,6 +60,7 @@ class DisbandArea
         @unit.set_order undefined
       else
         g.set_order @unit, 'Disband'
+      return false
 
     @view
     .attr 'disband', true

@@ -5,7 +5,7 @@ class g.view.Manual extends g.view.Base
 
 
   is_active: ->
-    @game.status == 'started' 
+    @game.status == 'going' 
 
 
   update: ( game_updated )->

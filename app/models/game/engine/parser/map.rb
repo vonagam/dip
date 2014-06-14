@@ -63,13 +63,23 @@ module Engine
       end
 
       borders_infos.each do |area_name, borders_info|
-        area = map.areas[ area_name ]
+        areas = [ map.areas[ area_name ] ]
 
-        borders_info.each do |type, neighbours|
-          border_type = type == 'land' ? Area::LAND_BORDER : Area::SEA_BORDER
+        if area_name =~ /\A(\w+)_/
+          areas.push map.areas[ $1.to_sym ]
+        end
 
-          neighbours.each do |neighbour|
-            area.add_border map.areas[ neighbour.to_sym ], border_type
+        areas.each do |area|
+          borders_info.each do |type, neighbours|
+            border_type = type == 'land' ? Area::LAND_BORDER : Area::SEA_BORDER
+
+            neighbours.each do |neighbour|
+              area.add_border map.areas[ neighbour.to_sym ], border_type
+
+              if neighbour =~ /\A(\w+)_/
+                area.add_border map.areas[ $1.to_sym ], border_type
+              end
+            end
           end
         end
       end
