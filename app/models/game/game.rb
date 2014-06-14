@@ -26,6 +26,7 @@ class Game
   field :time_mode
   field :chat_mode
   field :secret, default: ->{ SecureRandom.hex(8) }
+  field :finished_by
 
   belongs_to :map
   belongs_to :creator, class_name: 'User'
@@ -91,7 +92,7 @@ class Game
     state.process
 
     if state._type == 'State'
-      update_attributes status: 'finished'
+      update_attributes status: 'finished', finished_by: 'win'
       return
     end
 

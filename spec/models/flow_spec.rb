@@ -71,9 +71,12 @@ describe 'Flow' do
 
       #1
       make_orders 'Russia', war: [:Move, :gal]
+      make_orders 'Turkey', smy: [:Move, :syr], ank: [:Move, :smy]
       progress!
       expect_unit 'Russia', 'Awar', false
       expect_unit 'Russia', 'Agal'
+      expect_unit 'Turkey', 'Asyr'
+      expect_unit 'Turkey', 'Fsmy', false
 
       #2
       expect_state 'Move'

@@ -1,5 +1,3 @@
-//= require ./regions
-
 //= require ./g
 
 //= require_tree ./controllers

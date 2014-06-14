@@ -26,59 +26,52 @@ module Engine
 
       map = Map.new
 
-      map.yaml_areas = yamlmap['Areas']
+      map.yaml_areas = yamlmap['Areas'].to_json
+
+      borders_infos = {}
 
       yamlmap['Areas'].each do |name, info|
 
-        if info['neis'].is_a?(Array)
-          neighbours = info['neis']
-        else
-          neighbours = info['neis']['xc']
+        neis = info['neis']
 
-          info['neis'].select { |k,v| k != 'xc' }.each do |location, neis|
+        multicoast = neis.has_key?('water') && neis['water'].is_a?(Hash)
+
+        if multicoast
+          neis['water'].each do |location, water_neis|
             location_name = ("#{name}_#{location}").to_sym
+
             map.areas[location_name] = Area.new(
-              location_name, :coast, false, neis, info['full'].to_sym, false
+              location_name, :coast, false, info['full'].to_sym, false
             )
+
+            borders_infos[ location_name ] = { 'water' => water_neis }
           end
+
+          neis.delete 'water'
         end
 
         map.areas[name.to_sym] = Area.new(
           name.to_sym,
           info['type'].to_sym,
           info.has_key?('center'),
-          neighbours,
           info['full'].to_sym,
-          !info['neis'].is_a?(Array)
+          multicoast
         )
+
+        borders_infos[ name.to_sym ] = neis
 
       end
 
-      map.areas.each do |name, area|
+      borders_infos.each do |area_name, borders_info|
+        area = map.areas[ area_name ]
 
-        while nei = area.neighbours.pop
+        borders_info.each do |type, neighbours|
+          border_type = type == 'land' ? Area::LAND_BORDER : Area::SEA_BORDER
 
-          neighbour = map.areas[ nei.to_sym ]
-
-          ( 
-            if area.type == :water || neighbour.type == :water
-              [Area::SEA_BORDER]
-            elsif area.type == :land || neighbour.type == :land
-              [Area::LAND_BORDER]
-            else
-              [Area::SEA_BORDER, Area::LAND_BORDER]
-            end
-          )
-          .each do |type|
-            area.add_border neighbour, type
-
-            if nei =~ /\A(\w+)_/
-              area.add_border map.areas[ $1.to_sym ], type
-            end
+          neighbours.each do |neighbour|
+            area.add_border map.areas[ neighbour.to_sym ], border_type
           end
-
         end
-
       end
 
       map.powers = yamlmap['Powers'].keys

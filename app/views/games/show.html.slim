@@ -34,5 +34,6 @@
 javascript:
   g.initialize( 
     #{ with_format(:json){ raw render template: 'games/show' } },
-    #{ with_format(:json){ raw render template: 'messages/index' } }
+    #{ with_format(:json){ raw render template: 'messages/index' } },
+    #{ raw @game.map.info.yaml_areas }
   )

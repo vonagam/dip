@@ -112,11 +112,13 @@ move.after_list_end = ->
   return true
 
 move_selecting = ->
-  unit = g.get_unit_in g.map.data('[unit_select]')
+  unit = g.get_unit_in g.map.data '[unit_select]'
   
   possibles = g.map.find '#'+unit.position()
 
-  for possibility in unit.neighbours()
+  possibilities = if unit.type == 'army' then unit.area.neighbours() else unit.neighbours()
+
+  for possibility in possibilities
     pos = possibility.split('_')[0]
 
     if unit.type == 'army'
@@ -131,14 +133,18 @@ move_selecting = ->
   return possibles
 
 convoy_selecting = ->
-  last_one = g.map.data('[move_select]').attr('id')
+  unit = g.get_unit_in g.map.data '[move_select]'
+
   possibles = $()
-  for nei in regions[last_one].xc
-    nei = nei.split('_')[0]
-    if regions[nei].type == 'water'
-      possibles = possibles.add g.map.find('#'+nei) if g.contain_unit( nei )
+
+  for possibility in unit.area.neighbours()
+    pos = possibility.split('_')[0]
+
+    if regions[pos].type == 'water'
+      possibles = possibles.add g.map.find('#'+pos) if g.contain_unit( pos )
     else
-      possibles = possibles.add g.map.find('#'+nei)
+      possibles = possibles.add g.map.find('#'+pos)
+  
   possibles = possibles.not $(move.convoy)
   return possibles
 
@@ -171,8 +177,6 @@ support_select = new g.SelectingState
 
     for neighbour in unit.neighbours()
       area = g.state.get_area neighbour
-
-      continue unless unit.can_go area.type()
 
       for from, order of area.targeting
         continue if from == unit.area.name

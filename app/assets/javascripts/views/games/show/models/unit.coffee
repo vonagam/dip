@@ -41,7 +41,15 @@ class g.model.Unit
     @area.name + ( if @sub_area == 'xc' then '' else "_#{@sub_area}" )
 
   neighbours: ->
-    regions[@area.name][@sub_area]
+    neis = @area.region().neis
+
+    if @type == 'army'
+      neis.land
+    else
+      if $.isArray neis.water
+        neis.water
+      else
+        neis.water[@sub_area]
 
   can_go: ( area_type )->
     !((@type == 'army' && area_type == 'water') || (@type == 'fleet' && area_type == 'land'))

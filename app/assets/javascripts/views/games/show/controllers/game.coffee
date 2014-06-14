@@ -2,6 +2,8 @@ class g.controller.Game extends BP.Controller
   constructor: ( page_arguments )->
     data = page_arguments[0]
     messages = page_arguments[1]
+    @regions = page_arguments[2]
+    window.regions = @regions
 
     super g, "/games/#{data.id}.json"
 
@@ -105,6 +107,7 @@ class g.controller.Game extends BP.Controller
 
 
   page_restored: ->
+    window.regions = @regions
     super
     @toggle_webscokets true
     @fetch()

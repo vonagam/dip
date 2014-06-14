@@ -3,6 +3,8 @@ class Side
 
   field :power
   field :alive, type: Boolean, default: true
+  field :surrender, type: Boolean, default: false
+  field :draw, type: Boolean, default: false
   field :orderable, type: Boolean, default: true
 
   embedded_in :game

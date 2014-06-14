@@ -3,18 +3,16 @@ require 'set'
 module Engine
   class Area
     attr_accessor :abbrv, :type, :supply_center, :name, :multicoast
-    attr_accessor :borders, :neighbours
+    attr_accessor :borders
 
     LAND_BORDER = 1
     SEA_BORDER = 2
 
-    def initialize( abbrv, type, supply_center, neighbours, name, multicoast )
+    def initialize( abbrv, type, supply_center, name, multicoast )
       @abbrv = abbrv
       @type = type
       @supply_center = supply_center
       @name = name
-
-      @neighbours = neighbours
 
       @borders = { LAND_BORDER => Set.new, SEA_BORDER => Set.new }
 
