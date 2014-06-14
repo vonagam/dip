@@ -13,6 +13,8 @@
 - Show full game info
 - Create chat message when side changed
 - Show all messages after end of game
+- Surrender
+- Propose draw
 
 ### Global
 - Add english locale (in future)

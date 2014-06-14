@@ -37,7 +37,7 @@ class g.model.Area
   region: ->
     regions[@name]
   supply: ->
-    @region().supply
+    @region().center
   type: ->
     @region().type
 
