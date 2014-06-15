@@ -67,7 +67,7 @@ class Game
     sides.only(:power).all.collect!(&:power)
   end
   def alive_powers
-    sides.fighting.only(:power).all.collect!(&:power)
+    alive_sides.collect!(&:power)
   end
   def available_powers
     powers - taken_powers
