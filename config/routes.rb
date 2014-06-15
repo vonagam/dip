@@ -2,6 +2,8 @@ Diplomacy::Application.routes.draw do
   default_url_options host: Rails.env.production? ? 'dip.kerweb.ru' : 'localhost:3000'
   
   devise_for :users
+  
+  ActiveAdmin.routes(self)
 
   resources :games, only: [:create, :show, :destroy] do
     member do
