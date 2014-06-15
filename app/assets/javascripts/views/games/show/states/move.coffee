@@ -191,7 +191,7 @@ support_select = new g.SelectingState
   container: -> g.map
 
 # Total scheme
-g.order_index.add [
+g.main_state.add [
   g.game_phase.Move.add [
     unit_select
     actions.add [

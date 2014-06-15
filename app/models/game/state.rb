@@ -22,7 +22,7 @@ class State
   end
 
   def parse_orders( what = nil )
-    what ||= game.orders.all
+    what ||= game.orders.all.map!{ |x| x.data }.reduce({}, :merge)
     
     Engine::Parser::Order.new( gamestate ).parse_orders what, type
   end
@@ -101,6 +101,8 @@ class State
   end
 
   def update_sides( state_class )
+    return unless game.sides.count > 1
+
     orderable = state_class.allow_orders map, @areas_states
 
     units = count_units @areas_states

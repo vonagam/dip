@@ -58,7 +58,7 @@ retreat.after_list_end = ->
   return true
 
 # Retreat scheme
-g.order_index.add [
+g.main_state.add [
   g.game_phase.Retreat.add [
     dislodged_select
     retreat.add [

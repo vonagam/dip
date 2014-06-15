@@ -28,7 +28,7 @@ json.states @game.states do |state|
   if state != @state
     state.resulted_orders
   elsif @side && order = @game.order_of(@side)
-    { @side.power => order.data }
+    order.data
   end
     
   json.orders orders

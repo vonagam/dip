@@ -7,15 +7,3 @@ g.contain_unit = ( area_name )->
 g.game_phase = {}
 
 g.main_state = new state.Radio
-
-g.order_index = new state.Radio 
-  toggls:
-    form:
-      target: -> doc.find('#new_order button')
-      bind:
-        'mousedown': ()->
-          orders = g.state.collect_orders g.power
-
-          $(this).closest('form').find('[name="order[data]"]').val( jso(orders) )
-
-g.main_state.add [ g.order_index ]

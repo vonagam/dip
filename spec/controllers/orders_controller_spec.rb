@@ -11,7 +11,10 @@ describe OrdersController do
   end
 
   def send_post_create( order_data )
-    post :create, format: :json, game_id: @game.id, order: { data: order_json( order_data ) }
+    post :create, 
+      format: :json, 
+      game_id: @game.id, 
+      order: { data: order_json( { 'Italy' => order_data } ) }
   end
 
   it 'two orders' do

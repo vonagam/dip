@@ -25,6 +25,12 @@ class Side
     game.order_of self
   end
 
+  def return_unallowed_powers( powers )
+    return [] if power.blank?
+
+    powers.select{ |x| x != power }
+  end
+
   protected
 
   def game_has_space

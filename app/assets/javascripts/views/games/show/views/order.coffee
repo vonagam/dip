@@ -7,12 +7,11 @@ class g.view.Order extends g.view.Base
     @button.clicked ()=>
       state = @game.state
       power = @game.user_side.power
-      orders = state.collect_orders power
+      orders = state.collect_orders()
 
       @button.ajax 'post', @button.data('url'), { order: { data: JSON.stringify(orders) } }, (order)=>
         if state.last
-          state.raw.orders = {}
-          state.raw.orders[ power ] = order.data
+          state.raw.orders = order.data
 
           if state.attached
             state.reset()
@@ -36,8 +35,6 @@ class g.view.Order extends g.view.Base
 
     if @game.status == 'going' && @game.state.last
       g.game_phase[@game.state.type()].turn true
-    else
-      g.order_index.turn false
 
     if @turned
       @button.removeClass 'green yellow'

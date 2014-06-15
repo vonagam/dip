@@ -139,6 +139,8 @@ class Game
   end
 
   def randomize_sides
+    return unless sides.count > 1
+
     available = available_powers
     sides.select{ |s| s.power.blank? }.each do |side|
       side.update_attributes power: available.shuffle!.pop

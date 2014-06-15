@@ -68,15 +68,20 @@ class g.model.State
     @attached = false
     return
 
-  collect_orders: ( power )->
-    orders = {}
+  collect_orders: ->
+    powers_orders = {}
 
-    for unit in @powers[ power ].units
-      if unit.order
-        position = if @type() == 'Supply' then unit.position() else unit.area.name
-        orders[ position ] = unit.order.to_json()
+    for name, power of @powers
+      power_orders = {}
 
-    orders
+      for unit in power.units
+        if order = unit.order
+          position = if order.type == 'Build' then unit.position() else unit.area.name
+          power_orders[ position ] = order.to_json()
+
+      powers_orders[name] = power_orders
+
+    powers_orders
 
   get_area: ( area )->
     @areas[ area.split('_')[0] ]

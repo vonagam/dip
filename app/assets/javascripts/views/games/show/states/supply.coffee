@@ -106,4 +106,4 @@ class SupplyState extends state.Base
 g.game_phase.Supply = new SupplyState
 
 # Supply scheme
-g.order_index.add([ g.game_phase.Supply ])
+g.main_state.add([ g.game_phase.Supply ])

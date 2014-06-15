@@ -6,7 +6,7 @@ module Engine
       @gamestate = gamestate
     end
 
-    def parse_orders( all_orders, state_type )
+    def parse_orders( powers_orders, state_type )
       classes = case state_type
         when 'Move'    then [Move, Hold, Support, SupportHold, Convoy]
         when 'Retreat' then [Retreat]
@@ -15,9 +15,12 @@ module Engine
 
       result = []
 
-      all_orders.each do | power_orders |
-        power = power_orders.side.power.to_sym
-        orders = power_orders.data
+      powers_orders.each do |power, orders|
+        power = power.to_sym
+
+      #all_orders.each do | power_orders |
+      #  power = power_orders.side.power.to_sym
+      #  orders = power_orders.data
 
         orders.each do | region, order |
           order = parse_order region, order, power, state_type

@@ -26,7 +26,7 @@ describe 'Flow' do
 
     @game.orders.create!({
       side: @game.side_of( @users[power] ), 
-      data: orders
+      data: { power => orders }
     })
     @game.reload
   end
