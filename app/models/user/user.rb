@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  include Mongoid::Enum
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -36,6 +37,7 @@ class User
   # field :locked_at,       type: Time
 
   field :login, type: String
+  enum :role, [:player, :admin]
   field :participated_games, type: Array, default: []
 
   has_many :created_games, class_name: 'Game', foreign_key: 'creator_id'

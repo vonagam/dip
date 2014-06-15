@@ -4,6 +4,10 @@ class Ability
   def initialize( user )
     @user = user || User.new
 
+    if @user.admin?
+      can :manage, :all
+    end
+
     can :start, Game, creator_id: @user.id, status: :waiting
 
     can :destroy, Game do |game|
