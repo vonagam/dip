@@ -23,10 +23,9 @@ class state.Base
 
 
   turn: (bool)->
-    return if @turned == bool
+    bool = Boolean bool
 
-    if typeof bool != 'boolean'
-      log 'state turn: not boolean bool'
+    return if @turned == bool
 
     @turned = bool
 
@@ -101,6 +100,9 @@ class state.Base
       if toggl['data']
         for name, thing of toggl['data']
           target.data name, if bool then Base.get_thing_value(toggl.target) else null
+
+      if toggl['toggle']
+        target.toggle toggl['toggle'] == bool
 
       on_off = if bool then 'on' else 'off'
       
