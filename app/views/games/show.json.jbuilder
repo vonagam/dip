@@ -13,7 +13,7 @@ if user_signed_in?
 end
 
 json.sides @game.sides do |side|
-  json.extract! side, :power, :status, :orderable
+  json.extract! side, :power, :name, :status, :orderable
   json.user side.user.login
 
   json.user_side true if @side == side

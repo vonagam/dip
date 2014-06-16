@@ -61,9 +61,9 @@ describe 'Flow' do
 
       @users.each do |power, user|
         if power == 'Russia'
-          user.side_in( @game ).update_attributes power: power
+          user.side_in( @game ).update_attributes power: [power]
         else
-          @game.sides.create power: power, user: user
+          @game.sides.create power: [power], user: user
         end
       end
     end
@@ -88,14 +88,14 @@ describe 'Flow' do
       expect_orderable 7
       make_orders 'Austria', bud: [:Move, :gal], vie: [:Support, :bud, :gal]
       progress!
-      expect( @game.sides.where(orderable: true).first.power ).to eq 'Russia'
+      expect( @game.sides.where(orderable: true).first.power ).to eq ['Russia']
       expect_unit 'Russia', 'Agal-bud'
 
       #3
       expect_state 'Retreat'
       expect_orderable 1
       progress!
-      expect( @game.sides.where(orderable: true).first.power ).to eq 'Russia'
+      expect( @game.sides.where(orderable: true).first.power ).to eq ['Russia']
 
       #4
       expect_state 'Supply'

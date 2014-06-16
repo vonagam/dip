@@ -64,10 +64,10 @@ class Game
     map.powers
   end
   def taken_powers
-    sides.only(:power).all.collect!(&:power)
+    get_powers sides
   end
   def alive_powers
-    alive_sides.collect!(&:power)
+    get_powers alive_sides
   end
   def available_powers
     powers - taken_powers
@@ -84,7 +84,7 @@ class Game
     if waiting?
       going!
 
-      randomize_sides
+      fill_sides_powers
 
       state.send_websocket
       start_timer
@@ -138,13 +138,17 @@ class Game
     duration
   end
 
-  def randomize_sides
-    return unless sides.count > 1
-
-    available = available_powers
-    sides.select{ |s| s.power.blank? }.each do |side|
-      side.update_attributes power: available.shuffle!.pop
+  def fill_sides_powers
+    if sides.count == 1
+      sides.first.update_attributes power: map.powers
+    else
+      available = available_powers
+      sides.select{ |s| s.power.blank? }.each do |side|
+        side.update_attributes power: [ available.shuffle!.pop ]
+      end
     end
+
+    sides.each &:save_name
   end
 
   def is_left?
@@ -157,5 +161,9 @@ class Game
     end
 
     return true
+  end
+
+  def get_powers( sides )
+    sides.reduce([]){ |sum,x| sum + x.power.to_a }
   end
 end

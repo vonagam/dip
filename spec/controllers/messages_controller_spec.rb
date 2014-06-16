@@ -17,8 +17,8 @@ describe MessagesController do
 
     progress!
 
-    from = @side.reload.power
-    to = second_side.reload.power
+    from = @side.reload.name
+    to = second_side.reload.name
 
     expect{ send_message_create to: to, text: 'asd' }
     .to change{ @game.reload.messages.count }.from(1).to(2)

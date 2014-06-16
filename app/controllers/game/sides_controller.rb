@@ -23,6 +23,8 @@ class SidesController < ApplicationController
   end
 
   def side_params
-    params.require(:side).permit :power
+    p = params.require(:side).permit power: []
+    p[:power] = p[:power].first if p[:power] && p[:power].size > 1
+    p
   end
 end
