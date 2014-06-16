@@ -6,7 +6,7 @@ describe OrdersController do
     @user = @game.creator
     @side = @user.side_in @game
 
-    @side.update_attributes power: 'Italy'
+    @side.update_attributes power: ['Italy']
     sign_in @user
   end
 

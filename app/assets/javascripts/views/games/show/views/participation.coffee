@@ -77,6 +77,6 @@ class g.view.Participation extends g.view.Base
 
       for side in @game.raw_data.sides
         continue unless side.power
-        select.children( "[value='#{side.power}']" ).prop 'disabled', true
+        select.children( "[value='#{side.power[0]}']" ).prop 'disabled', true
 
     return

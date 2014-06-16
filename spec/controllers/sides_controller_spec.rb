@@ -7,7 +7,7 @@ describe SidesController do
     sign_in @user
   end
 
-  def send_side_create( power = '' )
+  def send_side_create( power = [] )
     post :create, format: :json, game_id: @game.id, side: { power: power }
   end
   def send_side_destroy
@@ -18,7 +18,7 @@ describe SidesController do
     expect{ send_side_create }
     .to change{ @game.reload.sides.count }.from(1).to(2)
 
-    expect{ send_side_create( 'Austria' ) }
+    expect{ send_side_create( ['Austria'] ) }
     .not_to change{ @game.reload.sides.count }.from(2)
   end
 

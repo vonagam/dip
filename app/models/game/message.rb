@@ -52,7 +52,7 @@ class Message
       :no_one
     elsif to == from
       :yourself
-    elsif game.alive_powers.not_include?(to)
+    elsif game.alive_sides.map(&:name).not_include?(to)
       :not_alive
     end
 

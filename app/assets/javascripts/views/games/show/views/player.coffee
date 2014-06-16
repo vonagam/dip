@@ -20,7 +20,7 @@ class g.view.Player extends g.view.Base
 
       side = @game.user_side
       @power.toggle side != null
-      @power.html side.power || 'Random' if side
+      @power.html side.name || 'Random' if side
 
       @view.toggleClass 'two_line', side != null
 

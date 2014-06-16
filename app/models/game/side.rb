@@ -2,9 +2,10 @@ class Side
   include Mongoid::Document
   include Mongoid::Enum
 
-  field :power
+  field :power, type: Array
   enum :status, [:fighting, :draw, :surrendered, :lost, :won]
   field :orderable, type: Boolean, default: true
+  field :name
 
   embedded_in :game
   belongs_to :user
@@ -14,7 +15,7 @@ class Side
   before_validation :delete_power_if_powers_random
   
   validates :user_id, presence: true, uniqueness: true, on: :create
-  validates :power, inclusion: {in: proc{|s| s.game.powers}}, allow_blank: true
+  validate :powers_on_map
   validate :game_has_space, on: :create
 
   after_create :add_participated_game, :websockets
@@ -26,12 +27,29 @@ class Side
   end
 
   def return_unallowed_powers( powers )
-    return [] if power.blank?
+    powers.reject{ |x| power.include? x }
+  end
 
-    powers.select{ |x| x != power }
+  def save_name
+    name =
+    case power.size
+    when 1 then power.first
+    when game.powers.size then 'Host'
+    else power.reduce(''){ |sum,p| sum + p[0] }
+    end
+
+    update_attribute :name, name
   end
 
   protected
+
+  def powers_on_map
+    return if power.blank?
+
+    if power.any? { |p| game.powers.not_include? p }
+      errors.add :power, :unknown
+    end
+  end
 
   def game_has_space
     if game.powers.size == game.sides.count
@@ -51,7 +69,7 @@ class Side
   end
 
   def websockets
-    WebsocketRails["#{game.id}_#{power}"].make_private if power
+    WebsocketRails["#{game.id}_#{name}"].make_private if name
     WebsocketRails[game.id.to_s].trigger 'side', self
   end
 end

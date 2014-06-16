@@ -69,6 +69,8 @@ ru:
               cant_be_manual: Не может быть публичной и в ручном режиме
         side:
           attributes:
+            power:
+              unknown: Страна отсутствует на карте
             game:
               filled: Нет свободных мест
         order:

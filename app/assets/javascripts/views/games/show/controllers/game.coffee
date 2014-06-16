@@ -39,7 +39,7 @@ class g.controller.Game extends BP.Controller
 
     if @user_side
       if @side_channel == null
-        @side_channel = @websockets.subscribe_private "#{@id}_#{@user_side.power}"
+        @side_channel = @websockets.subscribe_private "#{@id}_#{@user_side.name}"
     else
       if @side_channel != null
         @side_channel.destroy()

@@ -101,20 +101,21 @@ class State
   end
 
   def update_sides( state_class )
-    return unless game.sides.count > 1
-
     orderable = state_class.allow_orders map, @areas_states
+    orderable.compact!
+    orderable.uniq!
+    orderable.map! &:to_s
 
     units = count_units @areas_states
     supplies = count_supplies map.supply_centers, @areas_states
 
     game.alive_sides.each do |side|
-      p = side.power.to_sym
+      ps = side.power
 
-      if units.include?(p) || supplies.include?(p)
-        side.update_attributes! orderable: orderable.include?(p)
+      if ps.any?{ |p| units.include?(p) || supplies.include?(p) }
+        side.update_attributes! orderable: ps.any?{ |p| orderable.include? p }
       else
-        side.update_attributes! orderable: false, status: :lose
+        side.update_attributes! orderable: false, status: :lost
       end
     end
   end
@@ -130,11 +131,11 @@ class State
     units = Hash.new { |h,k| h[k] = 0 }
     areas_states.each do |abbrv, area|
       if unit = area.unit
-        units[unit.nationality] += 1
+        units[unit.nationality.to_s] += 1
       end
     end
     areas_states.dislodges.each do |abbr, dislodge|
-      units[dislodge.unit.nationality] += 1
+      units[dislodge.unit.nationality.to_s] += 1
     end
     units
   end
@@ -143,7 +144,7 @@ class State
     supplies = Hash.new { |h,k| h[k] = 0 }
     supply_centers.each do |abbrv, area|
       if owner = areas_states[abbrv].owner
-        supplies[owner] += 1
+        supplies[owner.to_s] += 1
       end
     end
     supplies
@@ -158,7 +159,7 @@ class State::Move < State
     State::Retreat
   end
   def self.allow_orders( map, areas_states )
-    areas_states.map{ |abbr, area| area.unit.try :nationality }
+    areas_states.map{ |abbr, area| area.unit.try(:nationality) }
   end
 end
 
@@ -185,7 +186,7 @@ class State::Supply < State
     units = count_units areas_states
     supplies = count_supplies map.supply_centers, areas_states
 
-    map.powers.map{ |p| p.to_sym }.select do |power|
+    map.powers.select do |power|
       units[power] != supplies[power]
     end
   end

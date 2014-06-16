@@ -6,7 +6,6 @@ class g.view.Order extends g.view.Base
 
     @button.clicked ()=>
       state = @game.state
-      power = @game.user_side.power
       orders = state.collect_orders()
 
       @button.ajax 'post', @button.data('url'), { order: { data: JSON.stringify(orders) } }, (order)=>

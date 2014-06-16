@@ -94,7 +94,7 @@ class g.view.Chat extends g.view.Base
       
       for side in @game.raw_data.sides
         if ( side.status == 'fighting' || side.status == 'draw' ) && side != @user_side
-          @select.append @side_option side.power
+          @select.append @side_option side.name
 
     return
 
@@ -130,7 +130,7 @@ class g.view.Chat extends g.view.Base
 
 
   side_span: ( side )->
-    "<span class='side #{side} #{side == @user_side.power}'>#{side}</span>"
+    "<span class='side #{side} #{side == @user_side.name}'>#{side}</span>"
   side_option: ( side )->
     "<option value='#{side}'>#{side}</option>"
 
