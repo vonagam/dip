@@ -26,6 +26,8 @@ ru:
         cancel: Отменить <br> участие
         change_power: Изменить <br> страну
         powers_is_random: Страны будут распределены случайно
+      rollback:
+        rollback: Откатить <br> ход
       order:
         send: Отдать <br> приказы
       timer:

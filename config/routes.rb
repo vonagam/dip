@@ -7,9 +7,9 @@ Diplomacy::Application.routes.draw do
 
   resources :games, only: [:create, :show, :destroy] do
     member do
-      get 'start'
-      get 'progress'
-      get 'continue'
+      post 'progress'
+      post 'continue'
+      post 'rollback'
     end
 
     resource :order, only: [:create]  

@@ -14,8 +14,8 @@ describe Game do
     expect( @game.sides.first.power ).to be nil
   end
 
-  describe '#progress!' do
-    let(:progress) { -> { @game.progress! } }
+  describe '#progress' do
+    let(:progress) { -> { @game.progress } }
 
     it 'change status' do
       expect( progress ).to change( @game, :status ).from('waiting').to('started')
@@ -39,7 +39,7 @@ describe Game do
     @game.update_attributes time_mode: 'sixty_seconds'
 
     4.times do |i|
-      @game.progress!
+      @game.progress
       @game.reload
       expect( @game.send :is_left? ).to be (i == 3)
     end

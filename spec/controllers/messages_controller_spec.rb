@@ -15,7 +15,7 @@ describe MessagesController do
   it 'one private message' do
     second_side = create :side, game: @game
 
-    progress!
+    progress
 
     from = @side.reload.name
     to = second_side.reload.name

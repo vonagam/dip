@@ -12,8 +12,8 @@ class Game
   }
 
   CHAT_MODES = {
-    'public' => true,
-    'private' => false,
+    'only_public' => true,
+    'only_private' => false,
     'rotation' => proc{ |game| game.state.is_fall? },
     'both' => nil
   }
@@ -78,7 +78,7 @@ class Game
     answer.is_a?( Proc ) ? answer.call( self ) : answer
   end
 
-  def progress!
+  def progress
     return if ended?
 
     if waiting?
@@ -102,6 +102,16 @@ class Game
     start_timer
   end
 
+  def rollback
+    return unless states.count > 1
+
+    state.destroy
+
+    reload
+
+    state.update_attribute :resulted_orders, nil
+  end
+
   def start_timer( force = false )
     return if time_mode == 'manual' || ( !force && is_left? )
 
@@ -109,11 +119,15 @@ class Game
       
     state.update_attribute :end_at, end_at
 
-    RestClient.delay( run_at: end_at ).get progress_game_url( self, secret: secret )
+    RestClient.delay( run_at: end_at ).post( progress_game_url(self), secret: secret )
   end
 
   def end_by( reason )
     update_attributes! status: :ended, ended_by: reason
+  end
+
+  def sandbox?
+    going? && sides.count == 1
   end
 
   protected
@@ -149,6 +163,11 @@ class Game
     end
 
     sides.each &:save_name
+  end
+
+  def sandbox!
+    sides.first.update_attributes! power: map.powers
+    update_attributes! chat_mode: 'only_public'
   end
 
   def is_left?

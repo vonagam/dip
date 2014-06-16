@@ -1,5 +1,5 @@
-def progress!
-  @game.progress!
+def progress
+  @game.progress
   @game.reload
 end
 

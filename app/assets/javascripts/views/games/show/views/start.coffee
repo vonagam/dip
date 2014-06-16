@@ -3,9 +3,9 @@ class g.view.Start extends g.view.Base
     if game.user_side && game.user_side.creator
       super game, 'start'
 
-      @view.on 'ajax:success', ( e, data )=>
-        @game.update data
-        return false
+      #@view.on 'ajax:success', ( e, data )=>
+      #  @game.update data
+      #  return false
 
 
   is_active: ->

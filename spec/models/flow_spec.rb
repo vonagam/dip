@@ -31,8 +31,8 @@ describe 'Flow' do
     @game.reload
   end
 
-  def progress!
-    @game.progress!
+  def progress
+    @game.progress
     @game.reload
   end
 
@@ -70,13 +70,13 @@ describe 'Flow' do
 
     it '#no_error' do
       #start
-      progress!
+      progress
 
 
       #1
       make_orders 'Russia', stp: [:Move, :bot], war: [:Move, :gal] 
       make_orders 'Turkey', smy: [:Move, :syr], ank: [:Move, :smy]
-      progress!
+      progress
       expect_unit 'Russia', 'Fbot'
       expect_unit 'Russia', 'Awar', false
       expect_unit 'Russia', 'Agal'
@@ -87,21 +87,21 @@ describe 'Flow' do
       expect_state 'Move'
       expect_orderable 7
       make_orders 'Austria', bud: [:Move, :gal], vie: [:Support, :bud, :gal]
-      progress!
+      progress
       expect( @game.sides.where(orderable: true).first.power ).to eq ['Russia']
       expect_unit 'Russia', 'Agal-bud'
 
       #3
       expect_state 'Retreat'
       expect_orderable 1
-      progress!
+      progress
       expect( @game.sides.where(orderable: true).first.power ).to eq ['Russia']
 
       #4
       expect_state 'Supply'
       expect_orderable 1
       make_orders 'Russia', war: [:Build, :army]
-      progress!
+      progress
       expect_unit 'Russia', 'Awar'
 
       #5
@@ -109,36 +109,36 @@ describe 'Flow' do
       expect_orderable 7
       make_orders 'Turkey', con: [:Move, :bul]
       make_orders 'England', liv: [:Move, :yor], lon: [:Move, :nth] 
-      progress!
+      progress
       expect_unit 'England', 'Ayor'
 
       #6
       expect_state 'Move'
       make_orders 'England', yor: [:Move, :nor], nth: [:Convoy, :yor, :nor]
-      progress!
+      progress
       expect_unit 'England', 'Anor'
 
       #7
       expect_state 'Supply'
       expect_orderable 2
-      progress!
+      progress
 
       #8
       make_orders 'France', mar: [:Move, :pie]
-      progress!
+      progress
 
       make_orders 'France', pie: [:Move, :ven]
       make_orders 'Austria', tri: [:Support, :pie, :ven]
-      progress!
+      progress
 
       expect_state 'Retreat'
       make_orders 'Italy', ven: [:Retreat, :tyr]
-      progress!
+      progress
       expect_unit 'Italy', 'Atyr'
     end
 
     it 'retreat' do
-      progress!
+      progress
 
       @game.state.update_attributes!({
         data: {
@@ -160,13 +160,13 @@ describe 'Flow' do
       })
 
       @game.reload
-      @game.progress!
+      @game.progress
 
       puts @game.reload.state.data
     end
 
     it 'supply' do
-      progress!
+      progress
 
       @game.state.update_attributes!({
         data: {
@@ -188,7 +188,7 @@ describe 'Flow' do
 
       make_orders 'Austria', rum: [:Build, :army], bul: [:Build, :army]
 
-      progress!
+      progress
 
       puts @game.reload.states.first.resulted_orders
     end
@@ -216,7 +216,7 @@ describe 'Flow' do
       @game.sides.create power: '', user: user unless power == 'Russia'
     end
 
-    progress!
+    progress
 
     powers = @game.sides.map{ |x| x.power }
 

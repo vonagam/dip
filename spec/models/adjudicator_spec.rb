@@ -5,7 +5,7 @@ describe 'Adjudicator' do
     @user = create :user
     @map = Map.find_by name: 'Standart'
     @game = @user.created_games.create map: @map
-    @game.progress!
+    @game.progress
     @user.side_in( @game ).update_attributes power: 'Italy'
     @game.reload
   end
@@ -14,7 +14,7 @@ describe 'Adjudicator' do
     @game.state.data = '{"Powers":{"Italy":{"Units":['+units+'],"Areas":["rom"]}},"Embattled":[]}'
     @game.state.orders.create! data: orders, side: @user.side_in(@game)
 
-    @game.progress!
+    @game.progress
 
     return JSON.parse( @game.states.first.orders.first.data )
   end
@@ -100,7 +100,7 @@ describe 'Adjudicator' do
     
     @game.state.orders.create! data: '{"bud":{"type":"Retreat","to":"ser"}}', side: @user.side_in(@game)
 
-    @game.progress!
+    @game.progress
 
     expect( JSON.parse( @game.states.first.orders.first.data )['bud']['result'] ).to eq 'SUCCESS'
   end
@@ -132,7 +132,7 @@ describe 'Adjudicator' do
     
     @game.state.orders.create! data: '{"stp_nc":{"type":"Build","unit":"fleet"}}', side: @user.side_in(@game)
 
-    @game.progress!
+    @game.progress
 
     #puts @game.state.data
   end

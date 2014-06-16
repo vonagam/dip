@@ -1,0 +1,4 @@
+.rollback.j_component
+  a.button.red( href=rollback_game_path(@game, format: :json)
+                data-remote=true
+                data-method='post' ) == t '.rollback'

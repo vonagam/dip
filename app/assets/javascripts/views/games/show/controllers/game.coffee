@@ -45,7 +45,7 @@ class g.controller.Game extends BP.Controller
         @side_channel.destroy()
         @side_channel = null
 
-    if @states
+    if @states && data.states.length >= @states.length
       if data.states.length > @states.length
         @last.raw = data.states[ data.states.length - 2 ]
         @last.last = false

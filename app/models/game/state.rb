@@ -62,6 +62,8 @@ class State
 
     WebsocketRails[game.id.to_s].trigger 'state'
 
+    return if game.sandbox?
+
     text = "#{date/2}.#{date%2}:#{type}"
     game.messages.create from: 'Dip', is_public: true, text: text
   end

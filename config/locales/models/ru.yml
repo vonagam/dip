@@ -99,8 +99,8 @@ ru:
         twenty_four_hours: 24 часа
         manual: Ручной режим
       chat_modes:
-        public: Всегда публичный
-        private: Всегда приватный
+        only_public: Только публичный
+        only_private: Только приватный
         rotation: Чередование
         both: Выбор игрока
 

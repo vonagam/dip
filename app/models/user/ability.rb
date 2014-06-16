@@ -8,14 +8,18 @@ class Ability
       can :manage, :all
     end
 
-    can :start, Game, creator_id: @user.id, status: :waiting
-
     can :destroy, Game do |game|
       if he( game, :creator )
         case game.status
         when :waiting then true
         when :going then game.time_mode == 'manual' || game.is_left?
         end
+      end
+    end
+
+    can :rollback, Game do |game|
+      if he( game, :creator )
+        game.sides.count == 1
       end
     end
 

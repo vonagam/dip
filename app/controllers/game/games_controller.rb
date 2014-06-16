@@ -18,23 +18,23 @@ class GamesController < ApplicationController
     redirect_to root_path, status: 303
   end
 
-  def start
-    @game.progress!
-    show
-    render :show
-  end
-
   def progress
     valid_request = 
-    if @game.time_mode == 'manual'
+    if @game.waiting? || @game.time_mode == 'manual'
       @game.creator == current_user
     else
       @game.secret == params[:secret]
     end
 
-    @game.progress! if valid_request
+    @game.progress if valid_request
     
     head :ok
+  end
+
+  def rollback
+    @game.rollback
+    show
+    render 'games/show'
   end
 
   private

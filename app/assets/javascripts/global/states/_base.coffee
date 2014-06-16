@@ -72,6 +72,8 @@ class state.Base
  
 
   toggle_toggls: (bool)->
+    #TODO add attach-detach, hide-show
+
     for name, toggl of @toggls
       if bool
         target = Base.get_thing_value toggl.target

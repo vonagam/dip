@@ -18,7 +18,7 @@ describe OrdersController do
   end
 
   it 'two orders' do
-    progress!
+    progress
 
     expect{ send_post_create( rom: [:Move,:tus] ) }
     .to change{ @game.reload.orders.count }.from(0).to(1)
@@ -37,7 +37,7 @@ describe OrdersController do
   end
 
   it 'not signed' do
-    progress!
+    progress
     sign_out @user
 
     send_post_create rom: [:Move,:tus]
@@ -46,7 +46,7 @@ describe OrdersController do
   end
 
   it 'not participated' do
-    progress!
+    progress
     sign_out @user
     sign_in create :user
 
