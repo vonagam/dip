@@ -15,6 +15,9 @@ new Toggl
           this.change_state()
           return
 
+  _fun
+  _view
+
   +
   condition
   target
@@ -43,11 +46,10 @@ new Toggl
 
 
 class Toggl
-
   constructor: ( @toggls = {}, fun = this, view = doc )->
     @fun_context = @toggls._fun || fun
     @view_context = @toggls._view || view
-    @turned = false
+    @toggled = false
     @cache = {}
 
 
@@ -55,12 +57,12 @@ class Toggl
     bool = Boolean bool
     return if bool && @toggls.condition?.apply( @fun_context ) == false
     @toggle_toggls bool
-    @turned = bool
+    @toggled = bool
     return
 
 
   get_value: ( thing, args = [], selector = false )->
-    return thing.apply @fun_context, args if typeof thing == 'function'
+    return @apply_context thing, args if typeof thing == 'function'
     return @view_context.find thing if selector && typeof thing == 'string'
     return thing
 
@@ -82,7 +84,11 @@ class Toggl
     return
 
 
-  apply_context: ( fun )->
+  apply_context: ( fun, args )->
+    fun.apply @fun_context, args
+
+
+  wrap_context: ( fun )->
     => fun.apply @fun_context, arguments
 
 
@@ -109,8 +115,8 @@ class Toggl
         toggl.toggle bool
         continue
 
-      continue if @turned == bool || !target || /^_/.test( name ) || 
-        name == 'target' || name == 'condition' || name == 'fun'
+      continue if @toggled == bool || !target || /^_/.test( name ) || 
+        name == 'target' || name == 'condition'
 
       if match = name.match /^(add|remove)(\w+)$/
         direction = ( if match[1] == 'add' then true else false ) == bool
@@ -142,11 +148,11 @@ class Toggl
         for key, value of toggl
 
           if typeof value == 'function'
-            target[ on_off ]( key, @apply_context(value) )
+            target[ on_off ]( key, @wrap_context(value) )
 
           else
             for filter, fun of value
-              target[ on_off ]( key, filter, @apply_context(fun) )
+              target[ on_off ]( key, filter, @wrap_context(fun) )
         continue
 
       if name == 'show' || name == 'hide'
@@ -155,7 +161,7 @@ class Toggl
         continue
 
       if name == 'fun'
-        toggl.apply @fun_context, [target, bool]
+        @apply_context toggl, [target, bool]
         continue
 
       if match = name.match /^(ap|pre)(pend|detach)$/
