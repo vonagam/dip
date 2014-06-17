@@ -30,18 +30,17 @@ retreat_select = new g.SelectingState
 
 retreat = new state.List
   toggls:
-    selected:
+    Selected:
       target:-> g.map.data '[dislodged_select]'
-      attr: 'dislodged_selected'
-    probel:
-      target:-> doc
-      bind:
-        'keydown': (e)->
-          if e.which == 27 || e.which == 32
-            unit = get_dislodged_in g.map.data('[dislodged_select]')
-            unit.set_order undefined
-            retreat.turn false
-            return
+      addAttr: 'dislodged_selected'
+    Probel:
+      target: doc
+      on: keydown: (e)->
+        if e.which == 27 || e.which == 32
+          unit = get_dislodged_in g.map.data('[dislodged_select]')
+          unit.set_order undefined
+          retreat.turn false
+          return
 
 retreat.after_list_end = ->
   return true unless g.map.data '[move_select]'

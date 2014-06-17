@@ -20,7 +20,8 @@ class Actions extends state.Radio
     for child in @childs
       return if child.turned == true 
 
-    unit = g.get_unit_in(@selected)
+    unit = g.get_unit_in @toggls.get 'Selected'
+
     unless unit.order
       g.set_order unit, 'Hold'
 
@@ -31,23 +32,23 @@ class Actions extends state.Radio
 
 actions = new Actions
   toggls:
-    selected:
+    Selected:
       target:-> g.map.data '[unit_select]'
-      attr: 'unit_selected'
-    probel:
-      target:-> doc
-      bind:
-        'keydown': (e)->
+      addAttr: 'unit_selected'
+    Probel:
+      target: doc
+      on:
+        keydown: (e)->
           return support.turn true if e.which == 83
           return move.turn true if e.which == 77
           return actions.turn false if e.which == 32 || e.which == 27
           return hold() if e.which == 72
           return
 
-    order_type:
+    OrderType:
       target: '.order_type.j_component'
-      class: 'active'
-      bind:
+      addClass: 'active'
+      on:
         mousedown: 
           '[data-order]': (e)->
             l = {}
@@ -59,12 +60,9 @@ actions = new Actions
             else
               hold()
             return false
-    order_types:
+    OrderTypes:
       target: '.order_type.j_component [data-order]'
-      bind:
-        'choosen:on': ->
-          $(this).choosen 'deactive'
-          return
+      on: 'choosen:on': -> $(this).choosen 'deactive'; return
 
 
 # Hold order
@@ -80,14 +78,14 @@ move = new state.List
   resets:
     convoy: undefined
   toggls:
-    button:
+    Button:
       target: '.order_type [data-order="move"]'
       trigger: 'choosen'
 
 move.after_list_end = ->
   return true unless g.map.data '[move_select]'
 
-  unit = g.get_unit_in g.map.data('[unit_select]')
+  unit = g.get_unit_in g.map.data '[unit_select]'
   to = g.map.data '[move_select]'
 
   if unit.area == g.state.get_area to.attr('id')
@@ -156,15 +154,15 @@ move_select = new g.SelectingState
 # Support order
 support = new state.List
   toggls:
-    button:
+    Button:
       target: '.order_type [data-order="support"]'
       trigger: 'choosen'
 
 support.after_list_end = ->
   return true unless g.map.data '[move_select]'
 
-  who = g.get_unit_in g.map.data('[unit_select]')
-  whom = g.get_unit_in g.map.data('[move_select]')
+  who = g.get_unit_in g.map.data '[unit_select]'
+  whom = g.get_unit_in g.map.data '[move_select]'
 
   g.set_order who, 'Support', from: whom.area.name, to: whom.order.target.name
 
@@ -173,7 +171,7 @@ support.after_list_end = ->
 support_select = new g.SelectingState
   selecting:->
     possibles = $()
-    unit = g.get_unit_in actions.selected
+    unit = g.get_unit_in actions.toggls.get 'Selected'
 
     for neighbour in unit.neighbours()
       area = g.state.get_area neighbour

@@ -28,14 +28,13 @@ class g.view.History extends g.view.Base
       @game.set_state state unless state.attached
       return
 
-    @toggls.doc =
+    @toggls.add Keys:
       target: doc
-      bind:
-        keydown: (e)=>
-          if e.shiftKey
-            @controls.find('.back.one').trigger 'mousedown' if e.which == 37
-            @controls.find('.forward.one').trigger 'mousedown' if e.which == 39
-          return
+      on: keydown: (e)->
+        if e.shiftKey
+          @controls.find('.back.one').trigger 'mousedown' if e.which == 37
+          @controls.find('.forward.one').trigger 'mousedown' if e.which == 39
+        return
 
 
   is_active: ->

@@ -7,7 +7,8 @@ class state.Base
 
     @initials = hash.initials || {}
     @resets = hash.resets || {}
-    @toggls = hash.toggls || {}
+
+    @toggls = new Toggler hash.toggls, this
 
     @childs = []
     
@@ -55,7 +56,11 @@ class state.Base
     else
       child.turn false for child in @childs
 
-    return @toggle_toggls bool
+    @toggls.toggle bool
+
+    return true if @toggls.toggled != bool
+    
+    return
     
 
   @get_thing_value: ( thing )->
@@ -67,61 +72,4 @@ class state.Base
   set_variables: (variables)->
     for name, val of variables
       @[name] = Base.get_thing_value val
-    return
- 
-
-  toggle_toggls: (bool)->
-    #TODO add attach-detach, hide-show
-
-    for name, toggl of @toggls
-      if bool
-        target = Base.get_thing_value toggl.target
-
-        return true if target == 42
-
-        @[name] = target
-      else
-        target = @[name]
-
-        continue if target == undefined
-
-        @[name] = undefined
-
-
-      if toggl['class']
-        target.toggleClass toggl['class'], bool
-
-      if toggl['attr']
-        target.attr toggl['attr'], bool || null
-
-      if toggl['prop']
-        target.prop toggl['prop'], bool
-
-      if toggl['data']
-        for name, thing of toggl['data']
-          target.data name, if bool then Base.get_thing_value(toggl.target) else null
-
-      if toggl['toggle']
-        target.toggle toggl['toggle'] == bool
-
-      on_off = if bool then 'on' else 'off'
-      
-      if toggl['bind']
-        for e, thing of toggl['bind']
-
-          if typeof thing == 'function'
-            target[ on_off ]( e, thing )
-          else
-            for filter, fun of thing
-              target[ on_off ]( e, filter, fun )
-
-      if toggl['trigger']
-        thing = toggl['trigger']
-
-        if typeof thing == 'string'
-          target.trigger "#{thing}:#{on_off}"
-        else
-          for e in thing
-            target.trigger "#{e}:#{on_off}"
-
     return

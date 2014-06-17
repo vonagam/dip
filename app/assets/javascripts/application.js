@@ -23,6 +23,7 @@
 //= require global/jquery_html_hash
 //= require global/regexp_fix_turbolinks
 //= require global/vector_to_string
+//= require global/toggler
 //= require_tree ./global/states
 //= require_tree ./global/big_page
 //

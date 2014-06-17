@@ -17,17 +17,17 @@ class g.view.Chat extends g.view.Base
       @add_new_message message
       return
 
-    @toggle_keybindings = new state.Base
-      toggls:
-        keys:
-          target: doc
-          bind:
-            keydown: (e)=>
-              if e.shiftKey && @textarea.is(':focus')
-                @form.submit() if e.which == 13
-                @move_select_value 'prev' if e.which == 38
-                @move_select_value 'next' if e.which == 40
-              return
+    hoho = this
+
+    @toggle_keybindings = new Toggler
+      target: doc
+      on: keydown: (e)->
+        if e.shiftKey && @textarea.is(':focus')
+          @form.submit() if e.which == 13
+          @move_select_value 'prev' if e.which == 38
+          @move_select_value 'next' if e.which == 40
+        return
+      , this
 
     @window.on 'scroll', (e)=>
       @fetch() if @window.scrollTop() < 20
@@ -80,7 +80,7 @@ class g.view.Chat extends g.view.Base
     else
       @private = false
 
-    @toggle_keybindings.turn form_is_available
+    @toggle_keybindings.toggle form_is_available
 
     chat_is_private = @game.status == 'going' && !@game.raw_data.chat_is_public
 

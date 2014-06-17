@@ -2,42 +2,25 @@ class Looking extends state.Base
   constructor: ->
     super
     @resets.view = '.old_order.j_component'
-    @toggls.ordered = 
-      target: => @ordered_areas
-      bind:
-        mouseenter: (e)=> @show_order_string(e)
-        mouseleave: => @clear_view()
-
-
-  toggle_toggls: (bool)->
-    if bool
-      @get_ordered_areas()
-    else
-      @ordered_areas.data 'order_string', null
-
-    super
-
-    return
+    @toggls.add
+      Ordered:
+        target: @get_ordered_areas
+        on:
+          mouseenter: @show_order_string
+          mouseleave: @clear_view
+        addData: 
+          order_string: ( q )-> @get_area_order( q.data 'model' ).to_string()
 
 
   get_ordered_areas: ->
-    @ordered_areas = $()
-
-    check = (q)=>
-      area = q.data 'model'
-
-      order = @get_order( area, 'unit' ) || @get_order( area, 'dislodged' )
-
-      if order
-        q.data 'order_string', order.to_string()
-        @ordered_areas = @ordered_areas.add q
-
-    g.areas.each ->
-      check $ this
-      return
+    g.areas.filter ( i, element )=> @get_area_order $(element).data 'model'
 
 
-  get_order: ( area, unit_status )->
+  get_area_order: ( area )->
+    @get_unit_order( area, 'unit' ) || @get_unit_order( area, 'dislodged' )
+
+
+  get_unit_order: ( area, unit_status )->
     area[unit_status] && area[unit_status].order
 
 

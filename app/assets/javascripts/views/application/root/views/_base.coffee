@@ -2,7 +2,7 @@ class r.view.Base extends BP.View
   constructor: ( @root, @container_class, permanent = false )->
     super @root, @container_class, ".#{@container_class}.container"
  
-    @toggls.status = target: @view, class: 'opened'
+    @toggls.add Status: target: @view, addClass: 'opened'
 
     @view.find('.form .button, .sezam').clicked =>
       if @enabled && @turned == false

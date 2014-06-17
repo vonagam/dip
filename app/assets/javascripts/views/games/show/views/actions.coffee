@@ -4,7 +4,7 @@ class g.view._Actions extends state.Family
 
     @view = g.page.find '.actions.j_component'
 
-    @toggls.status = target: @view, class: 'active'
+    @toggls.add Status: target: @view, addClass: 'active'
 
     for name in [ 'start', 'delete', 'participation' ]
       view = views[ name ]
