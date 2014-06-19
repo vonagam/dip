@@ -13,12 +13,14 @@
       = f.input :time_mode,
         as: :radios,
         collection: Game::TIME_MODES.keys,
-        label_method: proc{ |mode| t "const.game.time_modes.#{mode}" }
+        label_method: proc{ |mode| t "const.game.time_modes.#{mode}" },
+        required: false
 
       = f.input :chat_mode,
         as: :radios,
         collection: Game::CHAT_MODES.keys,
-        label_method: proc{ |mode| t "const.game.chat_modes.#{mode}" }
+        label_method: proc{ |mode| t "const.game.chat_modes.#{mode}" },
+        required: false
 
       .centrator
         = f.input :is_public, required: false
