@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require react
 //= require websocket_rails/main
 //= require vonagam_items/basic
 //= require vonagam_items/ruby_regexp_fix
@@ -26,6 +27,8 @@
 //= require global/toggler
 //= require_tree ./global/states
 //= require_tree ./global/big_page
+//= require_tree ./vonagam_react
 //
 //= require views/application/root
 //= require views/games/show
+//= require example
