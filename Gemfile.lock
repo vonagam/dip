@@ -32,9 +32,8 @@ GIT
       ransack (~> 1.0)
       sass-rails
 
-GIT
-  remote: git://github.com/vonagam/items.git
-  revision: 0b6bfc624d6cebc465b4fdf0f711379664cf782a
+PATH
+  remote: ../items
   specs:
     vonagam_items (0.0.1)
       coffee-rails

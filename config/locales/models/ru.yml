@@ -66,25 +66,29 @@ ru:
         game:
           attributes:
             is_public:
-              cant_be_manual: Не может быть публичной и в ручном режиме
+              cant_be_manual: не может быть публичной и в ручном режиме
+            chat_mode:
+              blank: не выбран
+            time_mode:
+              blank: не выбран
         side:
           attributes:
             power:
-              unknown: Страна отсутствует на карте
+              unknown: страна отсутствует на карте
             game:
-              filled: Нет свободных мест
+              filled: нет свободных мест
         order:
           attributes:
             data:
-              not_parsable: Не удается считать приказы
+              not_parsable: не удается считать приказы
             game:
-              not_going: Не в активном состоянии
+              not_going: не в активном состоянии
         message:
           attributes:
             to:
-              no_one: Не указан адресат
-              yourself: Самому себе
-              not_alive: Сторона выбыла из игры
+              no_one: не указан адресат
+              yourself: самому себе
+              not_alive: сторона выбыла из игры
 
   const:
     game:

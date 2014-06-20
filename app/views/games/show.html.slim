@@ -37,3 +37,12 @@ javascript:
     #{ with_format(:json){ raw render template: 'messages/index' } },
     #{ raw @game.map.info.yaml_areas }
   )
+
+coffee:
+  log 
+    __div: 
+      class: 'order j_component'
+      __div: 
+        class: 'send button'
+        data_url: 'send_path'
+        __html: 'send'

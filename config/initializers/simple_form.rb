@@ -140,7 +140,7 @@ SimpleForm.setup do |config|
   # Default class for buttons = nil
   # + fields in wrappers config
   
-  config.collection_wrapper_class = :collection
+  config.collection_wrapper_class = 'collection error_container'
   config.item_wrapper_class = :item
   config.label_class = :label
   config.form_class = :form

@@ -1,3 +1,36 @@
+- Anytime
+  - All
+    - name and country
+    - back to root
+    + game settings
+    + players
+
+- Waiting
+  - Creator
+    - start
+    - delete
+  - User
+    - participate
+    - cancel
+    - change power
+
+- Going
+  - Manual
+    - Creator
+      - next turn
+  - Timed
+    - All
+      - timer
+
+  - All
+    - history
+  - Player
+    - send orders
+  
+  - Sandbox
+    - Creator
+      - rollback
+
 Кнопки
 
   Создатель
