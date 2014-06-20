@@ -1,3 +1,22 @@
+###* @jsx React.DOM ###
+
+
+GameRow = React.createClass
+  render: ->
+    `<a 
+      className={vr.classes( 'game tr', {'participated': this.props.game.participated} )}
+      href={ this.props.game.url }
+    >
+      <span className={vr.classes( 'td status', this.props.game.status )}></span>
+      <span className='td time_mode'>{ this.props.game.time_mode }</span>
+      <span className='td chat_mode'>{ this.props.game.chat_mode }</span>
+      <span className='td sides'>{ this.props.game.sides }</span>
+    </a>`
+
+
+
+
+
 class r.view.Games extends r.view.Base
   constructor: ( root )->
     super root, 'games', true
@@ -68,14 +87,7 @@ class r.view.Games extends r.view.Base
       else
         i++
 
-      game_template.clone().html_hash
-        time_mode: game.time_mode
-        chat_mode: game.chat_mode
-        sides: game.sides
-        status: (x)-> x.addClass game.status
-      .addClass if game.participated then 'participated' else null
-      .attr href: game.url
-      .appendTo tab
+      React.renderComponent `<GameRow game={game} />`, tab[0]
 
     if tab_i == 1
       @tfooter.empty()
@@ -106,13 +118,3 @@ class r.view.Games extends r.view.Base
     for field, val of @filter
       return false if game[field] != val
     return true
-
-
-game_template = $("\
-<a class='game tr'>\
-<span class='td status'></span>\
-<span class='td time_mode'></span>\
-<span class='td chat_mode'></span>\
-<span class='td sides'></span>\
-</a>
-")
