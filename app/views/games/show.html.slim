@@ -30,19 +30,13 @@
     
     .right.pil.container = render 'games/show/chat'
 
+  coffee:
+    React.renderComponent vr.Svg({data: @standart_map.Standart}), $('.keep_ratio')[0]
 
-javascript:
-  g.initialize( 
-    #{ with_format(:json){ raw render template: 'games/show' } },
-    #{ with_format(:json){ raw render template: 'messages/index' } },
-    #{ raw @game.map.info.yaml_areas }
-  )
-
-coffee:
-  log 
-    __div: 
-      class: 'order j_component'
-      __div: 
-        class: 'send button'
-        data_url: 'send_path'
-        __html: 'send'
+/
+  javascript:
+    g.initialize( 
+      #{ with_format(:json){ raw render template: 'games/show' } },
+      #{ with_format(:json){ raw render template: 'messages/index' } },
+      #{ raw @game.map.info.yaml_areas }
+    )

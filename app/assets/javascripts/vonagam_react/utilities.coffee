@@ -19,6 +19,9 @@ class vr.Classes
   valueOf: ->
     @classes.join ' '
 
+  toString: ->
+    @valueOf()
+
 
 vr.classes = ->
   (new vr.Classes).add_array arguments

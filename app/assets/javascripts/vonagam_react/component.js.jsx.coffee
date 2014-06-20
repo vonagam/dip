@@ -2,8 +2,11 @@
 
 vr.Component = React.createClass
   render: ->
-    `<div 
-      className={vr.classes( 'component', this.props.name, this.props.className )} 
-    >
-      {this.props.children}
-    </div>`
+    @transferPropsTo(
+      `<div 
+        className={vr.classes( 'component', this.props.name, this.props.className )}
+        name={null}
+      >
+        {this.props.children}
+      </div>`
+    )

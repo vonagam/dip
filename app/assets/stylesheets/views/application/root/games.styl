@@ -1,78 +1,80 @@
-#application_root > .games
-  > .cave
-    
-    > .filters
-      pad t 10 b 20
+#application_root 
+  .games
+  
+    > .cave
+      
+      > .filters
+        pad t 10 b 20
 
-      > .filter
-        + .filter
-          mar t 10
+        > .filter
+          + .filter
+            mar t 10
 
-        > .input
-          wid 150
-          mar l 5
+          > .input
+            wid 150
+            mar l 5
 
-    > .table
-      txt ali cen
+      > .table
+        txt ali cen
 
-      .td
-        + .td
-          mar l 10
+        .td
+          + .td
+            mar l 10
 
-        &.time_mode
-          wid 85
-        &.chat_mode
-          wid 85
-        &.sides
-          wid 30
+          &.time_mode
+            wid 85
+          &.chat_mode
+            wid 85
+          &.sides
+            wid 30
 
-        &.status
-          wid 30
+          &.status
+            wid 30
 
-      > .tbody
-        > .tab
-          dis non
-          &.current
-            dis blo
+        > .tbody
+          > .tab
+            dis non
+            &.current
+              dis blo
 
-          > .tr
-            dis blo
-            hei 30
-            txt hei 30
+            > .tr
+              dis blo
+              hei 30
+              txt hei 30
+              mar t 5
+
+              &:hover
+                bac clr hsl(0,0,92)
+
+              > .status
+                &:after
+                  dis blo
+                  mar t 7.5 x aut
+                  con ''
+                  wid 15
+                  hei 15
+                  brd rds 50%
+                &.waiting:after
+                  bac clr hsl(40,80,50)
+                &.going:after
+                  bac clr hsl(120,50,50)
+                &.ended:after
+                  bac clr hsl(0,50,50)
+
+        > .tfooter
+          > .pag
             mar t 5
+            dis inl-blo
+            ver t
+            hei 20
+            wid 15
+            cur pnt
+
+            + .pag
+              mar l 5
 
             &:hover
               bac clr hsl(0,0,92)
 
-            > .status
-              &:after
-                dis blo
-                mar t 7.5 x aut
-                con ''
-                wid 15
-                hei 15
-                brd rds 50%
-              &.waiting:after
-                bac clr hsl(40,80,50)
-              &.going:after
-                bac clr hsl(120,50,50)
-              &.ended:after
-                bac clr hsl(0,50,50)
-
-      > .tfooter
-        > .pag
-          mar t 5
-          dis inl-blo
-          ver t
-          hei 20
-          wid 15
-          cur pnt
-
-          + .pag
-            mar l 5
-
-          &:hover
-            bac clr hsl(0,0,92)
-
-          &.current
-            bac clr hsl(0,0,80)
+            &.current
+              bac clr hsl(0,0,80)

@@ -4,13 +4,13 @@
   .grey.layer
 
 #application_root.page
-  = render 'application/root/login'
-  = render 'application/root/signs'
-  = render 'application/root/new_game'
-  = render 'application/root/rules'
-  = render 'application/root/games'
-
-  #place_to_react
+  .left.col
+    = render 'application/root/games'
+  .right.col
+    = render 'application/root/login'
+    = render 'application/root/signs'
+    = render 'application/root/new_game'
+    = render 'application/root/rules'
 
 javascript:
   r.initialize( #{ with_format(:json){ raw render template: 'application/root' } } );

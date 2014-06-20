@@ -4,6 +4,8 @@
 @import 'views/application/root/games'
 
 #application_root_layout
+  wid min 970
+
   > #main
     box brd
     pad 20
@@ -18,39 +20,48 @@
 
 #application_root
   txt ali cen
-  wid 280
 
-  > .container
-    pos rel
-    
-    &.disabled
-      dis non
+  > .col
+    + .col
+      mar l 20
 
-    &.enabled
-      dis blo
+    &.left
+      wid 610
 
-    .cave, .fields
-      hei 0
-      ovr hid
-      opa 0
-      tra opacity 0.5s
+    &.right 
+      wid 300
 
-    > .closer
-      dis non
+    > .container
+      pos rel
+      
+      &.disabled
+        dis non
 
-    > .button.sezam
-      transition color 0.5s, background-color 0.5s
-
-    &.opened
-      .cave, .fields
-        hei aut
-        ovr vis
-        opa 1
-
-      > .closer
+      &.enabled
         dis blo
 
+      .cave, .fields
+        hei 0
+        ovr hid
+        opa 0
+        tra opacity 0.5s
+
+      > .closer
+        dis non
+
       > .button.sezam
-        txt clr black sha non
-        bac clr tra
-        cur def
+        transition color 0.5s, background-color 0.5s
+
+      &.opened
+        .cave, .fields
+          hei aut
+          ovr vis
+          opa 1
+
+        > .closer
+          dis blo
+
+        > .button.sezam
+          txt clr black sha non
+          bac clr tra
+          cur def
