@@ -1,7 +1,7 @@
 #diplomacy_map
   background-color hsl(0, 0%, 50%)
 
-  > g >
+  > #regions > g >
     .s, .l, .w
       stroke hsl(0, 0%, 25%)
 
@@ -30,7 +30,7 @@
       font-family Arial,Helvetica,sans-serif
       font-size 8px
 
-  > #Orders
+  > #orders
     > line, > path
       stroke-width 2
 
@@ -61,7 +61,3 @@
 
     > .FAILURE
       stroke white !important
-
-  +data(hide-abbrs, true)
-    text
-      display none

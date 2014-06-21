@@ -32,4 +32,3 @@
 //= require views/application/root
 //= require views/games/show
 //= require map
-//= require map_react

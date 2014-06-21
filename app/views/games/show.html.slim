@@ -19,19 +19,26 @@
 
   .pils2
 
-    .left.container.pil
-      = render 'games/show/stats'
-      .keep_ratio = render 'games/show/map'
-      .abbrs.container abbs
-      .old_order.j_component
-      = render 'games/show/order_type'
+    #map_place.left.pil
 
     .resizer
     
-    .right.pil.container = render 'games/show/chat'
+    #chat_place.right.pil
 
-  coffee:
-    React.renderComponent vr.Svg({data: @standart_map.Standart}), $('.keep_ratio')[0]
+  javascript:
+    var initialState = new g.model.State( #{ with_format(:json){ raw render template: 'games/show' } }['states'][0] )
+
+    var messages = #{ with_format(:json){ raw render template: 'messages/index' } }
+
+    React.renderComponent(
+      vr.MapContainer({ 'coords': standart_map.Standart, 'initialState': initialState }), 
+      $('#map_place')[0]
+    )
+
+    React.renderComponent(
+      vr.Chat({ 'messages': messages }), 
+      $('#chat_place')[0]
+    )
 
 /
   javascript:

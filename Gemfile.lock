@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: git://github.com/vonagam/items.git
-  revision: 852eb7a2910a4d3b39483432a5b1451d7c1f3676
+  revision: 33be60dcfcf2e81a402652792f6c915adf4cb92b
   specs:
     vonagam_items (0.0.1)
       coffee-rails
@@ -243,7 +243,7 @@ GEM
       rspec-expectations (~> 3.0.0)
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
-    rspec-support (3.0.1)
+    rspec-support (3.0.2)
     rubyzip (1.1.4)
     russian (0.6.0)
       i18n (>= 0.5.0)

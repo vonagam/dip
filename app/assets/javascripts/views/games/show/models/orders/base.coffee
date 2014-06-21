@@ -10,22 +10,15 @@ class g.model.Order.Base
     @target = @unit.area
   
   attach: ->
-    @visualization = @create_visualization()
-    g.orders_visualizations.append @visualization
     @target.targeting[ @unit.area.name ] = this
     return
 
   detach: ->
-    @visualization.remove()
-    delete @visualization
     delete @target.targeting[ @unit.area.name ]
     return
 
-  create_visualization: ->
-    return $()
-
   to_json: ->
-    return { type: @type }
+    type: @type
 
   view_class_name: ->
     "#{@type} #{@unit.power.name} #{@status}"

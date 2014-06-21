@@ -1,45 +1,43 @@
-#games_show
-  .chat.j_component
-    &.active
-      dis blo
+#games_show .chat
+  > .window
+    bac clr white
+    overflow-y scroll
+    resize vertical
+    brd 2 hsl(0,0,85)
+    mar b 10
+    hei min 200
 
-    > .window
-      bac clr white
-      overflow-y scroll
-      resize vertical
-      brd 2 hsl(0,0,85)
+    > .message
+      txt siz 14
+      pad 0.3em 0.6em
 
-      > .message
-        txt siz 14
-        pad 0.3em 0.6em
+      + .message
+        brd t 1 hsl(0,0,90)
 
-        + .message
-          brd t 1 hsl(0,0,90)
+      > .created_at, > .from, > .to, > .text
+        dis inl
 
-        > .created_at, > .from, > .to, > .text
-          dis inl
+      > .to:after, > .to:before, > .created_at
+        txt clr hsl(0,0,70)
 
-        > .to:after, > .to:before, > .created_at
-          txt clr hsl(0,0,70)
+      > .to > .true, > .from > .true
+        dis non
 
-        > .to > .true, > .from > .true
-          dis non
+      > .to:after
+        con ' :'
 
-        > .to:after
-          con ' :'
+      > .created_at
+        txt siz 10
 
-        > .created_at
-          txt siz 10
+      &.private > .to:before
+        con '> '
+        
+      &.public > .to > .side
+        dis non
 
-        &.private > .to:before
-          con '> '
-          
-        &.public > .to > .side
-          dis non
+  > form
+    pad t 0
 
-    > form
-      pad t 0
-
-    #message_text
-      txt hei inh siz 14
-      hei min 3.6em
+  #message_text
+    txt hei inh siz 14
+    hei min 3.6em

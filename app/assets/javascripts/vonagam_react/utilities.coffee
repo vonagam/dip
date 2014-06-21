@@ -25,3 +25,9 @@ class vr.Classes
 
 vr.classes = ->
   (new vr.Classes).add_array arguments
+
+
+vr.stop_event = ( e )->
+  e.stopPropagation()
+  e.preventDefault()
+  return

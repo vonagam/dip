@@ -5,9 +5,6 @@ class g.model.Order.Convoy extends g.model.Order.Base
     @from = data.from
     @to = data.to
 
-  create_visualization: ->
-    g.svgs.get 'convoy', @view_class_name(), @unit.coords
-
   to_json: ->
     j = super
     j['from'] = @from

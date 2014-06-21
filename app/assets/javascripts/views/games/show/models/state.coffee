@@ -1,7 +1,7 @@
 class g.model.State
-  constructor: ( @raw, @game )->
-    @attached = false
+  constructor: ( @raw )->
     @last = false
+    @read_data()
 
   reset: ->
     @detach()
@@ -36,6 +36,7 @@ class g.model.State
       for area_name in @raw.data.Embattled
         @areas[area_name].embattled = true
 
+    ###
     if @type() == 'Move'
       for power_name, power_data of @powers
         for unit in power_data.units
@@ -51,22 +52,7 @@ class g.model.State
           else
             position = area_name.split '_'
             new g.model.Order.Build( @areas[position[0]], position[1], order )
-
-  attach: ->
-    @read_data()
-
-    area.attach() for name, area of @areas
-    power.attach() for name, power of @powers
-
-    @attached = true
-    return
-
-  detach: ->
-    area.detach() for name, area of @areas
-    power.detach() for name, power of @powers
-
-    @attached = false
-    return
+    ###
 
   collect_orders: ->
     powers_orders = {}

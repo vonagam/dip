@@ -5,15 +5,15 @@ for $i in (0...$z)
   $color = $i * 51
 
   #diplomacy_map 
-    > g > .unit.{$country}
+    > #regions 
+      > g > .unit.{$country}
         fill hsl( $color, 90%, 40% )
         stroke hsl( $color, 100%, 20% )
 
-    .{$country}
-      > .l
+      > .{$country} > .l
         fill hsl( $color, 60%, 60% )
 
-    #Orders > .{$country}
+    > #orders > .{$country}
       stroke hsl( $color, 100%, 20% )
 
   .stats .{$country} .power,

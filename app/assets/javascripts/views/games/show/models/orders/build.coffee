@@ -13,8 +13,12 @@ class g.model.Order.Build extends g.model.Order.Base
 
     index = @unit.power.units.indexOf @unit
     @unit.power.units.splice index, 1
+
+    @detach()
+
     return
 
+  ###
   attach: ->
     @unit.area.view().attr 'builded', true
     super
@@ -24,9 +28,7 @@ class g.model.Order.Build extends g.model.Order.Base
     @unit.area.view().removeAttr 'builded'
     super
     return
-
-  create_visualization: ->
-    g.svgs.get 'build', @view_class_name(), @unit.coords
+  ###
 
   to_json: ->
     j = super

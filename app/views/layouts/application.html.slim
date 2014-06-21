@@ -7,6 +7,9 @@ html
     = javascript_include_tag 'application'
     = csrf_meta_tags
 
+    javascript:
+      window.regions = #{ raw Map.find_by( name: 'Standart' ).info.yaml_areas }
+
   body id=content_for(:body_id)
 
     #main.layout

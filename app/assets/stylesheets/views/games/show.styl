@@ -43,31 +43,36 @@
       cur ew-resize
 
     > .left
-      pos rel
 
-      > .keep_ratio
+      > .map_container
         pos rel
 
-        &:after
-          pad t 91.8032787%
-          dis blo
-          con ''
+        &.hide_abbrs .abbr
+          dis non
 
-        > #diplomacy_map
-          pos abs t 0 l 0
-          wid 100%
-          hei 100%
+        > .keep_ratio
+          pos rel
 
-      > .abbrs
-        pos abs b 0 l 0 z 2
-        txt ali cen
-        mar 0
-        cur pnt
-        txt clr black
-        sha non
+          &:after
+            pad t 91.8032787%
+            dis blo
+            con ''
 
-        &.hidden
-          txt clr hsl(0,0,60)
+          > #diplomacy_map
+            pos abs t 0 l 0
+            wid 100%
+            hei 100%
+
+        > .abbrs
+          pos abs b 0 l 0 z 2
+          txt ali cen
+          mar 0
+          cur pnt
+          txt clr black
+          sha non
+
+          &.hidden
+            txt clr hsl(0,0,60)
 
     > .right
       mar l 20

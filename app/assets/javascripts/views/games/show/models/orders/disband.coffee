@@ -3,7 +3,4 @@ class g.model.Order.Disband extends g.model.Order.Base
     super
     @type = 'Disband'
 
-  create_visualization: ->
-    g.svgs.get 'disband', @view_class_name(), @unit.coords
-
   to_string: -> 'D'
