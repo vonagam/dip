@@ -1,19 +1,9 @@
 class g.controller.Game extends BP.Controller
   constructor: ( page_arguments )->
-    data = page_arguments[0]
+    game = page_arguments[0]
     messages = page_arguments[1]
-    @regions = page_arguments[2]
-    window.regions = @regions
 
-    super g, "/games/#{data.id}.json"
-
-    @id = data.id
-    @type = data._type
-
-    g.map.find('[data-coords]').each ->
-      q = $ this
-      xy = q.attr('data-coords').split(',')
-      q.data 'coords', new Vector({ x: parseInt(xy[0]), y: parseInt(xy[1]) })
+    @id = game.id
 
     host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
     @websockets = new WebSocketRails host + '/websocket'
@@ -70,11 +60,8 @@ class g.controller.Game extends BP.Controller
 
 
   set_state: ( state )->
-    @state.detach() if @state
     @state = state
-    @state.attach() if @state
-
-    g.state = @state
+    @state.read_data()
 
     @update_views false
     return

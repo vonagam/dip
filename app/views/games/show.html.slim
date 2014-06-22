@@ -5,45 +5,13 @@
     .left
       = render 'games/show/actions'
 
-      = render 'games/show/history'
-
-      = render 'games/show/manual'
       = render 'games/show/timer'
 
-      = render 'games/show/order'
-    
-    .right
-      = render 'games/show/player'
-      = render 'games/show/root'
-
-
-  .pils2
-
-    #map_place.left.pil
-
-    .resizer
-    
-    #chat_place.right.pil
-
   javascript:
-    var initialState = new g.model.State( #{ with_format(:json){ raw render template: 'games/show' } }['states'][0] )
-
-    var messages = #{ with_format(:json){ raw render template: 'messages/index' } }
-
     React.renderComponent(
-      vr.MapContainer({ 'coords': standart_map.Standart, 'initialState': initialState }), 
-      $('#map_place')[0]
-    )
-
-    React.renderComponent(
-      vr.Chat({ 'messages': messages }), 
-      $('#chat_place')[0]
-    )
-
-/
-  javascript:
-    g.initialize( 
-      #{ with_format(:json){ raw render template: 'games/show' } },
-      #{ with_format(:json){ raw render template: 'messages/index' } },
-      #{ raw @game.map.info.yaml_areas }
+      vr.Game({ 
+        'initialData': #{ with_format(:json){ raw render template: 'games/show' } }, 
+        'initialMessages': #{ with_format(:json){ raw render template: 'messages/index' } } 
+      }), 
+      $('#main')[0]
     )

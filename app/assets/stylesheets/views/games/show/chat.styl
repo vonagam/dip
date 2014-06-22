@@ -5,7 +5,7 @@
     resize vertical
     brd 2 hsl(0,0,85)
     mar b 10
-    hei min 200
+    hei 200
 
     > .message
       txt siz 14
@@ -17,10 +17,13 @@
       > .created_at, > .from, > .to, > .text
         dis inl
 
+      > .created_at, > .from, > .to
+        mar r 5
+
       > .to:after, > .to:before, > .created_at
         txt clr hsl(0,0,70)
 
-      > .to > .true, > .from > .true
+      > .to > .self, > .from > .self
         dis non
 
       > .to:after

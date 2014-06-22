@@ -1,4 +1,4 @@
-@standart_map = 
+@maps = 
   Standart:
     viewBox: [610,560]
     regions:

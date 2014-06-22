@@ -2,11 +2,11 @@
 
 vr.Component = React.createClass
   render: ->
+    className = vr.classes 'component', active: @props.active
+    inside = if @props.active then @props.children else null
+    
     @transferPropsTo(
-      `<div 
-        className={vr.classes( 'component', this.props.name, this.props.className )}
-        name={null}
-      >
-        {this.props.children}
+      `<div className={className}>
+        {inside}
       </div>`
     )

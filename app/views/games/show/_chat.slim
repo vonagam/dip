@@ -1,8 +1,0 @@
-.chat.j_component
-  .window style='height: 200px; margin-bottom: 10px;'
-
-  = simple_form_for Message.new, url: game_messages_path(@game, format: :json), remote: true,
-    html: { 'data-no-redirect' => true } do |f|
-    = f.input :to, label: false, collection: @game.alive_powers
-    = f.input :text, label: false
-    = f.button :button, class: 'yellow'

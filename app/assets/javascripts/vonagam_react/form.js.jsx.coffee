@@ -39,9 +39,11 @@ vr.Input.string = React.createClass
 
 vr.Input.select = React.createClass
   render: ->
+    select_option = vr.Input.select_option
+
     options = {}
     @props.collection.forEach ( option )->
-      options['key-'+option] = `<option value={option}>{option}</option>`
+      options['key-'+option] = `<select_option label={option} />`
 
     `<select
       id={input_id(this.props)} 
@@ -52,6 +54,13 @@ vr.Input.select = React.createClass
     >
       {options}
     </select>`
+
+
+
+vr.Input.select_option = React.createClass
+  render: ->
+    value = @props.value ? @props.label
+    `<option value={ value }>{this.props.label}</option>`
 
 
 
@@ -136,16 +145,3 @@ vr.Form = React.createClass
         {this.props.children}
       </form>`
     )
-
-###
-<div class="field select optional message_to"><select class="select optional input" id="message_to" name="message[to]"><option value=""></option>
-<option value="Russia">Russia</option>
-<option value="Turkey">Turkey</option>
-<option value="Austria">Austria</option>
-<option value="Italy">Italy</option>
-<option value="France">France</option>
-<option value="England">England</option>
-<option value="Germany">Germany</option></select></div>
-<div class="field text required message_text"></div>
-<button class="button yellow" name="button" type="submit">Отправить</button></form>
-###

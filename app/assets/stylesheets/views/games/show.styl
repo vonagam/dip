@@ -1,22 +1,24 @@
+[data-selectable]
+  fill red
+
 #games_show_layout
   wid min 970
 
 #games_show
   dis blo
 
-  .j_component
+  .component:not(.active)
     dis non
-    &.active
-      dis inl-blo
-      ver t
 
   > .menu
     hei 66
     pad y 10
     txt hei 46
 
-    .j_component
+    .component
       wid 150
+      dis inl-blo
+      ver t
       .button
         wid 150
         + .button
