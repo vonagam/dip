@@ -158,7 +158,7 @@ MessageForm = React.createClass
       <Form
         ref='form'
         id='new_message'
-        action='/games/exampl2/messages.json'
+        action={Routes.game_messages_path( game.data.id, { format: 'json' } )}
         method='post'
         className='new_message'
         no_redirect='true'

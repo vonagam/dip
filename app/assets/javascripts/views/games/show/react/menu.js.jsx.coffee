@@ -12,7 +12,11 @@ vr.Menu = React.createClass
 
     `<div className='menu container row'>
       <div className='left'>
+        <Rollback game={game} page={page} />
+        <Delete game={game} />
+        <Start game={game} />
         <History game={game} page={page} />
+        <Timer game={game} />
         <Manual game={game} />
         <SendOrders game={game} page={page} />
       </div>
@@ -21,6 +25,86 @@ vr.Menu = React.createClass
         <LinkToRoot />
       </div>
     </div>`
+
+
+
+renderButtonComponent = ( 
+    className,
+    is_active,
+    button_options  
+  )->
+    ->
+      game = @props.game
+
+      active = is_active game
+
+      button = Button button_options.call this, game if active
+
+      `<Component className={className} active={active}>
+        {button}
+      </Component>`
+
+
+
+Rollback = React.createClass
+  componentDidMount: ()->
+    node = $ @getDOMNode()
+    node.on 'ajax:success', ( e, data )=>
+      page = @props.page
+      page.setState page.state_from_data data
+      return
+    return
+  render: renderButtonComponent(
+      'rollback'
+      ( game )->
+        game.user_side?.creator &&
+        game.data.status == 'going' && 
+        game.states.length > 1 && 
+        game.data.sides.length == 1
+      ( game )->
+        href: Routes.rollback_game_path game.data.id, format: 'json'
+        className: 'red'
+        method: 'post'
+        remote: true
+        text: 'rollback'
+    )
+
+
+
+Delete = React.createClass
+  render: renderButtonComponent(
+      'delete'
+      ( game )->
+        game.user_side?.creator &&
+        ( 
+          switch game.data.status
+            when 'waiting' then true
+            when 'going'
+              game.data.time_mode == 'manual' || 
+              game.states[ game.states.length - 1 ].raw.end_at == null
+        )
+      ( game )->
+        href: Routes.game_path game.data.id, format: 'json'
+        className: 'red'
+        method: 'delete'
+        remote: true
+        confirm: 'Are you sure?'
+        text: 'delete'
+    )
+
+
+
+Start = React.createClass
+  render: renderButtonComponent(
+      'start'
+      ( game )-> game.user_side?.creator && game.data.status == 'waiting'
+      ( game )->
+        href: Routes.progress_game_path game.data.id, format: 'json'
+        className: 'green'
+        method: 'post'
+        remote: true
+        text: 'start'
+    )
 
 
 
@@ -95,29 +179,61 @@ History = React.createClass
 
 
 
-Manual = React.createClass
+Timer = React.createClass
+  toggle_timer: ( bool )->
+    if bool
+      @end_at = Date.parse @last.raw.end_at
+      return if @timer_id || @end_at <= new Date().getTime()
+      @forceUpdate()
+      @timer_id = setInterval (=> @forceUpdate()), 1000
+    else 
+      if @timer_id
+        clearInterval @timer_id
+        @timer_id = null
+    return
+  show_remain: ->
+    remain = @end_at - new Date().getTime()
+
+    if remain < 0
+      @toggle_timer false
+      minutes = 0
+      seconds = 0
+    else
+      minutes = Math.floor(remain / 60000)
+      seconds = Math.floor( (remain - minutes*60000)/1000 )
+    
+    "#{ if minutes > 0 then minutes + ':' else ''}#{seconds}"
+  componentDidUpdate: -> @toggle_timer @active
+  componentDidMount: -> @toggle_timer @active
   render: ->
     game = @props.game
+    @last = game.states[ game.states.length - 1 ]
 
-    active = 
+    @active = 
+      game.data.status == 'going' && 
+      game.data.time_mode != 'manual' &&
+      @last.raw.end_at != null
+
+    `<Component className='timer' active={this.active && this.timer_id}>
+      remain {this.show_remain()}
+    </Component>`
+
+
+
+Manual = React.createClass
+  render: renderButtonComponent(
+    'manual'
+    ( game )-> 
       game.user_side?.creator &&
       game.data.time_mode == 'manual' && 
       game.data.status == 'going'
-
-    if active
-      href = Routes.progress_game_path game.data.id, format: 'json'
-      button = 
-        `<Button
-          className='red'
-          href={href} 
-          method='post'
-          remote={true} 
-          text='progress'
-        />`
-
-    `<Component className='manual' active={active}>
-      {button}
-    </Component>`
+    ( game )->
+      href: Routes.progress_game_path game.data.id, format: 'json'
+      className: 'red'
+      method: 'post'
+      remote: true
+      text: 'progress'
+  )
 
 
 
@@ -137,28 +253,18 @@ SendOrders = React.createClass
 
         return
     vr.stop_event e
-  render: ->
-    game = @props.game
-
-    active = 
+  render: renderButtonComponent(
+    'order'
+    ( game )-> 
       game.data.status == 'going' && 
       game.state.last &&
       game.user_side?.orderable
-
-    if active
-      button_classes = vr.classes 'send', 
-        if game.state.raw.orders then 'green' else 'yellow'
-
-      button = 
-        `<Button
-          className={button_classes}
-          onMouseDown={this.onMouseDown}
-          text='send'
-        />`
-
-    `<Component className='order' active={active}>
-      {button}
-    </Component>`
+    ( game )->
+      href: Routes.progress_game_path game.data.id, format: 'json'
+      className: 'send ' + if game.state.raw.orders then 'green' else 'yellow'
+      text: 'send'
+      onMouseDown: @onMouseDown
+  )
 
 
 
@@ -185,7 +291,8 @@ Player = React.createClass
 
 
 LinkToRoot = React.createClass
-  render: ->
-    `<Component className='' active={true}>
-      <Button className='grey' href='/' text='root' />
-    </Component>`
+  render: renderButtonComponent(
+    'root'
+    ( game )-> true
+    ( game )-> className: 'grey', href: '/', text: 'root'
+  )

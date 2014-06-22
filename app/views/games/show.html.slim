@@ -7,11 +7,11 @@
 
       = render 'games/show/timer'
 
-  javascript:
-    React.renderComponent(
-      vr.Game({ 
-        'initialData': #{ with_format(:json){ raw render template: 'games/show' } }, 
-        'initialMessages': #{ with_format(:json){ raw render template: 'messages/index' } } 
-      }), 
-      $('#main')[0]
-    )
+javascript:
+  React.renderComponent(
+    vr.Game({ 
+      'initialData': #{ with_format(:json){ raw render template: 'games/show' } }, 
+      'initialMessages': #{ with_format(:json){ raw render template: 'messages/index' } } 
+    }), 
+    $('#main')[0]
+  )
