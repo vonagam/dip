@@ -19,9 +19,7 @@ class g.model.Area
     all = []
     neis = @region().neis
 
-    add = (array)->
-      Array.prototype.push.apply all, array
-      return
+    add = ( array )-> all = all.concat array
 
     if lands = neis.land
       add lands
@@ -33,4 +31,21 @@ class g.model.Area
         for sub, water of waters
           add water
 
-    return all
+    all
+
+  possible_builds: ->
+    builds = []
+
+    neis = @regions().neis
+
+    if neis.land
+      builds.push sub: 'xc', type: 'army'
+
+    if waters = neis.water
+      if $.isArray waters
+        builds.push sub: 'xc', type: 'fleet'
+      else
+        for sub, water of waters
+          builds.push sub: sub, type: 'fleet'
+
+    builds
