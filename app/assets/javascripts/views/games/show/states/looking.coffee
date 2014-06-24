@@ -1,3 +1,4 @@
+###
 class Looking extends state.Base
   constructor: ->
     super
@@ -32,9 +33,4 @@ class Looking extends state.Base
   clear_view: ->
     @view.empty()
     return
-
-
-
-g.game_phase.Looking = new Looking
-
-g.main_state.add [ g.game_phase.Looking ]
+###

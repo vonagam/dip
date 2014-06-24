@@ -1,3 +1,4 @@
+###
 class g.view._Actions extends state.Family
   constructor:( views ) ->
     super()
@@ -9,3 +10,4 @@ class g.view._Actions extends state.Family
     for name in [ 'start', 'delete', 'participation' ]
       view = views[ name ]
       @add [ view ] if view
+###

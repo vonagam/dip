@@ -92,6 +92,7 @@ vr.Game = React.createClass
     Menu = vr.Menu
     Map = vr.Map
     Chat = vr.Chat
+    Orders = vr.Orders
 
     `<div id='games_show' className='page'>
       <Menu 
@@ -99,11 +100,13 @@ vr.Game = React.createClass
         page={this} 
       />
       <Resizer>
-        <Map 
-          game={this.state} 
-          page={this}
-          coords={maps.Standart} 
-        />
+        <Orders game={this.state}>
+          <Map 
+            game={this.state} 
+            page={this}
+            coords={maps.Standart} 
+          />
+        </Orders>
         <Chat 
           game={this.state} 
           initialMessages={this.props.initialMessages}

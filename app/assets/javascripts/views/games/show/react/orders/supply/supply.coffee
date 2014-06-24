@@ -3,7 +3,7 @@ set_build = ( area, possible )->
   return
 
 build_callback = ( name )->
-  area = @state.get_area name
+  area = @gstate.get_area name
   unit = area.unit
   possible = area.possible_builds()
 
@@ -21,9 +21,8 @@ build_callback = ( name )->
   @changeSelecting Orders.Supply.supply
   return
 
-
 disband_callback = ( name )->
-  unit = @state.get_area( name ).unit
+  unit = @gstate.get_area( name ).unit
 
   if unit.order
     unit.set_order null
@@ -38,7 +37,7 @@ Orders.Supply.supply = ->
     build: { selectable: [], callback: build_callback.bind(@) }
     disband: { selectable: [], callback: disband_callback.bind(@) }
 
-  for name, power of @state.powers
+  for name, power of @gstate.powers
     all_units = power.units
     real_units = all_units.filter (unit)-> !unit.order
     supplies = power.supplies()

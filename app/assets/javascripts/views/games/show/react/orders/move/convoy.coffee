@@ -1,15 +1,15 @@
 continue_callback = ( name )->
-  target = @state.get_area name
-  army = @state.selected.army
-  fleets = @state.selected.fleets
+  target = @gstate.get_area name
+  army = @gstate.selected.army
+  fleets = @gstate.selected.fleets
 
   @changeSelecting Orders.Move.convoy, army, [target.unit].concat fleets 
   return
 
 end_callback = ( name )->
-  target = @state.get_area name
-  army = @state.selected.unit
-  fleets = @state.selected.fleets
+  target = @gstate.get_area name
+  army = @gstate.selected.unit
+  fleets = @gstate.selected.fleets
 
   g.set_order army, 'Move', to: name
 
@@ -26,7 +26,7 @@ Orders.Move.convoy = ( army, fleets )->
   units_areas = fleets.concat( army ).map (unit)-> unit.area.name
 
   for name in fleets[0].area.neighbours()
-    area = @state.get_area name
+    area = @gstate.get_area name
 
     if ( area.type() != 'water' || area.unit ) && units_areas.indexOf( name ) == -1
       ( if area.type() == 'water' then continues else ends ).push area.name

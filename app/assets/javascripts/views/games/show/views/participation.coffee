@@ -1,3 +1,4 @@
+###
 class g.view.Participation extends g.view.Base
   constructor: ( game, data )->
     unless game.user_side && game.user_side.creator
@@ -80,3 +81,4 @@ class g.view.Participation extends g.view.Base
         select.children( "[value='#{side.power[0]}']" ).prop 'disabled', true
 
     return
+###

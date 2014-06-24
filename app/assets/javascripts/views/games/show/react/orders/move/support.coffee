@@ -1,7 +1,7 @@
 callback = ( name )->
-  area = @state.get_area name
+  area = @gstate.get_area name
   supported = area.unit
-  supporter = @state.selected.unit
+  supporter = @gstate.selected.unit
 
   g.set_order supporter, 'Support', from: name, to: supported.order.target.name
 

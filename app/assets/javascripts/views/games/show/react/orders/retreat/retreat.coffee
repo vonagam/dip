@@ -1,6 +1,6 @@
 callback = ( name )->
-  target = @state.get_area name
-  unit = @state.selected.unit
+  target = @gstate.get_area name
+  unit = @gstate.selected.unit
 
   if target == unit.area
     unit.set_order null
@@ -14,7 +14,7 @@ Orders.Move.move = ( unit )->
   select = {}
 
   selectable = unit.neighbours().filter ( possibility )->
-    area = @state.get_area possibility
+    area = @gstate.get_area possibility
     !( area.embattled || area.unit || area.name == unit.dislodged )
 
   select.retreat = 

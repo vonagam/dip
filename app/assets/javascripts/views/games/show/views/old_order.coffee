@@ -1,3 +1,4 @@
+###
 class g.view.OldOrder extends g.view.Base
   constructor: ( game )->
     super game, 'old_order'
@@ -15,3 +16,4 @@ class g.view.OldOrder extends g.view.Base
     g.game_phase.Looking.turn true if @turned
 
     return
+###

@@ -1,13 +1,13 @@
 callback = ( name )->
-  area = @state.get_area name
+  area = @gstate.get_area name
   unit = area.unit
 
   @changeSelecting Orders.Move.move, unit
   return
 
-Orders.Move.unit: ->
+Orders.Move.unit = ->
   selectable = [] 
-  for name, power of @state.powers
+  for name, power of @gstate.powers
     for unit in power.units
       selectable.push unit.area.name
 

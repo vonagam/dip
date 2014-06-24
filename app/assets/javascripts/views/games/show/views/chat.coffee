@@ -1,3 +1,4 @@
+###
 class g.view.Chat extends g.view.Base
   constructor: ( game )->
     super game, 'chat', true
@@ -156,3 +157,4 @@ message_template = $("
 <div class='text'></div>
 </div>
 ")
+###

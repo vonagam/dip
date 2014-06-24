@@ -17,16 +17,10 @@ vr.Map = React.createClass
   render: ->
     className = vr.classes 'map_container container', hide_abbrs: @state.hide_abbrs
 
-    if @props.game.data.status == 'going' && @props.game.state.last
-      className.add @props.page.last.raw.type
-      Orders.Move.first.apply this if !@control
-    else
-      @control = null
-
     game_state = @props.game.state
     
     `<div className={className}>
-      <SvgMap state={game_state} coords={this.props.coords} control={this.control} />
+      <SvgMap state={game_state} coords={this.props.coords} control={this.props.control} />
       <Stats state={game_state} />
       <AbbrToggler hide_abbrs={this.state.hide_abbrs} callback={this.toggleAbbrs} />
     </div>`
@@ -103,7 +97,7 @@ Region = React.createClass
     dislodged = `<Unit model={model.dislodged} coords={this.props.coords} />` if model.dislodged
     embattled = `<Embattled coords={coords.unit.xc} />` if model.embattled and not model.unit
 
-    check = ChekOrderControl name, control
+    check = vr.isSelectable name, control
     
     `<g 
       id={name} 
@@ -130,7 +124,7 @@ Polygon = React.createClass
     
     if polygon.part
       options.id = "#{@props.region}_#{polygon.part}"
-      $.merge options, ChekOrderControl options.id, @props.control
+      $.merge options, vr.isSelectable options.id, @props.control
 
     if polygon.d
       options.d = polygon.d

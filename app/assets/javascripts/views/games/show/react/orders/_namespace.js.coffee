@@ -1,0 +1,4 @@
+@Orders =
+  Move: {}
+  Retreat: {}
+  Supply: {}
