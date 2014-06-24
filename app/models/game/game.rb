@@ -119,7 +119,9 @@ class Game
       
     state.update_attribute :end_at, end_at
 
-    RestClient.delay( run_at: end_at ).post( progress_game_url(self), secret: secret )
+    RestClient.delay( run_at: end_at ).post( 
+      progress_game_url(self), secret: secret 
+    )
   end
 
   def end_by( reason )
