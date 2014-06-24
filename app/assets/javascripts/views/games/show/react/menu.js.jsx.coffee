@@ -252,7 +252,8 @@ SendOrders = React.createClass
           @props.page.forceUpdate()
 
         return
-    vr.stop_event e
+
+    return vr.stop_event e
   render: renderButtonComponent(
     'order'
     ( game )-> 
@@ -260,7 +261,6 @@ SendOrders = React.createClass
       game.state.last &&
       game.user_side?.orderable
     ( game )->
-      href: Routes.progress_game_path game.data.id, format: 'json'
       className: 'send ' + if game.state.raw.orders then 'green' else 'yellow'
       text: 'send'
       onMouseDown: @onMouseDown

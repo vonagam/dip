@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require react
+//= require d3
 //= require websocket_rails/main
 //= require vonagam_items/basic
 //= require vonagam_items/ruby_regexp_fix

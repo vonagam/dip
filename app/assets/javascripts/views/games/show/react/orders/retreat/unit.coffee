@@ -5,7 +5,7 @@ callback = ( name )->
   @changeSelecting Orders.Retreat.retreat, unit
   return
 
-Orders.Move.unit = ->
+Orders.Retreat.unit = ->
   selectable = []
   for name, power of @gstate.powers
     for unit in power.units

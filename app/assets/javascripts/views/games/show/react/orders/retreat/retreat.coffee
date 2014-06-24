@@ -1,6 +1,6 @@
 callback = ( name )->
   target = @gstate.get_area name
-  unit = @gstate.selected.unit
+  unit = @state.selected.unit
 
   if target == unit.area
     unit.set_order null
@@ -10,7 +10,7 @@ callback = ( name )->
   @changeSelecting Orders.Retreat.unit
   return
 
-Orders.Move.move = ( unit )->
+Orders.Retreat.retreat = ( unit )->
   select = {}
 
   selectable = unit.neighbours().filter ( possibility )->

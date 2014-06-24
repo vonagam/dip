@@ -1,6 +1,6 @@
 move_callback = ( name )->
   target = @gstate.get_area name
-  unit = @gstate.selected.unit
+  unit = @state.selected.unit
 
   if target == unit.area
     g.set_order unit, 'Hold'
@@ -13,7 +13,7 @@ move_callback = ( name )->
 convoy_callback = ( name )->
   target = @gstate.get_area name
   fleet = target.unit
-  unit = @gstate.selected.unit
+  unit = @state.selected.unit
   @changeSelecting Orders.Move.convoy, unit, [fleet]
   return
 
@@ -27,7 +27,7 @@ Orders.Move.move = ( unit )->
   if unit.type == 'army'
     selectable = unit.area.neighbours().filter (area_name)=>
       area = @gstate.get_area area_name
-      nei_area.type() == 'water' && nei_area.unit
+      area.type() == 'water' && area.unit
 
     select.convoy = selectable: selectable, callback: convoy_callback.bind(@)
 

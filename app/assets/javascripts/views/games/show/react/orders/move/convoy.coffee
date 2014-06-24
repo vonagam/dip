@@ -1,15 +1,15 @@
 continue_callback = ( name )->
   target = @gstate.get_area name
-  army = @gstate.selected.army
-  fleets = @gstate.selected.fleets
+  army = @state.selected.army
+  fleets = @state.selected.fleets
 
   @changeSelecting Orders.Move.convoy, army, [target.unit].concat fleets 
   return
 
 end_callback = ( name )->
   target = @gstate.get_area name
-  army = @gstate.selected.unit
-  fleets = @gstate.selected.fleets
+  army = @state.selected.unit
+  fleets = @state.selected.fleets
 
   g.set_order army, 'Move', to: name
 

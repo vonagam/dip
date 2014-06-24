@@ -7,6 +7,7 @@ callback = ( name )->
 
 Orders.Move.unit = ->
   selectable = [] 
+
   for name, power of @gstate.powers
     for unit in power.units
       selectable.push unit.area.name

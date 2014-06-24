@@ -4,10 +4,10 @@
 
 vr.isSelectable = ( name, control )->
   if control.selecting
-    for name, data of control.select
+    for type, data of control.select
       if data.selectable.indexOf( name ) != -1
         return {
-          'data-selectable': control.step 
+          'data-selectable': [control.step, type].join ' ' 
           'onMouseDown': data.callback.bind this, name
         }
 
@@ -20,7 +20,7 @@ vr.Orders = React.createClass
   getInitialState: ->
     selecting: false
 
-  empty_state: ->
+  empty_state:
     selecting: false
     selected: null
     select: null
@@ -54,7 +54,7 @@ vr.Orders = React.createClass
         if is_possible
           @getFirstSelect game
         else
-          @empty_state()
+          @empty_state
       )
 
     return
@@ -65,6 +65,10 @@ vr.Orders = React.createClass
 
   componentWillMount: ->
     @update @props
+    return
+
+  changeMoveType: ( callback )->
+    @changeSelecting Orders.Move[callback], @state.selected.unit
     return
 
   render: ->

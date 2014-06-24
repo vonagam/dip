@@ -56,19 +56,9 @@ SvgMap = React.createClass
             coords={regions_coords} 
           />`
 
-    ###
-    <marker id='move_marker' markerWidth='8' markerHeight='10' refx='3' refy='5' orient='auto'>
-      <polygon points='2,2 6,5 2,8'/>
-    </marker>
-    <marker id='support_marker' markerWidth='3' markerHeight='3' refx='1.5' refy='1.5'>
-      <circle cx='1.5' cy='1.5' r='1.5'/>
-    </marker>
-    ###
-
     `<div className='keep_ratio'>
       <svg id='diplomacy_map' viewBox={viewBox}>
-        <defs>
-        </defs>
+        <Defs />
         <g id='regions'>{regions}</g>
         <g id='orders'>{orders}</g>
       </svg>
@@ -203,7 +193,10 @@ full_coords = ( coords, full_name )->
 
 Order = React.createClass
   Circle: ->
-    `<circle className={this.className} transform={this.transform} r='10' />`
+    `<circle 
+      className={this.className} data-status={this.status} 
+      transform={this.transform} r='10' 
+    />`
   Line: ->
     from = unit_coords @coords, @order.unit
     to = full_coords @coords, @order.to
@@ -213,9 +206,12 @@ Order = React.createClass
     f = from.sum vec.mult 8
     t = to.sum vec.mult -12
 
-    `<line className={this.className} x1={f.x} y1={f.y} x2={t.x} y2={t.y} />`
+    `<line 
+      className={this.className} data-status={this.status} 
+      x1={f.x} y1={f.y} x2={t.x} y2={t.y} 
+    />`
   Disband: ->
-    `<g className={this.className} transform={this.transform}>
+    `<g className={this.className} data-status={this.status} transform={this.transform}>
       <line x1='-5' y1='-5' x2='5' y2='5'/>
       <line x1='-5' y1='5' x2='5' y2='-5'/>
     </g>`
@@ -237,7 +233,7 @@ Order = React.createClass
       to.add( from ).scale 0.5
       d += 'Q'+from+' '+to
 
-    `<path className={this.className} d={d} />`
+    `<path className={this.className} data-status={this.status} d={d} />`
   Move: -> @Line()
   Retreat: -> @Line()
   Build: -> @Circle()
@@ -245,7 +241,8 @@ Order = React.createClass
   render: ->
     @coords = @props.coords
     @order = @props.order
-    @className = "#{@order.type} #{@order.unit.power.name} #{@order.status}"
+    @className = "#{@order.type} #{@order.unit.power.name}"
+    @status = @order.status
     @transform = translate unit_coords @coords, @order.unit
 
     @[@order.type]()
@@ -290,6 +287,28 @@ AbbrToggler = React.createClass
       abbs
     </div>`
 
+
+Defs = React.createClass
+  addMarkers: ->
+    defs = d3.select @getDOMNode()
+
+    defs
+    .append 'marker'
+    .attr id: 'move_marker', markerWidth: 8, markerHeight: 10, refX: 3, refY: 5, orient: 'auto'
+    .append 'polygon'
+    .attr points: '2,2 6,5 2,8'
+
+    defs
+    .append 'marker'
+    .attr id: 'support_marker', markerWidth: 3, markerHeight: 3, refX: 1.5, refY: 1.5
+    .append 'circle'
+    .attr cx: 1.5, cy: 1.5, r: 1.5
+
+    return
+  componentDidMount: -> @addMarkers()
+  componentDidUpdate: -> @addMarkers()
+  shouldComponentUpdate: -> false
+  render: -> `<defs />`
 
 ###
 TODO
