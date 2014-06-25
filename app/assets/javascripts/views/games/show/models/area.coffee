@@ -1,51 +1,53 @@
-class g.model.Area
-  constructor: ( @name, @state )->
+modulejs.define 'g.m.Area', ->
 
-    @targeting = {}
+  class Area
+    constructor: ( @name, @state )->
 
-    #power
-    #unit
-    #dislodged
-    #embattled
+      @targeting = {}
 
-  region: ->
-    regions[@name]
-  supply: ->
-    @region().center
-  type: ->
-    @region().type
+      #power
+      #unit
+      #dislodged
+      #embattled
 
-  neighbours: ->
-    all = []
-    neis = @region().neis
+    region: ->
+      regions[@name]
+    supply: ->
+      @region().center
+    type: ->
+      @region().type
 
-    add = ( array )-> all = all.concat array
+    neighbours: ->
+      all = []
+      neis = @region().neis
 
-    if lands = neis.land
-      add lands
+      add = ( array )-> all = all.concat array
 
-    if waters = neis.water
-      if $.isArray waters
-        add waters
-      else
-        for sub, water of waters
-          add water
+      if lands = neis.land
+        add lands
 
-    all
+      if waters = neis.water
+        if $.isArray waters
+          add waters
+        else
+          for sub, water of waters
+            add water
 
-  possible_builds: ->
-    builds = []
+      all
 
-    neis = @region().neis
+    possible_builds: ->
+      builds = []
 
-    if neis.land
-      builds.push sub: 'xc', type: 'army'
+      neis = @region().neis
 
-    if waters = neis.water
-      if $.isArray waters
-        builds.push sub: 'xc', type: 'fleet'
-      else
-        for sub, water of waters
-          builds.push sub: sub, type: 'fleet'
+      if neis.land
+        builds.push sub: 'xc', type: 'army'
 
-    builds
+      if waters = neis.water
+        if $.isArray waters
+          builds.push sub: 'xc', type: 'fleet'
+        else
+          for sub, water of waters
+            builds.push sub: sub, type: 'fleet'
+
+      builds

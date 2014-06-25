@@ -1,71 +1,80 @@
-class g.model.State
-  constructor: ( @raw )->
-    @last = false
+modulejs.define 'g.m.State', 
+  [
+    'g.m.Area'
+    'g.m.Power'
+    'g.m.Unit'
+    'g.m.order.Build'
+  ]
+  ( Area, Power, Unit, Build )->
 
-  read_data: ->
-    @powers = {}
-    @areas = {}
+    class State
+      constructor: ( @raw )->
+        @last = false
 
-    for name, region of regions
-      @areas[name] = new g.model.Area name, this
+      read_data: ->
+        @powers = {}
+        @areas = {}
 
-    for power_name, power_data of @raw.data.Powers
-      power = new g.model.Power power_name
+        for name, region of regions
+          @areas[name] = new Area name, this
 
-      for unit_data in power_data.Units
-        unit_info = unit_data.match(/^([AF])(\w+)(?:-(\w+))?$/)
-        type = if unit_info[1] == 'A' then 'army' else 'fleet'
-        address = unit_info[2].split '_'
-        area = @areas[ address[0] ]
-        sub_area = address[1] || 'xc'
-        dislodged = unit_info[3]
+        for power_name, power_data of @raw.data.Powers
+          power = new Power power_name
 
-        new g.model.Unit power, type, area, sub_area, dislodged
+          for unit_data in power_data.Units
+            unit_info = unit_data.match(/^([AF])(\w+)(?:-(\w+))?$/)
+            type = if unit_info[1] == 'A' then 'army' else 'fleet'
+            address = unit_info[2].split '_'
+            area = @areas[ address[0] ]
+            sub_area = address[1] || 'xc'
+            dislodged = unit_info[3]
 
-      for area_name in power_data.Areas
-        power.add_area @areas[area_name]
+            new Unit power, type, area, sub_area, dislodged
 
-      @powers[power_name] = power
+          for area_name in power_data.Areas
+            power.add_area @areas[area_name]
 
-    if @raw.data.Embattled
-      for area_name in @raw.data.Embattled
-        @areas[area_name].embattled = true
+          @powers[power_name] = power
 
-    if @type() == 'Move'
-      for power_name, power_data of @powers
-        for unit in power_data.units
-          g.set_order unit, 'Hold'
+        if @raw.data.Embattled
+          for area_name in @raw.data.Embattled
+            @areas[area_name].embattled = true
 
-    if @raw.orders
-      whom = if @type() == 'Retreat' then 'dislodged' else 'unit'
-      for power_name, orders of @raw.orders
-        for area_name, order of orders
-          if order.type != 'Build'
-            unit = @get_area( area_name )[whom]
-            g.set_order unit, order.type, order
-          else
-            position = area_name.split '_'
-            new g.model.Order.Build( @areas[position[0]], position[1], order )
+        if @type() == 'Move'
+          for power_name, power_data of @powers
+            for unit in power_data.units
+              unit.create_order 'Hold'
 
-    @
+        if @raw.orders
+          whom = if @type() == 'Retreat' then 'dislodged' else 'unit'
+          for power_name, orders of @raw.orders
+            for area_name, order of orders
+              if order.type != 'Build'
+                unit = @get_area( area_name )[whom]
+                unit.create_order order.type, order
+              else
+                position = area_name.split '_'
+                new Build( @areas[position[0]], position[1], order )
 
-  collect_orders: ->
-    powers_orders = {}
+        @
 
-    for name, power of @powers
-      power_orders = {}
+      collect_orders: ->
+        powers_orders = {}
 
-      for unit in power.units
-        if order = unit.order
-          position = if order.type == 'Build' then unit.position() else unit.area.name
-          power_orders[ position ] = order.to_json()
+        for name, power of @powers
+          power_orders = {}
 
-      powers_orders[name] = power_orders
+          for unit in power.units
+            if order = unit.order
+              position = if order.type == 'Build' then unit.position() else unit.area.name
+              power_orders[ position ] = order.to_json()
 
-    powers_orders
+          powers_orders[name] = power_orders
 
-  get_area: ( area )->
-    @areas[ area.split('_')[0] ]
+        powers_orders
 
-  type: ->
-    @raw.type
+      get_area: ( area )->
+        @areas[ area.split('_')[0] ]
+
+      type: ->
+        @raw.type

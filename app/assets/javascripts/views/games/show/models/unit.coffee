@@ -1,31 +1,38 @@
-class g.model.Unit
-  constructor: ( @power, @type, @area, @sub_area, @dislodged )->
-    @order = undefined
-    @power.units.push this
-    @status = if @dislodged then 'dislodged' else 'unit'
-    @area[@status] = this
+modulejs.define 'g.m.Unit', ->
 
-  areas: ( name )->
-    @area.state.areas[ name ]
+  class Unit
+    constructor: ( @power, @type, @area, @sub_area, @dislodged )->
+      @order = undefined
+      @power.units.push this
+      @status = if @dislodged then 'dislodged' else 'unit'
+      @area[@status] = this
 
-  position: ->
-    @area.name + ( if @sub_area == 'xc' then '' else "_#{@sub_area}" )
+    areas: ( name )->
+      @area.state.areas[ name ]
 
-  neighbours: ->
-    neis = @area.region().neis
+    position: ->
+      @area.name + ( if @sub_area == 'xc' then '' else "_#{@sub_area}" )
 
-    if @type == 'army'
-      neis.land
-    else
-      if $.isArray neis.water
-        neis.water
+    neighbours: ->
+      neis = @area.region().neis
+
+      if @type == 'army'
+        neis.land
       else
-        neis.water[@sub_area]
+        if $.isArray neis.water
+          neis.water
+        else
+          neis.water[@sub_area]
 
-  set_order: ( order )->
-    @order?.detach()
-    @order = order
-    @order?.attach()
+    set_order: ( order )->
+      @order?.detach()
+      @order = order
+      @order?.attach()
 
-  can_go: ( area_type )->
-    !((@type == 'army' && area_type == 'water') || (@type == 'fleet' && area_type == 'land'))
+    create_order: ( order_class, options )->
+      order_constructor = modulejs.require 'g.m.order.' + order_class
+      @set_order new order_constructor @, options
+      return
+
+    can_go: ( area_type )->
+      !((@type == 'army' && area_type == 'water') || (@type == 'fleet' && area_type == 'land'))

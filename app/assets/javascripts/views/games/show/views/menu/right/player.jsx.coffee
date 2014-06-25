@@ -1,23 +1,25 @@
 ###* @jsx React.DOM ###
 
-g.view.Player = React.createClass
-  render: ->
-    Component = vr.Component
+modulejs.define 'g.v.menu.Player',
+  [ 'vr.Component', 'vr.classes' ]
+  ( Component, classes )->
 
-    game = @props.game
-    name = game.data.login
+    React.createClass
+      render: ->
+        game = @props.game
+        name = game.data.login
 
-    active = name != undefined
+        active = name != undefined
 
-    if active
-      login = `<div className='login'>{name}</div>`
+        if active
+          login = `<div className='login'>{name}</div>`
 
-      if game.user_side
-        power = `<div className='power'>{game.user_side.name || 'Random'}</div>`
+          if game.user_side
+            power = `<div className='power'>{game.user_side.name || 'Random'}</div>`
 
-    className = vr.classes 'player', two_line: power != null
+        className = classes 'player', two_line: power != null
 
-    `<Component className={className} active={active}>
-      {login}
-      {power}
-    </Component>`
+        `<Component className={className} active={active}>
+          {login}
+          {power}
+        </Component>`

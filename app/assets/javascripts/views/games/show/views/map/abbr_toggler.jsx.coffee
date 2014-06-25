@@ -1,12 +1,16 @@
 ###* @jsx React.DOM ###
 
-g.view.AbbrToggler = React.createClass
-  onMouseDown: (e)->
-    @props.callback()
-    vr.stop_event e
-    return
-  render: ->
-    className = vr.classes 'abbrs container', hidden: @props.hide_abbrs
-    `<div className={className} onMouseDown={this.onMouseDown}> 
-      abbs
-    </div>`
+modulejs.define 'g.v.map.AbbrToggler',
+  [ 'vr.classes', 'vr.stopEvent' ]
+  ( classes, stopEvent )->
+
+    React.createClass
+      onMouseDown: (e)->
+        @props.callback()
+        stopEvent e
+        return
+      render: ->
+        className = classes 'abbrs container', hidden: @props.hide_abbrs
+        `<div className={className} onMouseDown={this.onMouseDown}> 
+          abbs
+        </div>`

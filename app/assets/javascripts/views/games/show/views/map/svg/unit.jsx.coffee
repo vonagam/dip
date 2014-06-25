@@ -1,19 +1,23 @@
 ###* @jsx React.DOM ###
 
-g.view.Unit = React.createClass
-  render: ->
-    unit = @props.model
-    className = vr.classes 'unit', unit.type, dislodged: unit.dislodged
-    power = unit.power.name
-    points = if unit.type == 'army' then '-4,-4 -4,4 4,4 4,-4' else '-6,-2 0,5 6,-2'
+modulejs.define 'g.v.map.svg.Unit',
+  [ 'vr.classes', 'g.v.map.svg.unit_coords' ]
+  ( classes, c )->
 
-    coords = g.unit_coords @props.coords, unit
+    React.createClass
+      render: ->
+        unit = @props.model
+        className = classes 'unit', unit.type, dislodged: unit.dislodged
+        power = unit.power.name
+        points = if unit.type == 'army' then '-4,-4 -4,4 4,4 4,-4' else '-6,-2 0,5 6,-2'
 
-    transform = g.translate coords
+        coords = c.unit_coords @props.coords, unit
 
-    `<polygon 
-      className={className}
-      data-power={power}
-      points={points} 
-      transform={transform} 
-    />`
+        transform = c.translate coords
+
+        `<polygon 
+          className={className}
+          data-power={power}
+          points={points} 
+          transform={transform} 
+        />`

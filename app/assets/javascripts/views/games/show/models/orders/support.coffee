@@ -1,15 +1,17 @@
-class g.model.Order.Support extends g.model.Order.Base
-  constructor: (unit, data)->
-    super
-    @type = 'Support'
-    @from = data.from 
-    @to = data.to
+modulejs.define 'g.m.order.Support', ['g.m.order.Base'], ( Base )->
 
-  to_json: ->
-    j = super
-    j['from'] = @from
-    j['to'] = @to
-    return j
+  class Support extends Base
+    constructor: (unit, data)->
+      super
+      @type = 'Support'
+      @from = data.from 
+      @to = data.to
 
-  to_string: ->
-    "S #{@from}#{ if @to != @from then ' -> '+@to else '' }"
+    to_json: ->
+      j = super
+      j['from'] = @from
+      j['to'] = @to
+      return j
+
+    to_string: ->
+      "S #{@from}#{ if @to != @from then ' -> '+@to else '' }"

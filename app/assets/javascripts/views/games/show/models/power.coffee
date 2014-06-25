@@ -1,12 +1,14 @@
-class g.model.Power
-  constructor: ( @name )->
-    @units = []
-    @areas = []
+modulejs.define 'g.m.Power', ->
 
-  add_area: ( area )->
-    area.power = this
-    @areas.push area
-    return
+  class Power
+    constructor: ( @name )->
+      @units = []
+      @areas = []
 
-  supplies: ->
-    area for area in @areas when area.supply()
+    add_area: ( area )->
+      area.power = this
+      @areas.push area
+      return
+
+    supplies: ->
+      area for area in @areas when area.supply()

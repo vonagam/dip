@@ -1,6 +1,8 @@
-class g.model.Order.Disband extends g.model.Order.Base
-  constructor: ->
-    super
-    @type = 'Disband'
+modulejs.define 'g.m.order.Disband', ['g.m.order.Base'], ( Base )->
 
-  to_string: -> 'D'
+  class Disband extends Base
+    constructor: ->
+      super
+      @type = 'Disband'
+
+    to_string: -> 'D'

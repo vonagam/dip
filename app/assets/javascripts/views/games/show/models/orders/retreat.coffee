@@ -1,7 +1,9 @@
-class g.model.Order.Retreat extends g.model.Order.Move
-  constructor: ->
-    super
-    @type = 'Retreat'
+modulejs.define 'g.m.order.Retreat', ['g.m.order.Move'], ( Move )->
 
-  to_string: ->
-    "R -> #{@to}"
+  class Retreat extends Move
+    constructor: ->
+      super
+      @type = 'Retreat'
+
+    to_string: ->
+      "R -> #{@to}"

@@ -1,22 +1,26 @@
-class g.model.Order.Build extends g.model.Order.Base
-  constructor: ( area, sub_area = 'xc', data )->
-    @type = 'Build'
-    @unit = new g.model.Unit area.power, data.unit, area, sub_area
-    super @unit, data
-    @unit.set_order this
+modulejs.define 'g.m.order.Build', 
+  ['g.m.order.Base', 'g.m.Unit']
+  ( Base, Unit )->
 
-  remove: ->
-    delete @unit.order
-    delete @unit.area.unit
+    class Build extends Base
+      constructor: ( area, sub_area = 'xc', data )->
+        @type = 'Build'
+        @unit = new Unit area.power, data.unit, area, sub_area
+        super @unit, data
+        @unit.set_order this
 
-    index = @unit.power.units.indexOf @unit
-    @unit.power.units.splice index, 1
+      remove: ->
+        delete @unit.order
+        delete @unit.area.unit
 
-    return
+        index = @unit.power.units.indexOf @unit
+        @unit.power.units.splice index, 1
 
-  to_json: ->
-    j = super
-    j['unit'] = @unit.type
-    return j
+        return
 
-  to_string: -> 'B'
+      to_json: ->
+        j = super
+        j['unit'] = @unit.type
+        return j
+
+      to_string: -> 'B'

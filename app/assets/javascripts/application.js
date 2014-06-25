@@ -20,6 +20,7 @@
 //= require vonagam_items/ruby_regexp_fix
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
+//= require modulejs-0.2
 //
 //= require global/cookie
 //= require global/jquery_html_hash
@@ -31,6 +32,6 @@
 //= require_tree ./global/big_page
 //= require_tree ./vonagam_react
 //
+//= require maps
 //= require views/application/root
 //= require views/games/show
-//= require map

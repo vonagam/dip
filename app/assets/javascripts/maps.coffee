@@ -1,4 +1,4 @@
-@maps = 
+modulejs.define 'maps',
   Standart:
     viewBox: [610,560]
     regions:

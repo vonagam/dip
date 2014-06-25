@@ -6,8 +6,10 @@
       = render 'games/show/actions'
 
 javascript:
+  Game = modulejs.require('g.v.Game');
+
   React.renderComponent(
-    g.view.Game({ 
+    Game({ 
       'initialData': #{ with_format(:json){ raw render template: 'games/show' } }, 
       'initialMessages': #{ with_format(:json){ raw render template: 'messages/index' } } 
     }), 

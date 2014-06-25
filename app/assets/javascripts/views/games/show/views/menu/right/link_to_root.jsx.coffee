@@ -1,8 +1,12 @@
 ###* @jsx React.DOM ###
 
-g.view.LinkToRoot = React.createClass
-  render: g.view.renderButtonComponent(
-    'root'
-    ( game )-> true
-    ( game )-> className: 'grey', href: '/', text: 'root'
-  )
+modulejs.define 'g.v.menu.LinkToRoot',
+  [ 'g.v.menu.buttonComponent' ]
+  ( buttonComponent )->
+
+    React.createClass
+      render: buttonComponent(
+        'root'
+        ( game )-> true
+        ( game )-> className: 'grey', href: '/', text: 'root'
+      )
