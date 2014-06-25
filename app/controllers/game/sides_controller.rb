@@ -24,7 +24,7 @@ class SidesController < ApplicationController
 
   def side_params
     p = params.require(:side).permit :power
-    p[:power] = [ p[:power] ] if p[:power]
+    p[:power] = [ p[:power] ] if p[:power].not_blank?
     p
   end
 end

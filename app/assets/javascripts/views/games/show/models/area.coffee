@@ -36,7 +36,7 @@ class g.model.Area
   possible_builds: ->
     builds = []
 
-    neis = @regions().neis
+    neis = @region().neis
 
     if neis.land
       builds.push sub: 'xc', type: 'army'

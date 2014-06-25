@@ -5,11 +5,9 @@
     .left
       = render 'games/show/actions'
 
-      = render 'games/show/timer'
-
 javascript:
   React.renderComponent(
-    vr.Game({ 
+    g.view.Game({ 
       'initialData': #{ with_format(:json){ raw render template: 'games/show' } }, 
       'initialMessages': #{ with_format(:json){ raw render template: 'messages/index' } } 
     }), 

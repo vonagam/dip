@@ -130,6 +130,18 @@ class Game
     going? && sides.count == 1
   end
 
+  def is_left?
+    return false if states.count < 4
+
+    last_three_states = states.desc(:_id).limit(3).skip(1).to_a
+
+    last_three_states.each do |state|
+      return false unless state.resulted_orders.empty?
+    end
+
+    return true
+  end
+
   protected
 
   def if_manual_then_private
@@ -168,18 +180,6 @@ class Game
   def sandbox!
     sides.first.update_attributes! power: map.powers
     update_attributes! chat_mode: 'only_public'
-  end
-
-  def is_left?
-    return false if states.count < 4
-
-    last_three_states = states.desc(:_id).limit(3).skip(1).to_a
-
-    last_three_states.each do |state|
-      return false unless state.resulted_orders.empty?
-    end
-
-    return true
   end
 
   def get_powers( sides )

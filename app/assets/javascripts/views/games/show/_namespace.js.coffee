@@ -1,2 +1,3 @@
 @g = 
   model: {}
+  view: {}

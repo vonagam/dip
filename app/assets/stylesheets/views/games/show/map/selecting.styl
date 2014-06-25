@@ -1,0 +1,62 @@
+#diplomacy_map > #regions
+  [data-selectable]
+    cur pnt
+    
+  > 
+    [data-selectable~='unit']
+    [data-selectable~='dislodged']
+    [data-selectable~='build']
+    [data-selectable~='disband']
+
+      &:hover
+        > .l
+          fill hsl(50,30,65)
+        > .w
+          fill hsl(210,30,65)
+
+      $z = length($countries)
+      for $i in (0...$z)
+        $country = $countries[$i]
+        $color = $i * 51
+
+        &[data-power={'"'+$country+'"'}]:hover > .l
+          fill hsl($color,60,45)
+
+
+    [data-selectable~='unit']:hover > .unit
+      fill white !important
+
+    [data-selectable~='dislodged']:hover > .dislodged
+      stroke black !important
+
+    [data-selected~='unit'] > .unit
+    [data-selected~='fleets'] > .unit
+    [data-selected~='dislodged'] > .dislodged
+      fill white !important
+      stroke white !important
+
+
+  [data-selectable~='maneuver']
+    > .l, &.l
+      fill hsl( 50, 30%, 60%)
+    > .w
+      fill hsl(210, 30%, 60%)
+
+    &:hover
+      > .l, &.l
+        fill hsl( 50, 20%, 50%)
+      > .w
+        fill hsl(210, 20%, 50%)
+
+  $z = length($countries)
+  for $i in (0...$z)
+    $country = $countries[$i]
+    $color = $i * 51
+
+    [data-power={'"'+$country+'"'}]
+
+      &[data-selectable~='maneuver'] > .l, > [data-selectable~='maneuver']
+        fill hsl( $color, 60%, 50% )
+
+      &[data-selectable~='maneuver']:hover > .l, > [data-selectable~='maneuver']:hover
+        fill hsl( $color, 50%, 40% )
