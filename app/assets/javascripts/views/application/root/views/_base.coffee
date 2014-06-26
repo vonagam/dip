@@ -44,13 +44,6 @@ class r.view.Base extends BP.View
   toggle: ( bool )->
     super
 
-    ###
-    if bool
-      window.location.hash = @container_class
-    else
-      window.location.hash = ''
-    ###
-
     @toggle_form bool
 
     return

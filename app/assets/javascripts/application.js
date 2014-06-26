@@ -33,5 +33,5 @@
 //= require_tree ./vonagam_react
 //
 //= require maps
-//= require views/application/root
-//= require views/games/show
+//= require_tree ./views/games
+//= require views/application/root/index

@@ -2,6 +2,7 @@ class Game
   include Mongoid::Document
   include Mongoid::Slug
   include Mongoid::Enum
+  include Mongoid::Timestamps::Created
 
   TIME_MODES = { 
     'sixty_seconds' => 1,

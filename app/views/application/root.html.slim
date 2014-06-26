@@ -1,16 +1,11 @@
 - content_for :body_id, 'application_root_layout'
 
-#background.layer
-  .grey.layer
-
-#application_root.page
-  .left.col
-    = render 'application/root/games'
-  .right.col
-    = render 'application/root/login'
-    = render 'application/root/signs'
-    = render 'application/root/new_game'
-    = render 'application/root/rules'
-
 javascript:
-  r.initialize( #{ with_format(:json){ raw render template: 'application/root' } } );
+  (function(){
+    Page = modulejs.require('r.v.Page');
+
+    React.renderComponent(
+      Page(#{ with_format(:json){ raw render template: 'application/root' } }), 
+      $('#main')[0]
+    )
+  })()

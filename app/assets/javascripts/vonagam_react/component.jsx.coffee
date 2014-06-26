@@ -6,7 +6,7 @@ modulejs.define 'vr.Component',
 
     React.createClass
       render: ->
-        className = classes 'component', active: @props.active
+        className = classes 'component', disabled: !@props.active
         inside = if @props.active then @props.children else null
         
         @transferPropsTo(
