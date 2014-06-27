@@ -4,8 +4,9 @@ modulejs.define 'r.v.Page',
   [
     'r.v.RootComponent'
     'vr.Form'
+    'vr.form.input.Hidden'
   ]
-  ( RootComponent, Form )->
+  ( RootComponent, Form, HiddenInput )->
     React.createClass
       render: ->
         button = 
@@ -13,7 +14,16 @@ modulejs.define 'r.v.Page',
         
 
         `<RootComponent className='sign_in' active={}>
-          <Form >
+          <Form
+            action={Routes.session_path('user', {format: 'json'})}
+            method='post'
+            remote='true'
+            no_redirect='true'
+          >
+            <HiddenInput for='user' attr='remember_me' value='1' />
+            <Field for='user' attr='login' type='String' />
+            <Field for='user' attr='password' type='Password' />
+
           </Form>
         </RootComponent>`
 

@@ -14,7 +14,7 @@ modulejs.define 'vr.form.input.Select',
           id={h.input_id(this.props)} 
           className={h.objects_classes(this.props)}
           name={h.input_name(this.props)}
-          value={h.input_value(this.props)}
+          defaultValue={h.input_value(this.props)}
           required={this.props.required}
         >
           {options}
