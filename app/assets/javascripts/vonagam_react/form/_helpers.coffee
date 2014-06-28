@@ -4,7 +4,7 @@ modulejs.define 'vr.form.helpers',
     objects_classes: ( props, additional = 'input' )->
       classes(
         @input_id props
-        props.type || 'String'
+        props.type.downcase()
         required: props.required
         optional: !props.required
       ).add additional

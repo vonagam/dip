@@ -9,10 +9,10 @@ modulejs.define 'vr.form.Field',
 
     React.createClass
       render: ->
-        type = @props.type || 'String'
+        @props.type ||= 'String'
 
         label = Label @props if @props.label
-        input = modulejs.require('vr.form.input.'+type) @props
+        input = modulejs.require('vr.form.input.'+@props.type) @props
 
         `<div className={h.objects_classes(this.props, 'field')}>
           {label}
