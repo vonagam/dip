@@ -1,20 +1,18 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'vr.form.Field', 
-  [
-    'vr.form.helpers'
-    'vr.form.Label'
-  ]
-  ( h, Label )->
+modulejs.define 'vr.form.Field', ['vr.input.Field'], ( Field )->
+  React.createClass
+    render: ->
+      if @props.for
+        name = "#{@props.for}[#{@props.attr}]"
+      else
+        name = @props.attr || @props.name
 
-    React.createClass
-      render: ->
-        @props.type ||= 'String'
+      if @props.object
+        value = @props.object[@props.attr]
+      else
+        value = @props.value
 
-        label = Label @props if @props.label
-        input = modulejs.require('vr.form.input.'+@props.type) @props
-
-        `<div className={h.objects_classes(this.props, 'field')}>
-          {label}
-          {input}
-        </div>`
+      @transferPropsTo(
+        `<Field name={name} defaultValue={value} />`
+      )

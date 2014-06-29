@@ -1,19 +1,16 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'vr.input.Select', ->
+modulejs.define 'vr.input.Select', ['vr.input.getOption'], ( getOption )->
 
   React.createClass
     labelClicked: false
     render: ->
       options = {}
-      @props.collection.forEach ( option )->
-        if typeof option == 'object'
-          value = option.value
-          label = option.label
-        else
-          value = label = option
+      @props.collection.forEach ( option_data )->
+        option = getOption option_data
 
-        options['key-'+option] = `<option value={value}>{label}</option>`
+        options['key-'+option.value] = 
+          `<option value={option.value}>{option.label}</option>`
 
       `<select
         id={this.props.id}
