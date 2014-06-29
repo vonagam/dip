@@ -7,11 +7,11 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
 
   React.createClass
     labelClicked: ->
-      @refs.input.labelClicked()
+      @refs.input.labelClicked?()
       return
     render: ->
       type = typeByProps @props
-      Input = modulejs.required 'vr.input.' + capitaliseFirstLetter type.type
+      Input = modulejs.require 'vr.input.' + capitaliseFirstLetter type.type
       container_class = classes 'field', type.type, type.sub_type
 
       if @props.name
@@ -24,14 +24,7 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
         container_class.add id
     
       if @props.label
-        label_class = classes 'label', clickable: Input.labelClicked != false
-        label = `<div 
-            ref='label' 
-            className={label_class}
-            onMouseDown={Input.labelClicked != false ? this.labelClicked : null} 
-          >
-            {this.props.label}
-          </div>`
+        label = `<div ref='label' className='label' onMouseDown={this.labelClicked}>{this.props.label}</div>`
 
       if @props.hint
         hint = `<div ref='hint' className='hint'>{this.props.hint}</div>`

@@ -3,7 +3,7 @@
 modulejs.define 'vr.form.Field', ['vr.input.Field'], ( Field )->
   React.createClass
     render: ->
-      if @props.for
+      if @props.for && @props.attr
         name = "#{@props.for}[#{@props.attr}]"
       else
         name = @props.attr || @props.name

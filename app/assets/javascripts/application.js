@@ -34,4 +34,4 @@
 //
 //= require maps
 //= require_tree ./views/games
-//= require views/application/root/index
+//= require_tree ./views/application/root/react

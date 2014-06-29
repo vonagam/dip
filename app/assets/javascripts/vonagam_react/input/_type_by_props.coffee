@@ -17,7 +17,7 @@ modulejs.define 'vr.input.typeByProps', ->
     if /password/.test name
       return type: 'basic', sub_type: 'password'
 
-    if /(?:description|text)/
+    if /(?:description|text)/.test name
       return type: 'text'
 
     if props.collection

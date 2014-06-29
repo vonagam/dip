@@ -7,9 +7,9 @@ modulejs.define 'vr.Button', ->
       @transferPropsTo(
         `<a
           className='button'
-          data-remote={this.props.remote} remote={null}
-          data-method={this.props.method} method={null}
-          data-confirm={this.props.confirm} confirm={null}
+          data-remote={this.props.remote}
+          data-method={this.props.method}
+          data-confirm={this.props.confirm}
         >
           {this.props.text}
           {this.props.children}

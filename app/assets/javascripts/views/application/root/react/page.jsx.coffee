@@ -2,14 +2,13 @@
 
 modulejs.define 'r.v.Page',
   [
-  #  'r.v.SignIn'
-  #  'r.v.SignUp'
+    'r.v.SignIn'
+    'r.v.SignUp'
     'r.v.Games'
-  #  'r.v.NewGame'
-  #  'r.v.Rules'
+    'r.v.NewGame'
+    'r.v.Rules'
   ]
-  #( SignIn, SignUp, Games, NewGame, Rules )->
-  ( Games )->
+  ( SignIn, SignUp, Games, NewGame, Rules )->
     React.createClass
       getInitialState: ->
         opened_component: null
@@ -24,27 +23,16 @@ modulejs.define 'r.v.Page',
         return
       render: ->
         `<div id='application_root' className='page'>
+          <div className='background layer'>
+            <div className='grey layer' />
+          </div>
           <div className='col left'>
             <Games games={this.props.games} />
           </div>
           <div className='col right'>
+            <SignIn page={this} />
+            <SignUp page={this} />
+            <NewGame page={this} />
+            <Rules page={this} />
           </div>
         </div>`
-
-
-###
-#background.layer
-  .grey.layer
-
-        `<div id='application_root' className='page'>
-          <div className='col left'>
-            <Games />
-          </div>
-          <div className='col right'>
-            <SignIn />
-            <SignUp />
-            <NewGame />
-            <Rules />
-          </div>
-        </div>`
-###

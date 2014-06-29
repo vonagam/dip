@@ -1,10 +1,10 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'vr.input.String', ->
+modulejs.define 'vr.input.Basic', ->
 
   React.createClass
     labelClicked: ->
-      @refs.input.focus()
+      $( @refs.input.getDOMNode() ).focus()
       return
     render: ->
       `<input
@@ -13,6 +13,7 @@ modulejs.define 'vr.input.String', ->
         className={this.props.className}
         name={this.props.name}
         type={this.props.sub_type}
+        value={this.props.value}
         defaultValue={this.props.defaultValue}
         placeholder={this.props.placeholder}
       />`

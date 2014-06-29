@@ -5,22 +5,24 @@ modulejs.define 'r.v.RootComponent',
   ( classes, Button )->
     React.createClass
       render: ->
-        className = classes 'component', @props.name, disabled: !@props.enabled
+        className = classes 'component', @props.name, enabled: @props.enabled
 
         if @props.enabled
-          is_opened = @props.page.state.active_component == @props.name
+          is_opened = @props.page.state.opened_component == @props.name
 
           button_options = @props.button
 
-          toggle = @props.page.setActiveComponent.bind null, 
+          toggle = @props.page.setOpenedComponent.bind null, 
             if is_opened then null else @props.name
 
           if is_opened
             closer = `<div className='closer' onMouseDown={toggle} />`
             inside = @props.children
+            className.add 'opened'
           else
-            className.add 'closed'
             button_options.onMouseDown = toggle
+
+          button_options.className = classes button_options.className, 'sezam'
 
           button = Button button_options
 

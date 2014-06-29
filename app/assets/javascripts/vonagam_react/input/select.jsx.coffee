@@ -3,7 +3,6 @@
 modulejs.define 'vr.input.Select', ['vr.input.getOption'], ( getOption )->
 
   React.createClass
-    labelClicked: false
     render: ->
       options = {}
       @props.collection.forEach ( option_data )->
@@ -16,6 +15,7 @@ modulejs.define 'vr.input.Select', ['vr.input.getOption'], ( getOption )->
         id={this.props.id}
         className={this.props.className}
         name={this.props.name}
+        value={this.props.value}
         defaultValue={this.props.defaultValue}
       >
         {options}

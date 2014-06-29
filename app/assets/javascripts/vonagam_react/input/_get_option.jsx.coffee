@@ -1,5 +1,5 @@
 modulejs.define 'vr.input.getOption', ->
-  ( option_data )->
+  ( option )->
     r = {}
 
     if typeof option == 'object'
