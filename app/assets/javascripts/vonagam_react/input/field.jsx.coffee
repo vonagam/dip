@@ -43,6 +43,7 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
             sub_type={type.sub_type}
             placeholder={this.props.placeholder}
             collection={this.props.collection}
+            allow_blank={this.props.allow_blank}
             defaultValue={this.props.defaultValue}
             errors={this.props.errors}
           /> 

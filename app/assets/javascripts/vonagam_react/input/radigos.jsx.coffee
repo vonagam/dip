@@ -6,12 +6,21 @@ modulejs.define 'vr.input.Radigos',
 
     React.createClass
       getInitialState: ->
-        value: @props.value ? @props.defaultValue
+        value = 
+        if @props.value != undefined
+          @props.value
+        else if @props.defaultValue != undefined
+          @props.defaultValue
+        else if !@props.allow_blank && @props.collection?.length > 0
+          getOption( @props.collection[0] ).value
+        
+        value: value
       optionClicked: (e)->
-        log 123
         return if @props.value
         value = e.target.getAttribute 'data-value'
-        value = null if @state.value == value
+        if @state.value == value
+          return unless @props.allow_blank
+          value = null 
         @setState value: value
         return
       render: ->
@@ -19,7 +28,8 @@ modulejs.define 'vr.input.Radigos',
         optionClicked = @optionClicked
 
         options = {}
-        @props.collection.forEach ( option_data )->
+
+        for option_data in @props.collection
           option = getOption option_data
 
           className = classes 'radigo', checked: option.value.toString()==value

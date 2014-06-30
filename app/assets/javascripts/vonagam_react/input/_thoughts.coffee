@@ -5,10 +5,9 @@
   id
   name
   defaultValue
-  collection
+  collection + allow_blank
   sub_type
   placeholder
-  errors
 
 
   - Field

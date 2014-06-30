@@ -5,6 +5,10 @@ modulejs.define 'vr.input.Select', ['vr.input.getOption'], ( getOption )->
   React.createClass
     render: ->
       options = {}
+
+      if @props.allow_blank
+        options['key'] = `<option value=''></option>`
+
       @props.collection.forEach ( option_data )->
         option = getOption option_data
 
