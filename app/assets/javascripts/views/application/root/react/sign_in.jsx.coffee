@@ -10,9 +10,9 @@ modulejs.define 'r.v.SignIn',
   ( RootComponent, Form, fieldsFor, Submit )->
     React.createClass
       render: ->
-        button = className: 'green', text: 'sign_in'
+        button = className: 'green in_form', text: 'sign_in'
 
-        fields = fieldsFor { for: 'user' },
+        fields = fieldsFor 'user',
           login: label: 'login'
           password: label: 'password'
           remember_me: sub_type: 'hidden', value: 1

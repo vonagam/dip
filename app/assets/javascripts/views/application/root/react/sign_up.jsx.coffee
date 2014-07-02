@@ -10,9 +10,9 @@ modulejs.define 'r.v.SignUp',
   ( RootComponent, Form, fieldsFor, Submit )->
     React.createClass
       render: ->
-        button = className: 'yellow', text: 'sign_up'
+        button = className: 'yellow in_form', text: 'sign_up'
 
-        fields = fieldsFor { for: 'user' },
+        fields = fieldsFor 'user',
           login: label: 'login', hint: 'hint'
           password: label: 'password', hint: 'hint'
 

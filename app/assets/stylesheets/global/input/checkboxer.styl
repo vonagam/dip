@@ -1,0 +1,9 @@
+.input_checkboxer
+  + .label
+  
+    @extend $radiockeck_holder
+    &:before
+      @extend $radiockeck
+
+  &.checked + .label:before
+    @extend $radiockeck_mark

@@ -10,15 +10,15 @@ modulejs.define 'r.v.NewGame',
   ( RootComponent, Form, fieldsFor, Submit )->
     React.createClass
       render: ->
-        button = className: 'green', text: 'new_game'
+        button = className: 'green in_form', text: 'new_game'
 
-        fields = fieldsFor { for: 'game' },
+        fields = fieldsFor 'game',
           name: label: 'name', hint: 'hint'
           map: label: 'map', collection: [1,2,3]
           time_mode: label: 'time_mode', type: 'radigos', collection: [[1,1],[2,2],[3,3]]
-          chat_mode: label: 'chat_mode', collection: [[1,1],[2,2],[3,3]]
-          #is_public: label: 'is_public'
-          #powers_is_random: label: 'powers_is_random'
+          chat_mode: label: 'chat_mode', type: 'radigos', collection: [[1,1],[2,2],[3,3]]
+          is_public: label: 'is_public'
+          powers_is_random: label: 'powers_is_random'
 
 
         `<RootComponent

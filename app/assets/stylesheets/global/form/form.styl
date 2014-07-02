@@ -1,4 +1,4 @@
-form.form
+.form
   txt ali cen
   pad t 10
 
@@ -8,7 +8,7 @@ form.form
     > .input
       txt ali cen
 
-    > textarea.input
+    > .input_textarea
       dis blo
       txt ali l
 
@@ -17,24 +17,3 @@ form.form
 
     + .button
       mar t 0
-
-  .collection
-    .item + .item
-      mar t 5
-
-  .hint
-    txt siz 11
-    txt hei 2em
-    hei 0
-    opa 0
-    transition height 0.5s, opacity 0.5s, color 0.5s
-
-  :focus + .hint
-    hei 2em
-    opa 1
-
-  :invalid + .hint
-    txt clr hsl(0,50,50)
-
-  :valid + .hint
-    txt clr hsl(120,50,50) 

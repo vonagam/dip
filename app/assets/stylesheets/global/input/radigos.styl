@@ -1,0 +1,25 @@
+.input_radigos
+  @extend $input_window
+  hei aut
+
+  > .radigo
+    brd rds 10*$u
+    cur pnt
+
+    + .radigo
+      mar t 5*$u
+
+    &:hover
+      bac clr hsl(0,0,92.5)
+
+    &.checked
+      bac clr hsl(0,0,85)
+      cur def
+
+    @extend $radiockeck_holder
+    &:before
+      @extend $radiockeck
+      brd rds 50%
+
+    &.checked:before
+      @extend $radiockeck_mark

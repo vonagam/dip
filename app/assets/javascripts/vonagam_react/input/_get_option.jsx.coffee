@@ -1,15 +1,18 @@
-modulejs.define 'vr.input.getOption', ->
-  ( option )->
-    r = {}
+modulejs.define 'vr.input.getOptions', ->
+  ( options, fun )->
+    result = []
 
-    if typeof option == 'object'
-      if $.isArray option
-        r.value = option[0]
-        r.label = option[1]
-      else
-        r.value = option.value
-        r.label = option.label
+    if $.isArray options
+      if options.length > 0
+        if typeof options[0] == 'object'
+          [value,label] = if $.isArray options[0] then [0,1] else ['value','label']
+          for option in options
+            result.push fun option[value], option[label]
+        else
+          for option in options
+            result.push fun option, option
     else
-      r.value = r.label = option
+      for value, label of options
+        result.push fun value, label
 
-    r
+    result

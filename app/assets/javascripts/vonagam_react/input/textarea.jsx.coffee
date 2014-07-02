@@ -1,6 +1,6 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'vr.input.Text', ->
+modulejs.define 'vr.input.Textarea', ['vr.classes'], ( classes )->
 
   React.createClass
     labelClicked: ->
@@ -10,9 +10,10 @@ modulejs.define 'vr.input.Text', ->
       `<textarea
         ref='input'
         id={this.props.id}
-        className={this.props.className}
+        className={classes(this.props.className, 'input_textarea')}
         name={this.props.name}
         value={this.props.value}
         defaultValue={this.props.defaultValue}
         placeholder={this.props.placeholder}
+        onChange={this.props.onChange}
       />`

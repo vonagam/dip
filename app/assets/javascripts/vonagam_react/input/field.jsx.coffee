@@ -12,15 +12,10 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
     render: ->
       type = typeByProps @props
       Input = modulejs.require 'vr.input.' + capitaliseFirstLetter type.type
-      container_class = classes 'field', type.type, type.sub_type
+      container_class = classes 'field', "field_#{type.type}", type.sub_type
 
       if @props.name
-
-        name = @props.name
-        
-        id = name.replace /(?:\[|\])/g, (x)-> 
-          if x == '[' then '_' else ''
-
+        id = @props.name.replace /[\[\]]/g, (x)-> if x == '[' then '_' else ''
         container_class.add id
     
       if @props.label
@@ -34,11 +29,10 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
 
       @transferPropsTo(
         `<div className={container_class}>
-          {label}
           <Input
             ref='input'
             id={id}
-            name={name}
+            name={this.props.name}
             className='input'
             sub_type={type.sub_type}
             placeholder={this.props.placeholder}
@@ -46,7 +40,9 @@ modulejs.define 'vr.input.Field', ['vr.input.typeByProps','vr.classes'], ( typeB
             allow_blank={this.props.allow_blank}
             defaultValue={this.props.defaultValue}
             errors={this.props.errors}
-          /> 
+            onChange={this.props.onChange}
+          />
+          {label}
           {hint}
           {error}
         </div>`

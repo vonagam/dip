@@ -1,4 +1,12 @@
 modulejs.define 'vr.input.typeByProps', ->
+
+  mapping = [
+    [ /(?:[\[_]|^)is(?:[\]_]|$)/, type: 'checkboxer' ]
+    [ /email/, type: 'basic', sub_type: 'email' ]
+    [ /password/, type: 'basic', sub_type: 'password' ]
+    [ /(?:description|text)/, type: 'textarea' ]
+  ]
+
   ( props )->
     if props.type
       return type: props.type, sub_type: props.sub_type
@@ -6,21 +14,10 @@ modulejs.define 'vr.input.typeByProps', ->
     if props.sub_type
       return type: 'basic', sub_type: props.sub_type
 
-    name = props.name
-
-    if /(?:[\[_]|^)is(?:[\]_]|$)/.test name
-      return type: 'checkbox'
-
-    if /email/.test name
-      return type: 'basic', sub_type: 'email'
-
-    if /password/.test name
-      return type: 'basic', sub_type: 'password'
-
-    if /(?:description|text)/.test name
-      return type: 'text'
-
     if props.collection
       return type: 'select'
+
+    for check in mapping
+      return check[1] if check[0].test props.name
 
     type: 'basic', sub_type: 'text'

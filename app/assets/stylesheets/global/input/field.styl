@@ -1,0 +1,24 @@
+.field
+  pos rel
+  pad t 20
+
+  > .label
+    pos abs t 0 l 0 r 0
+
+  > .hint
+    txt siz 11 hei 2em clr hsl(0,0,60)
+    hei 0
+    opa 0
+    transition height 0.5s, opacity 0.5s, color 0.5s
+
+  > :focus ~ .hint
+    hei 2em
+    opa 1
+
+/*
+  :invalid + .hint
+    txt clr hsl(0,50,50)
+
+  :valid + .hint
+    txt clr hsl(120,50,50)
+*/
