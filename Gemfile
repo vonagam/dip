@@ -20,6 +20,7 @@ gem 'react-rails', '~> 0.10.0.0'
 gem 'vonagam_items', github: 'vonagam/items' # path: '../items' # 
 gem 'turbolinks'
 gem 'js-routes'
+gem 'i18n-js', github: 'fnando/i18n-js'
 
 # helpers
 gem 'simple_form'

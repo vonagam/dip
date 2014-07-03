@@ -21,6 +21,7 @@
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
 //= require modulejs-0.2
+//= require i18n/translations
 //
 //= require global/cookie
 //= require global/jquery_html_hash

@@ -20,9 +20,11 @@ modulejs.define 'r.v.RootComponent',
             inside = @props.children
             className.add 'opened'
           else
-            button_options.onMouseDown = toggle
+            if @props.children
+              button_options.onMouseDown = toggle
 
           button_options.className = classes button_options.className, 'sezam'
+          button_options.text = I18n.t "application.root.#{@props.name}.button"
 
           button = Button button_options
 

@@ -9,7 +9,7 @@ modulejs.define 'vr.input.Select',
         options = getOptions @props.collection, ( value, label )->
           `<option key={value} value={value}>{label}</option>`
 
-        options.unshift `<option value=''></option>` if @props.allow_blank != false
+        options.unshift `<option key='_blank' value=''></option>` if @props.allow_blank != false
 
         `<select
           id={this.props.id}

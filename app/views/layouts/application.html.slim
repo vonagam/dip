@@ -8,6 +8,10 @@ html
     = csrf_meta_tags
 
     javascript:
+      I18n.defaultLocale = "#{ I18n.default_locale }"
+      I18n.locale = "#{ I18n.locale }"
+
+    javascript:
       window.regions = #{ raw Map.find_by( name: 'Standart' ).info.yaml_areas }
 
   body id=content_for(:body_id)

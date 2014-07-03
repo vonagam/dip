@@ -7,7 +7,7 @@ modulejs.define 'r.v.Rules',
   ( RootComponent )->
     React.createClass
       render: ->
-        button = className: 'blue', text: 'rules'
+        button = className: 'blue'
 
         `<RootComponent
           className='container'

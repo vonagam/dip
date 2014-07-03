@@ -4,11 +4,12 @@ modulejs.define 'r.v.Page',
   [
     'r.v.SignIn'
     'r.v.SignUp'
+    'r.v.SignOut'
     'r.v.Games'
     'r.v.NewGame'
     'r.v.Rules'
   ]
-  ( SignIn, SignUp, Games, NewGame, Rules )->
+  ( SignIn, SignUp, SignOut, Games, NewGame, Rules )->
     React.createClass
       getInitialState: ->
         opened_component: null
@@ -32,6 +33,7 @@ modulejs.define 'r.v.Page',
           <div className='col right'>
             <SignIn page={this} />
             <SignUp page={this} />
+            <SignOut page={this} />
             <NewGame page={this} />
             <Rules page={this} />
           </div>

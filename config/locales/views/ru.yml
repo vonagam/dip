@@ -1,15 +1,18 @@
 ru:
   application:
     root:
-      rules: 
-        rules: Правила
-      signs:
-        out: Выйти
-        in: Войти
-        up: Создать аккаунт
       games:
-        games: Игры
-        any: Любой
+        title: Игры
+      sign_in:
+        button: Войти
+      sign_up:
+        button: Создать аккаунт
+      sign_out:
+        button: Выйти
+      new_game:
+        button: Создать игру
+      rules:
+        button: Правила
 
   games:
     show:

@@ -10,7 +10,7 @@ modulejs.define 'r.v.NewGame',
   ( RootComponent, Form, fieldsFor, Submit )->
     React.createClass
       render: ->
-        button = className: 'green in_form', text: 'new_game'
+        button = className: 'green in_form'
 
         fields = fieldsFor 'game',
           name: label: 'name', hint: 'hint'
