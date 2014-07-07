@@ -137,6 +137,8 @@ GEM
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.3.1)
     ffi (1.9.3)
+    font-awesome-rails (4.1.0.0)
+      railties (>= 3.2, < 5.0)
     formtastic (2.3.0.rc3)
       actionpack (>= 3.0)
     has_scope (0.6.0.rc)
@@ -344,6 +346,7 @@ DEPENDENCIES
   delayed_job_mongoid
   devise
   factory_girl_rails
+  font-awesome-rails
   i18n-js!
   jbuilder
   jquery-rails

@@ -2,8 +2,6 @@
 
 modulejs.define 'r.v.games.Game', ['vr.classes'], ( classes )->
   React.createClass
-    field_creator: (game)->
-      game.creator.login
     render: ->
       game = @props.game
       className = classes 'game tr', participated: game.participated

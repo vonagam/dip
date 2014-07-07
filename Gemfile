@@ -21,6 +21,7 @@ gem 'vonagam_items', github: 'vonagam/items' # path: '../items' #
 gem 'turbolinks'
 gem 'js-routes'
 gem 'i18n-js', github: 'fnando/i18n-js'
+gem 'font-awesome-rails'
 
 # helpers
 gem 'simple_form'

@@ -22,9 +22,7 @@ json.games games do |game|
   json.sides game.sides.count
   json.url game_path game
   
-  json.creator do
-    json.login game.creator.login
-  end
+  json.creator game.creator.login
 end
 
 json.crsf form_authenticity_token
