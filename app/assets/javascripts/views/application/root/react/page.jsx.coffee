@@ -28,7 +28,10 @@ modulejs.define 'r.v.Page',
             <div className='grey layer' />
           </div>
           <div className='col left'>
-            <Games games={this.props.games} />
+            <Games
+              games={this.props.games}
+              participated={this.props.user.participated_games}
+            />
           </div>
           <div className='col right'>
             <SignIn page={this} />

@@ -1,21 +1,41 @@
 #application_root 
   .games
+    > .filters > .td
+      wid (1/6)*100%
+    
     > .table
       
-      .td
-        wid (1/6)*100%
-    
+      .tr
+        pad 5
+
+        > div
+          mar x 5
+          wid 25
+
+        > .name
+          wid 180
+        > .created_at
+          wid 100
+      
       > .tbody
-        pad y 5
 
-        > .not_matching
-          dis non
-
-        > .tr
+        > .game
           dis blo
-          txt hei 1.7em
+          txt siz 15 hei 1.7em
 
           &:hover
             bac clr hsl(0,0,92)
           &:active
             bac clr hsl(0,0,85)
+
+          > .status
+            brd rds 50%
+            &.waiting
+              bac clr hsl(  0,  0, 50)
+            &.going
+              bac clr hsl( 40, 80, 50)
+            &.finished
+              bac clr hsl(  0, 50, 50)
+
+        > .not_matching
+          dis non

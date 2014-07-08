@@ -97,10 +97,9 @@ ru:
         going: Идущие
         ended: Завершенные
       time_modes:
-        sixty_seconds: 60 секунд
-        five_four_three: '3,4,5 минут'
-        half_day: Полдни
-        twenty_four_hours: 24 часа
+        5m: 5 минут
+        12h: 12 часов
+        1d: 1 день
         manual: Ручной режим
       chat_modes:
         only_public: Только публичный

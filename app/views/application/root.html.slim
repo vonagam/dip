@@ -4,8 +4,10 @@ javascript:
   (function(){
     Page = modulejs.require('r.v.Page');
 
-    React.renderComponent(
-      Page(#{ with_format(:json){ raw render template: 'application/root' } }), 
-      $('#main')[0]
-    )
+    root_data = #{ with_format(:json){ raw render template: 'application/root' } };
+    games_data = #{ with_format(:json){ raw render template: 'games/index' } };
+
+    page_options = $.extend( root_data, games_data );
+
+    React.renderComponent( Page( page_options ), $('#main')[0] );
   })()

@@ -33,18 +33,33 @@ modulejs.define 'r.v.Games',
       render: ->
         games = {}
         for game in @props.games
-          games[game._id] = `<Game game={game} fields={this.state.fields} />`
+          is_participated = 
+            if @props.participated
+              @props.participated.indexOf( game._id ) != -1
+            else
+              null
 
-        heads = {}
+          games[game._id] = `<Game game={game} fields={this.state.fields} is_participated={is_participated} />`
+
+        filters = {}
         for name, field_props of schema
           callback = this.onChange.bind null, name
           field = Field $.extend { label: name, onChange: callback }, field_props
-          heads[name] = `<div className='td'>{field}</div>`
+          filters[name] = `<div className='td'>{field}</div>`
 
         `<div className='games container'>
+          <div className='title'>{I18n.t("application.root.games.title")}</div>
+          <div className='filters'>{filters}</div>
           <div className='table'>
-            <div className='thead'>
-              {heads}
+            <div className='thead tr'>
+              <div className='name'>Name</div> 
+              <div className='status'><i className='fa fa-lightbulb-o'/></div>
+              <div className='sides'><i className='fa fa-male'/></div>
+              <div className='time_mode'><i className='fa fa-clock-o'/></div>
+              <div className='chat_mode'><i className='fa fa-envelope-o'/></div>
+              <div className='is_public'><i className='fa fa-eye'/></div>
+              <div className='is_participated'><i className='fa fa-gamepad'/></div>
+              <div className='created_at'><i className='fa fa-calendar'/></div>
             </div>
             <div className='tbody'>
               {games}

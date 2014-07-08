@@ -5,10 +5,9 @@ class Game
   include Mongoid::Timestamps::Created
 
   TIME_MODES = { 
-    'sixty_seconds' => 1,
-    'five_four_three' => { move: 5, supply: 4, retreat: 3 },
-    'half_day' => 720,
-    'twenty_four_hours' => 1440,
+    '5m' => 5,
+    '12h' => 720,
+    '1d' => 1440,
     'manual' => nil
   }
 
@@ -38,7 +37,7 @@ class Game
   delegate :progress_game_url, to: 'Rails.application.routes.url_helpers'
 
   validates :name, :is_public, :powers_is_random, :time_mode, :chat_mode, :map, :creator, presence: true
-  validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,20}\z/ }
+  validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,15}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
   validates :chat_mode, inclusion: { in: CHAT_MODES.keys }
   validate :if_manual_then_private
@@ -116,7 +115,7 @@ class Game
   def start_timer( force = false )
     return if time_mode == 'manual' || ( !force && is_left? )
 
-    end_at = get_duration.minutes.from_now
+    end_at = TIME_MODES[ time_mode ].minutes.from_now
       
     state.update_attribute :end_at, end_at
 
@@ -157,12 +156,6 @@ class Game
   end
   def add_creator_side
     sides.create user: creator
-  end
-
-  def get_duration
-    duration = TIME_MODES[ time_mode ]
-    duration = duration[ state.type.downcase.to_sym ] if duration.is_a?( Hash )
-    duration
   end
 
   def fill_sides_powers
