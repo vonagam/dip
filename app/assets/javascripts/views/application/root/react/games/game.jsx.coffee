@@ -31,12 +31,19 @@ modulejs.define 'r.v.games.Game', ['vr.classes'], ( classes )->
 
       is_participated = `<i className='fa fa-check' />` if @props.is_participated
 
+      powers_is_random =
+        if game.powers_is_random
+          `<i className='fa fa-random' />`
+        else
+          `<i className='fa fa-hand-o-right' />`
+
       `<a className={className} href={Routes.game_path(game.slug)}>
         <div className='name'>{game.name}</div>
         <div className={classes( 'status', game.status )}>{game.states}</div>
         <div className='sides'>{game.sides}</div>
         <div className='time_mode'>{time_mode}</div>
         <div className='chat_mode'>{chat_mode}</div>
+        <div className='powers_is_random'>{powers_is_random}</div>
         <div className='is_public'>{is_public}</div>
         <div className='is_participated'>{is_participated}</div>
         <div className='created_at'>{game.created_at}</div>

@@ -57,6 +57,7 @@ modulejs.define 'r.v.Games',
               <div className='sides'><i className='fa fa-male'/></div>
               <div className='time_mode'><i className='fa fa-clock-o'/></div>
               <div className='chat_mode'><i className='fa fa-envelope-o'/></div>
+              <div className='powers_is_random'><i className='fa fa-flag'/></div>
               <div className='is_public'><i className='fa fa-eye'/></div>
               <div className='is_participated'><i className='fa fa-gamepad'/></div>
               <div className='created_at'><i className='fa fa-calendar'/></div>
