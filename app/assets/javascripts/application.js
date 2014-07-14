@@ -17,22 +17,13 @@
 //= require d3
 //= require websocket_rails/main
 //= require vonagam_items/basic
-//= require vonagam_items/ruby_regexp_fix
 //= require vonagam_items/ajax/form
 //= require vonagam_items/vector
 //= require modulejs-0.2
 //= require i18n/translations
+//= require cookie
 //
-//= require global/cookie
-//= require global/jquery_html_hash
-//= require global/regexp_fix_turbolinks
-//= require global/vector_addons
-//= require global/routes
-//= require global/toggler
-//= require_tree ./global/states
-//= require_tree ./global/big_page
+//= require_tree ./global
 //= require_tree ./vonagam_react
-//
-//= require maps
 //= require_tree ./views/games
 //= require_tree ./views/application/root/react
