@@ -25,5 +25,4 @@
 //
 //= require_tree ./global
 //= require_tree ./vonagam_react
-//= require_tree ./views/games
-//= require_tree ./views/application/root/react
+//= require_tree ./views

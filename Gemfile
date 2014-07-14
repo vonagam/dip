@@ -40,6 +40,8 @@ gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
 
 gem 'websocket-rails'
 
+gem 'mongoid_query_string_interface'
+
 
 #back
 gem 'devise'

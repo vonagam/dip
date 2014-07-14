@@ -4,7 +4,7 @@ javascript:
   (function(){
     Page = modulejs.require('r.v.Page');
 
-    root_data = #{ with_format(:json){ raw render template: 'application/root' } };
+    root_data = #{ with_format(:json){ raw render 'layouts/access' } };
     games_data = #{ with_format(:json){ raw render template: 'games/index' } };
 
     page_options = $.extend( root_data, games_data );

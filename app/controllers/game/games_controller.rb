@@ -1,7 +1,15 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, except: [ :show, :progress ]
-  load_resource except: [ :create ]
+  before_action :authenticate_user!, except: [ :index, :show, :progress ]
+  load_resource except: [ :create, :index ]
   load_and_authorize_resource only: [ :destroy, :start ]
+
+  def index
+    query = [{ is_public: true }]
+
+    query.push({ :_id.in => current_user.participated_games }) if user_signed_in?
+    
+    @games = Game.or(*query) #.filter_by params[:query]
+  end
 
   def create
     new_game = Game.create game_params.merge( creator: current_user )

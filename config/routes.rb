@@ -3,13 +3,13 @@ Diplomacy::Application.routes.draw do
   
   devise_for :users
   
-  ActiveAdmin.routes(self)
+  ActiveAdmin.routes self
 
-  resources :games, only: [:create, :show, :destroy] do
+  resources :games, only: [:index, :create, :show, :destroy] do
     member do
-      post 'progress'
-      post 'continue'
-      post 'rollback'
+      post :progress
+      post :continue
+      post :rollback
     end
 
     resource :order, only: [:create]  
@@ -17,7 +17,7 @@ Diplomacy::Application.routes.draw do
     resources :messages, only: [:create, :index]
   end
 
-  root 'application#root'
+  root 'games#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
