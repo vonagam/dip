@@ -3,7 +3,6 @@ class Game
   include Mongoid::Slug
   include Mongoid::Enum
   include Mongoid::Timestamps::Created
-  extend Mongoid::QueryStringInterface
 
   TIME_MODES = { 
     '5m' => 5,

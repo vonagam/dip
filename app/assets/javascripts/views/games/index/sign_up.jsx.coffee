@@ -13,13 +13,13 @@ modulejs.define 'r.v.SignUp',
         button = className: 'yellow in_form'
 
         fields = fieldsFor 'user',
-          login: label: 'login', hint: 'hint'
-          password: label: 'password', hint: 'hint'
+          login: label: I18n.t('attributes.login'), hint: I18n.t('simple_form.hints.user.login')
+          password: label: I18n.t('attributes.password')
 
         `<RootComponent
           className='container'
           name='sign_up'
-          enabled={true}
+          enabled={this.props.page.user == undefined}
           page={this.props.page}
           button={button}
         >
@@ -30,6 +30,6 @@ modulejs.define 'r.v.SignUp',
             no_redirect='true'
           >
             {fields}
-            <Submit className='yellow' text='sign_up' />
+            <Submit className='yellow' text={I18n.t('application.root.sign_up.button')} />
           </Form>
         </RootComponent>`

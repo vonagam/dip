@@ -18,7 +18,7 @@ modulejs.define 'r.v.SignOut',
         `<RootComponent
           className='container'
           name='sign_out'
-          enabled={true}
+          enabled={this.props.page.user != undefined}
           page={this.props.page}
           button={button}
         />`

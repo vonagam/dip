@@ -14,3 +14,6 @@ json.games @games do |game|
   json.sides game.sides.count
   json.creator game.creator.login
 end
+
+json.page @games.current_page
+json.pages @games.total_pages

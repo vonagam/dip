@@ -18,4 +18,12 @@ class ApplicationController < ActionController::Base
     authenticate_user!
     redirect_to root_path unless current_user.admin?
   end
+
+  def searching( relation, conditions )
+    return relation if conditions.blank?
+
+    relation.and *(conditions.map do |condition|
+      { condition[:field].to_sym.send( condition[:method] ) => condition[:value] }
+    end)
+  end
 end
