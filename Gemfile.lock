@@ -78,7 +78,7 @@ GEM
     arbre (1.0.1)
       activesupport (>= 3.0.0)
     arel (4.0.2)
-    autoprefixer-rails (2.1.0.20140628)
+    autoprefixer-rails (2.1.1.20140710)
       execjs
     bcrypt (3.1.7)
     bourbon (3.2.3)
@@ -239,7 +239,7 @@ GEM
       redis (>= 3.0.2)
     responders (1.0.0)
       railties (>= 3.2, < 5)
-    rest-client (1.7.1)
+    rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
     rspec-core (3.0.2)

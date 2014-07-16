@@ -15,6 +15,18 @@ ru:
         button: Правила
 
   games:
+    index:
+      columns:
+        name: Название
+        status: Статус
+        sides: Кол-во сторон
+        time_mode: Временной режим
+        chat_mode: Режим чата
+        powers_is_random: Случайность сторон
+        is_public: Публичность
+        is_participated: Принимаете ли вы участие
+        created_at: Дата создания
+
     show:
       root:
         root: На <br> главную
