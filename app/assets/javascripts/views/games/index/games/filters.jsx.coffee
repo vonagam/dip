@@ -1,39 +1,24 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'r.v.Games',
-  ['r.v.games.Game', 'vr.input.Field']
-  ( Game, Filters )->
-    column_icons =
-      status: 'lightbulb-o'
-      sides: 'male'
-      time_mode: 'clock-o'
-      chat_mode: 'envelope-o'
-      powers_is_random: 'flag'
-      is_public: 'eye'
-      is_participated: 'gamepad'
-      created_at: 'calendar'
+modulejs.define 'r.v.Filters',
+  ['vr.input.Field']
+  ( Field )->
+    schema =
+      status: collection: I18n.t 'const.game.statuses'
+      sides: sub_type: 'number'
+      creator: {}
+      created_at: {}
+      chat_mode: collection: I18n.t 'const.game.chat_modes'
+      time_mode: collection: I18n.t 'const.game.time_modes'
 
     React.createClass
       getInitialState: ->
-        games: @props.games
-      changeGames: ( games )->
-        @setState games: games
-        return
-      setFilter: ( field, filter )->
-        fields = @state.fields
-        fields[field] = filter
-        @setState fields: fields
-        return
-      onChange: (name, e)->
-        #TODO fired two times? why?
-        field = name
-        filter = e.target.value
-        filter = if filter then new RegExp filter, 'i' else null
-        @setFilter field, filter
-        return
+        state = {}
+        state[field] = null for field of schema
+        state
       render: ->
         games = {}
-        for game in @state.games
+        for game in @props.games
           is_participated = 
             if @props.participated
               @props.participated.indexOf( game._id ) != -1
@@ -41,6 +26,12 @@ modulejs.define 'r.v.Games',
               null
 
           games[game._id] = `<Game game={game} fields={this.state.fields} is_participated={is_participated} />`
+
+        filters = {}
+        for name, field_props of schema
+          callback = this.onChange.bind null, name
+          field = Field $.extend { label: name, onChange: callback }, field_props
+          filters[name] = `<div className='td'>{field}</div>`
 
         columns = {}
         for name, icon of column_icons
@@ -51,7 +42,7 @@ modulejs.define 'r.v.Games',
 
         `<div className='games container'>
           <div className='title'>{I18n.t("application.root.games.title")}</div>
-          <Filters changeGames={this.changeGames} />
+          <div className='filters'>{filters}</div>
           <div className='table'>
             <div className='thead tr'>
               <div className='name'>{I18n.t('games.index.columns.name')}</div>
