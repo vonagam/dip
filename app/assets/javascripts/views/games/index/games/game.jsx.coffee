@@ -14,11 +14,6 @@ modulejs.define 'r.v.games.Game', ['vr.classes'], ( classes )->
       game = @props.game
       className = classes 'game tr'
 
-      for name, filter of @props.fields
-        if filter && !filter.test game[name]
-          className.add 'not_matching'
-          break
-
       time_mode = 
         if game.time_mode == 'manual'
           `<i className='fa fa-wrench' />`

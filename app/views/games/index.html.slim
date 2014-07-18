@@ -4,10 +4,9 @@ javascript:
   (function(){
     Page = modulejs.require('r.v.Page');
 
-    root_data = #{ with_format(:json){ raw render 'layouts/access' } };
-    games_data = #{ with_format(:json){ raw render template: 'games/index' } };
+    options = {};
+    options.access = #{ with_format(:json){ raw render 'layouts/access' } };
+    options.games_index = #{ with_format(:json){ raw render template: 'games/index' } };
 
-    page_options = $.extend( root_data, games_data );
-
-    React.renderComponent( Page( page_options ), $('#main')[0] );
+    React.renderComponent( Page( options ), $('#main')[0] );
   })()

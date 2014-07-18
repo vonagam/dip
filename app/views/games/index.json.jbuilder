@@ -15,5 +15,9 @@ json.games @games do |game|
   json.creator game.creator.login
 end
 
+if user_signed_in?
+  json.participated current_user.participated_games
+end
+
 json.page @games.current_page
 json.pages @games.total_pages

@@ -19,7 +19,7 @@ modulejs.define 'r.v.SignUp',
         `<RootComponent
           className='container'
           name='sign_up'
-          enabled={this.props.page.props.user == undefined}
+          enabled={!this.props.is_signed_in}
           page={this.props.page}
           button={button}
         >

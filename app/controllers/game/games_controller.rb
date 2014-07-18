@@ -8,7 +8,7 @@ class GamesController < ApplicationController
 
     query.push({ :_id.in => current_user.participated_games }) if user_signed_in?
     
-    @games = searching( Game.or(*query), params[:filter] ).paginate( page: params[:page] )
+    @games = searching( Game.or(*query), params[:filters] ).paginate( page: params[:page] )
   end
 
   def create

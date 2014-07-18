@@ -23,21 +23,20 @@ modulejs.define 'r.v.Page',
         @setState opened_component: name
         return
       render: ->
+        is_signed_in = @props.access.user != undefined
+
         `<div id='application_root' className='page'>
           <div className='background layer'>
             <div className='grey layer' />
           </div>
           <div className='col left'>
-            <Games
-              games={this.props.games}
-              participated={this.props.user.participated_games}
-            />
+            <Games data={this.props.games_index} />
           </div>
           <div className='col right'>
-            <SignIn page={this} />
-            <SignUp page={this} />
-            <SignOut page={this} />
-            <NewGame page={this} />
+            <SignIn page={this} is_signed_in={is_signed_in} />
+            <SignUp page={this} is_signed_in={is_signed_in} />
+            <SignOut page={this} is_signed_in={is_signed_in} />
+            <NewGame page={this} is_signed_in={is_signed_in} />
             <Rules page={this} />
           </div>
         </div>`

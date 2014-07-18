@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
   def searching( relation, conditions )
     return relation if conditions.blank?
 
-    relation.and *(conditions.map do |condition|
-      { condition[:field].to_sym.send( condition[:method] ) => condition[:value] }
+    relation.and *(conditions.map do |key, value|
+      { key.to_sym.send( value[0] ) => value[1] }
     end)
   end
 end

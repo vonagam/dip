@@ -24,7 +24,7 @@ modulejs.define 'r.v.NewGame',
         `<RootComponent
           className='container'
           name='new_game'
-          enabled={this.props.page.props.user != undefined}
+          enabled={this.props.is_signed_in}
           page={this.props.page}
           button={button}
         >
