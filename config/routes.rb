@@ -17,6 +17,8 @@ Diplomacy::Application.routes.draw do
     resources :messages, only: [:create, :index]
   end
 
+  get 'access' => 'application#access'
+
   root 'games#index'
 
   # Example of regular route:

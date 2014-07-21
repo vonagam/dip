@@ -13,6 +13,7 @@ modulejs.define 'r.v.Page',
     React.createClass
       getInitialState: ->
         opened_component: null
+        user: @props.access.user
       updateCRSF: ( crsf )->
         @crsf_meta.attr content: crsf
         return
@@ -22,8 +23,17 @@ modulejs.define 'r.v.Page',
       setOpenedComponent: ( name )->
         @setState opened_component: name
         return
+      updateAccess: ->
+        $(@getDOMNode()).ajax 'get', 
+          Routes.access_path(format: 'json'), 
+          {},
+          ( data )=>
+            @updateCRSF data.crsf
+            @setState user: data.user
+            return
+        return
       render: ->
-        is_signed_in = @props.access.user != undefined
+        is_signed_in = @state.user != undefined
 
         `<div id='application_root' className='page'>
           <div className='background layer'>

@@ -8,5 +8,8 @@ modulejs.define 'g.v.menu.LinkToRoot',
       render: buttonComponent(
         'root'
         ( game )-> true
-        ( game )-> className: 'grey', href: '/', text: 'root'
+        ( game )-> 
+          className: 'grey'
+          href: '/'
+          text: `<i className='fa fa-home' title='root' />`
       )

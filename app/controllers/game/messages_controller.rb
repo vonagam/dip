@@ -16,20 +16,8 @@ class MessagesController < ApplicationController
   end
 
   def index
-    side = @game.side_of current_user
-    offset = params[:offset]
-
-    @messages = @game.messages
-
-    if @game.status != 'ended'
-      select = [ { is_public: true } ]
-      select.push({ to: @side.power }, { from: @side.power }) if @side
-      @messages = @messages.or *select
-    end
-
-    @messages = @messages.where({ :created_at.lt => @offset }) if @offset
-    
-    @messages = @messages.desc(:created_at).limit(10).to_a
+    @side = @game.side_of current_user
+    @offset = params[:offset]
   end
 
   private

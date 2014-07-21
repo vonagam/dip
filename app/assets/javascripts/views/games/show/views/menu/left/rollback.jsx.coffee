@@ -24,5 +24,5 @@ modulejs.define 'g.v.menu.Rollback',
             className: 'red'
             method: 'post'
             remote: true
-            text: 'rollback'
+            text: `<i className='fa fa-undo' title='rollback' />`
         )

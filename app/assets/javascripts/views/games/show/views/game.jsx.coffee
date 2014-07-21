@@ -6,11 +6,12 @@ modulejs.define 'g.v.Game',
     'g.m.State'
     'g.v.Menu'
     'g.v.Map'
+    'g.v.Info'
     'g.v.Chat'
     'g.v.map.Order'
     'g.v.Resizer'
   ]
-  ( maps, State, Menu, Map, Chat, Orders, Resizer )->
+  ( maps, State, Menu, Map, Info, Chat, Orders, Resizer )->
 
     React.createClass
       state_from_data: ( data )->
@@ -78,10 +79,15 @@ modulejs.define 'g.v.Game',
         @setState state: state.read_data()
         return
 
+      setMapOrInfo: ( what )->
+        @setState map_or_info: what
+        return
+
       getInitialState: ->
         data = @props.initialData
         @id = data.id
         state = @state_from_data data
+        state.map_or_info = 'map'
 
         @start_websockets()
         @listen_side_channel state.user_side?.name
@@ -99,19 +105,25 @@ modulejs.define 'g.v.Game',
         return
 
       render: ->
-        `<div id='games_show' className='page'>
-          <Menu 
-            game={this.state} 
-            page={this} 
-          />
-          <Resizer>
-            <Orders game={this.state}>
+        left_part = 
+          if @state.map_or_info == 'map'
+            `<Orders game={this.state}>
               <Map 
                 game={this.state} 
                 page={this}
                 coords={maps.Standart} 
               />
-            </Orders>
+            </Orders>`
+          else
+            `<Info page={this} game={this.state} />`
+
+        `<div id='games_show' className='page'>
+          <Menu 
+            game={this.state} 
+            page={this}
+          />
+          <Resizer>
+            {left_part}
             <Chat 
               game={this.state} 
               initialMessages={this.props.initialMessages}

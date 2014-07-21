@@ -22,6 +22,7 @@ modulejs.define 'r.v.SignUp',
           enabled={!this.props.is_signed_in}
           page={this.props.page}
           button={button}
+          form_access={true}
         >
           <Form
             action={Routes.user_registration_path({format: 'json'})}

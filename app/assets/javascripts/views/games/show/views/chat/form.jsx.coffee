@@ -5,9 +5,9 @@ modulejs.define 'g.v.chat.Form',
     'vr.Component'
     'vr.Form'
     'vr.form.Field'
-    'vr.Button'
+    'vr.form.Submit'
   ]
-  ( Component, Form, Field, Button )->
+  ( Component, Form, Field, Submit )->
 
     React.createClass
       componentDidMount: ()->
@@ -58,7 +58,7 @@ modulejs.define 'g.v.chat.Form',
             onKeyDown={this.onKeyDown}
           >
             {to_select}
-            <Field for='message' attr='text' type='Text' placeholder='message' />
-            <Button className='yellow' text='send' />
+            <Field for='message' attr='text' placeholder='message' />
+            <Submit className='yellow' text='send' />
           </Form>
         </Component>`

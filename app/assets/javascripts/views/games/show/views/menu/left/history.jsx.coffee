@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
 modulejs.define 'g.v.menu.History',
-  [ 'vr.Component', 'vr.classes', 'vr.form.input.SelectOption' ]
-  ( Component, classes, SelectOption )->
+  [ 'vr.Component', 'vr.classes', 'vr.input.Select' ]
+  ( Component, classes, Select )->
 
     React.createClass
       controls: ->
@@ -38,14 +38,6 @@ modulejs.define 'g.v.menu.History',
 
         if @active
           states = game.states
-          
-          options = {}
-          for state, i in states
-            options[state.raw.id] = 
-              `<SelectOption 
-                value={i}
-                label={this.state_label(state.raw)}
-              />`
 
           controls = {}
           current = states.indexOf game.state
@@ -63,10 +55,14 @@ modulejs.define 'g.v.menu.History',
                 <div className='press' />
               </div>`
 
+          select = Select 
+            className: 'input'
+            value: current
+            onChange: @onChange
+            collection: states.map (state, index)=> [ index, @state_label(state.raw) ]
+
         `<Component className='history' active={this.active}>
-          <select className='input' value={current} onChange={this.onChange}>
-            {options}
-          </select>
+          {select}
           <div className='controls row'>
             {controls}
           </div>

@@ -76,5 +76,6 @@ group :test do
   gem 'rack'
 end
 
-#gem 'remotipart'
-#gem 'paperclip', '~> 3.0'
+
+#problematics
+gem 'nokogiri', '1.6.1'

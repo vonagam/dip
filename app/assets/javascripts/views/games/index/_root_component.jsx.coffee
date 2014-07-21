@@ -4,6 +4,13 @@ modulejs.define 'r.v.RootComponent',
   [ 'vr.classes', 'vr.Button' ]
   ( classes, Button )->
     React.createClass
+      componentDidMount: ->
+        if @props.form_access
+          node = $ @getDOMNode()
+          node.on 'ajax:success', =>
+            @props.page.updateAccess()
+            return
+        return
       render: ->
         className = classes 'component', @props.name, enabled: @props.enabled
 

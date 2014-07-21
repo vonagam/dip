@@ -4,7 +4,7 @@
 #games_show
   dis blo
 
-  .component:not(.active)
+  .component.disabled
     dis non '!'
 
   > .menu
@@ -13,22 +13,23 @@
     txt hei 46
 
     .component
-      wid 150
       dis inl-blo
       ver t
-      .button
-        wid 150
-        + .button
-          mar l 10
+      > .button
+        hei 46
+        wid 110
+        pad 0
+        > .fa
+          txt siz 23 hei 46
 
     > .left
-      > .active
+      > .component
         mar r 10
 
     > .right
       pos abs t 10 r 10
 
-      > .active
+      > .component
         mar l 10
 
   > .pils2
@@ -77,16 +78,14 @@
       mar l 20
 
 
-@import 'views/games/show/map/map'
 @import 'views/games/show/map/countries'
-@import 'views/games/show/map/selecting'
-
-@import 'views/games/show/actions'
-@import 'views/games/show/chat'
-@import 'views/games/show/history'
-@import 'views/games/show/old_order'
-@import 'views/games/show/choose_order'
-@import 'views/games/show/participation'
-@import 'views/games/show/player'
-@import 'views/games/show/stats'
-@import 'views/games/show/timer'
+@import 'views/games/show/map/svg/map'
+@import 'views/games/show/map/svg/selecting'
+@import 'views/games/show/map/old_order'
+@import 'views/games/show/map/choose_order'
+@import 'views/games/show/map/stats'
+@import 'views/games/show/chat/chat'
+@import 'views/games/show/menu/history'
+@import 'views/games/show/menu/player'
+@import 'views/games/show/menu/timer'
+@import 'views/games/show/menu/switch'

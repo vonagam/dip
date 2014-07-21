@@ -16,5 +16,5 @@ modulejs.define 'g.v.menu.Manual',
           className: 'red'
           method: 'post'
           remote: true
-          text: 'progress'
+          text: `<i className='fa fa-play' title='progress' />`
       )

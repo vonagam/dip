@@ -1,5 +1,4 @@
 modulejs.define 'vr.classes', ->
-
   class Classes
     constructor: ->
       @classes = []
@@ -23,7 +22,6 @@ modulejs.define 'vr.classes', ->
 
     toString: ->
       @valueOf()
-
 
   ->
     (new Classes).add_array arguments

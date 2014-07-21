@@ -31,7 +31,8 @@ modulejs.define 'g.v.map.svg.Region',
         coords.polygons.forEach (polygon, index)->
           polygons.push `<Polygon key={index} region={name} polygon={polygon} control={control} />`
         
-        title = `<title>{region.full}</title>`
+        #TODO wait fix in gem
+        #title = `<title>{region.full}</title>`
         center = `<Center coords={coords.center} />` if coords.center
         abbr = `<Abbr name={name} coords={coords.abbr} type={region.type} />`
         unit = `<Unit model={model.unit} coords={this.props.coords} />` if model.unit
@@ -41,7 +42,7 @@ modulejs.define 'g.v.map.svg.Region',
         check = isSelectable name, control
 
         React.DOM.g $.extend( { id: name, 'data-power':power }, check ),
-          title
+          #title
           polygons
           center
           abbr

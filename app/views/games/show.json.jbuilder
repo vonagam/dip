@@ -1,5 +1,6 @@
 json.extract! @game, 
-  :id, 
+  :id,
+  :name,
   :time_mode,
   :chat_mode,
   :status,

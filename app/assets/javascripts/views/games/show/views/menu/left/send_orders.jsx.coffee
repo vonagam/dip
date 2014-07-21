@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
 modulejs.define 'g.v.menu.SendOrders',
-  [ 'g.v.menu.buttonComponent' ]
-  ( buttonComponent )->
+  [ 'g.v.menu.buttonComponent', 'vr.stopEvent' ]
+  ( buttonComponent, stopEvent )->
 
     React.createClass
       onMouseDown: (e)->
@@ -20,7 +20,7 @@ modulejs.define 'g.v.menu.SendOrders',
 
             return
 
-        return vr.stop_event e
+        return stopEvent e
       render: buttonComponent(
         'order'
         ( game )-> 
@@ -29,6 +29,6 @@ modulejs.define 'g.v.menu.SendOrders',
           game.user_side?.orderable
         ( game )->
           className: 'send ' + if game.state.raw.orders then 'green' else 'yellow'
-          text: 'send'
+          text: `<i className='fa fa-pencil' title='send orders' />`
           onMouseDown: @onMouseDown
       )

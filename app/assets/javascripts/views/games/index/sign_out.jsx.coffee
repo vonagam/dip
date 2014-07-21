@@ -21,4 +21,5 @@ modulejs.define 'r.v.SignOut',
           enabled={this.props.is_signed_in}
           page={this.props.page}
           button={button}
+          form_access={true}
         />`

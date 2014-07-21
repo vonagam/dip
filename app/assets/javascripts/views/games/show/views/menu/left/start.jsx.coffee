@@ -13,5 +13,5 @@ modulejs.define 'g.v.menu.Start',
             className: 'green'
             method: 'post'
             remote: true
-            text: 'start'
+            text: `<i className='fa fa-flag-checkered' title='start' />`
         )

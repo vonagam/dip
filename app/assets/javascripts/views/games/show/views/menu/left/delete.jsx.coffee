@@ -22,5 +22,5 @@ modulejs.define 'g.v.menu.Delete',
             method: 'delete'
             remote: true
             confirm: 'Are you sure?'
-            text: 'delete'
+            text: `<i className='fa fa-trash-o' title='delete' />`
         )
