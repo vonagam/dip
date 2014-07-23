@@ -84,11 +84,8 @@ modulejs.define 'g.v.Game',
         return
 
       getInitialState: ->
-        log @props
-
-        data = @props.initialData
-        @id = data.id
-        state = @state_from_data data
+        @id = @props.id
+        state = @state_from_data @props
         state.map_or_info = 'map'
 
         @start_websockets()
@@ -128,7 +125,7 @@ modulejs.define 'g.v.Game',
             {left_part}
             <Chat 
               game={this.state} 
-              initialMessages={this.props.initialMessages}
+              initialMessages={this.props.messages}
               side_channel={this.side_channel}
               game_channel={this.game_channel}
             />
