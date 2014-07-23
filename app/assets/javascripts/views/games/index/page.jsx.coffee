@@ -25,11 +25,12 @@ modulejs.define 'r.v.Page',
         return
       updateAccess: ->
         $(@getDOMNode()).ajax 'get', 
-          Routes.access_path(format: 'json'), 
+          Routes.games_path(format: 'json'), 
           {},
           ( data )=>
-            @updateCRSF data.crsf
-            @setState user: data.user
+            @updateCRSF data.access.crsf
+            @setState user: data.access.user
+            @refs.Games.refresh data
             return
         return
       render: ->
@@ -40,7 +41,7 @@ modulejs.define 'r.v.Page',
             <div className='grey layer' />
           </div>
           <div className='col left'>
-            <Games data={this.props.games_index} />
+            <Games ref='Games' data={this.props} />
           </div>
           <div className='col right'>
             <SignIn page={this} is_signed_in={is_signed_in} />

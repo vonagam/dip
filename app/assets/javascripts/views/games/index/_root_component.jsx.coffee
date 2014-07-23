@@ -8,7 +8,7 @@ modulejs.define 'r.v.RootComponent',
         if @props.form_access
           node = $ @getDOMNode()
           node.on 'ajax:success', =>
-            @props.page.updateAccess()
+            @props.page.fetch()
             return
         return
       render: ->

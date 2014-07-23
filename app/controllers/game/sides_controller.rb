@@ -2,9 +2,13 @@ class SidesController < ApplicationController
   before_action :authenticate_user!
   load_resource :game
   before_action :find_side
-  authorize_resource through: :game
+  authorize_resource through: :game, except: :index
+
+  def index
+  end
    
   def create
+    @side ||= @game.sides.build user: current_user
     @side.update_attributes side_params
 
     respond_with @side, location: game_path(@game)
@@ -19,7 +23,7 @@ class SidesController < ApplicationController
   private
 
   def find_side
-    @side = @game.side_of( current_user ) || @game.sides.build( user: current_user )
+    @side = @game.side_of current_user
   end
 
   def side_params

@@ -10,7 +10,4 @@ end
 
 @messages = @messages.desc(:created_at).limit(10).to_a
 
-
-json.array! @messages do |message|
-  json.extract! message, :_id, :from, :to, :created_at, :is_public, :text
-end
+json.messages @messages, partial: 'messages/message', as: :message

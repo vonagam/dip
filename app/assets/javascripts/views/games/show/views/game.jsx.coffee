@@ -84,6 +84,8 @@ modulejs.define 'g.v.Game',
         return
 
       getInitialState: ->
+        log @props
+
         data = @props.initialData
         @id = data.id
         state = @state_from_data data

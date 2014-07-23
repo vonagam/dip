@@ -1,14 +1,4 @@
 - content_for :body_id, 'application_root_layout'
 
 javascript:
-  (function(){
-    Page = modulejs.require('r.v.Page');
-
-    React.renderComponent(
-      Page({ 
-        access: #{ with_format(:json){ raw render 'layouts/access' } }, 
-        games_index: #{ with_format(:json){ raw render template: 'games/index' } }
-      }), 
-      $('#main')[0]
-    )
-  })()
+  renderReactPage('r.v.Page', #{ with_format(:json){ raw render template: 'games/index' } });

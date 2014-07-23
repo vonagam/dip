@@ -7,7 +7,7 @@ modulejs.define 'g.v.menu.Player',
     React.createClass
       render: ->
         game = @props.game
-        name = game.data.login
+        name = game.data.access.user
 
         active = name != undefined
 

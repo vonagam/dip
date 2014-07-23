@@ -1,45 +1,27 @@
 ###* @jsx React.DOM ###
 
-modulejs.define 'r.v.games.Game', ['vr.classes'], ( classes )->
-
-  chat_modes = {
-    'only_public': 'fa-comment-o',
-    'only_private': 'fa-comment',
-    'rotation': 'fa-refresh',
-    'both': 'fa-comments-o'
-  }
+modulejs.define 'r.v.games.Game', ['vr.classes', 'icons'], ( classes, icons )->
 
   React.createClass
     render: ->
       game = @props.game
       className = classes 'game tr'
+      game_icons = icons.Game.values
 
-      time_mode = 
-        if game.time_mode == 'manual'
-          `<i className='fa fa-wrench' />`
-        else 
-          game.time_mode
+      values = {}
+      for field in @props.fields
+        if field == 'status'
+          values[field] = `<div className={classes( 'status', game.status )}>{game.states_count}</div>`
+          continue
 
-      chat_mode = `<i className={'fa '+chat_modes[game.chat_mode]} />`
+        value = game[field]
+        icon = game_icons[field] && game_icons[field][value]
 
-      is_public = `<i className='fa fa-eye-slash' />` if not game.is_public
+        visual = switch icon
+          when undefined then value
+          when 0 then null
+          else `<i className={'fa fa-'+icon} />`
 
-      is_participated = `<i className='fa fa-check' />` if @props.is_participated
+        values[field] = `<div className={field}>{visual}</div>`
 
-      powers_is_random =
-        if game.powers_is_random
-          `<i className='fa fa-random' />`
-        else
-          `<i className='fa fa-hand-o-right' />`
-
-      `<a className={className} href={Routes.game_path(game.slug)}>
-        <div className='name'>{game.name}</div>
-        <div className={classes( 'status', game.status )}>{game.states}</div>
-        <div className='sides'>{game.sides}</div>
-        <div className='time_mode'>{time_mode}</div>
-        <div className='chat_mode'>{chat_mode}</div>
-        <div className='powers_is_random'>{powers_is_random}</div>
-        <div className='is_public'>{is_public}</div>
-        <div className='is_participated'>{is_participated}</div>
-        <div className='created_at'>{game.created_at}</div>
-      </a>`
+      `<a className={className} href={Routes.game_path(game.slug)}>{values}</a>`

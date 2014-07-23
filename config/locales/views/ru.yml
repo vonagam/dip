@@ -19,7 +19,7 @@ ru:
       columns:
         name: Название
         status: Статус
-        sides: Кол-во сторон
+        sides_count: Кол-во сторон
         time_mode: Временной режим
         chat_mode: Режим чата
         powers_is_random: Случайность сторон

@@ -14,6 +14,9 @@ Diplomacy::Application.routes.draw do
 
     resource :order, only: [:create]  
     resource :side, only: [:create, :destroy]
+
+    resources :states, only: [:index]
+    resources :sides, only: [:index]
     resources :messages, only: [:create, :index]
   end
 
