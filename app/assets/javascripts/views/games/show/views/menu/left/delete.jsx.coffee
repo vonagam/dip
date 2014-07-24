@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
 modulejs.define 'g.v.menu.Delete',
-  [ 'g.v.menu.buttonComponent' ]
-  ( buttonComponent )->
+  [ 'g.v.menu.buttonComponent', 'icons' ]
+  ( buttonComponent, icons )->
     
     React.createClass
       render: buttonComponent(
@@ -22,5 +22,5 @@ modulejs.define 'g.v.menu.Delete',
             method: 'delete'
             remote: true
             confirm: 'Are you sure?'
-            text: `<i className='fa fa-trash-o' title='delete' />`
+            text: icons.get 'trash-o', 'delete'
         )

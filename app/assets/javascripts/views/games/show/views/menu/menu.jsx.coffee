@@ -6,6 +6,7 @@ modulejs.define 'g.v.Menu',
     'g.v.menu.Rollback'
     'g.v.menu.Delete'
     'g.v.menu.Start'
+    'g.v.menu.Participation'
     'g.v.menu.History'
     'g.v.menu.Timer'
     'g.v.menu.Manual'
@@ -18,6 +19,7 @@ modulejs.define 'g.v.Menu',
     Rollback
     Delete
     Start
+    Participation
     History
     Timer
     Manual
@@ -37,6 +39,7 @@ modulejs.define 'g.v.Menu',
               <Switch page={page} />
               <Rollback game={game} page={page} />
               <Start game={game} />
+              <Participation game={game} />
               <History game={game} page={page} />
               <Timer game={game} />
               <Manual game={game} />
@@ -45,6 +48,7 @@ modulejs.define 'g.v.Menu',
           else
             `<div className='left'>
               <Switch page={page} />
+              <Participation game={game} />
               <Delete game={game} />
               <Start game={game} />
               <Timer game={game} />

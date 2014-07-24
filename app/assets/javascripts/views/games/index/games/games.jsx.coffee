@@ -18,7 +18,7 @@ modulejs.define 'r.v.Games',
     columns = for field in fields
       name = I18n.t 'games.index.columns.'+field
       if icon = icons.Game.fields[field]
-        `<div key={field} className={field} title={name}><i className={'fa fa-'+icon}/></div>`
+        `<div key={field} className={field} title={name}>{icons.get(icon)}</div>`
       else
         `<div key={field} className={field}>{name}</div>`
 

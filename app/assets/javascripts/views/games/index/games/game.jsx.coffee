@@ -20,7 +20,7 @@ modulejs.define 'r.v.games.Game', ['vr.classes', 'icons'], ( classes, icons )->
         visual = switch icon
           when undefined then value
           when 0 then null
-          else `<i className={'fa fa-'+icon} />`
+          else icons.get icon
 
         values[field] = `<div className={field}>{visual}</div>`
 

@@ -1,8 +1,8 @@
 ###* @jsx React.DOM ###
 
 modulejs.define 'r.v.RootComponent', 
-  [ 'vr.classes', 'vr.Button' ]
-  ( classes, Button )->
+  [ 'vr.classes', 'vr.Button', 'icons' ]
+  ( classes, Button, icons )->
     React.createClass
       componentDidMount: ->
         if @props.form_access
@@ -31,7 +31,10 @@ modulejs.define 'r.v.RootComponent',
               button_options.onMouseDown = toggle
 
           button_options.className = classes button_options.className, 'sezam'
-          button_options.text = I18n.t "application.root.#{@props.name}.button"
+          button_options.text = [
+            icons.get icons.Layout.actions[@props.name]
+            I18n.t "application.root.#{@props.name}.button"
+          ]
 
           button = Button button_options
 

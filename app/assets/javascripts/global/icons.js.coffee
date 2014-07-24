@@ -26,3 +26,12 @@ modulejs.define 'icons',
       is_participated:
         true: 'check'
         false: 0
+  Layout:
+    actions:
+      sign_in: 'pencil-square-o'
+      sign_up: 'sign-in'
+      sign_out: 'sign-out'
+      rules: 'book'
+      new_game: 'plus'
+  get: ( icon, title = null )->
+    React.DOM.i className: ('fa fa-'+icon), title: title
