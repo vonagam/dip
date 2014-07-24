@@ -28,7 +28,7 @@ modulejs.define 'g.v.menu.SendOrders',
           game.state.last &&
           game.user_side?.orderable
         ( game )->
-          className: 'send ' + if game.state.raw.orders then 'green' else 'yellow'
+          className: 'send ' + if game.state.raw.orders then 'yellow' else 'green'
           text: `<i className='fa fa-pencil' title='send orders' />`
           onMouseDown: @onMouseDown
       )

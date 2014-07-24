@@ -27,6 +27,7 @@ ru:
         create: Создать игру
       side:
         create: Принять участие
+        update: Изменить сторону
       order:
         create: Отдать приказы
       message:

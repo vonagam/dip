@@ -48,9 +48,9 @@ modulejs.define 'g.v.Menu',
           else
             `<div className='left'>
               <Switch page={page} />
-              <Participation game={game} />
               <Delete game={game} />
               <Start game={game} />
+              <Participation game={game} />
               <Timer game={game} />
             </div>`
 

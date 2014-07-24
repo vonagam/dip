@@ -37,6 +37,9 @@ class Ability
       side.game.waiting? &&
       he( side )
     end
+    cannot :delete, Side do |side|
+      he( side.game, :creator )
+    end
   end
 
   protected

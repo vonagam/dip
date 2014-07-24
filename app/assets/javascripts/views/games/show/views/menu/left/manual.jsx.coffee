@@ -13,7 +13,7 @@ modulejs.define 'g.v.menu.Manual',
           game.data.status == 'going'
         ( game )->
           href: Routes.progress_game_path game.data.id, format: 'json'
-          className: 'red'
+          className: 'yellow'
           method: 'post'
           remote: true
           text: `<i className='fa fa-play' title='progress' />`

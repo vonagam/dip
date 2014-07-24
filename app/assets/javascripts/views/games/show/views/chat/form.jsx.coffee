@@ -59,6 +59,6 @@ modulejs.define 'g.v.chat.Form',
           >
             {to_select}
             <Field for='message' attr='text' placeholder='message' />
-            <Submit className='yellow' text='send' />
+            <Submit className='green' text='send' />
           </Form>
         </Component>`

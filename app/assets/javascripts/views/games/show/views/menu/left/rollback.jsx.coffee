@@ -5,7 +5,7 @@ modulejs.define 'g.v.menu.Rollback',
   ( buttonComponent )->
 
     React.createClass
-      componentDidMount: ()->
+      componentDidMount: ->
         node = $ @getDOMNode()
         node.on 'ajax:success', ( e, data )=>
           page = @props.page

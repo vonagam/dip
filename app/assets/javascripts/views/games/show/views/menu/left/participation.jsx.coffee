@@ -18,6 +18,15 @@ modulejs.define 'g.v.menu.Participation',
         popup: false
       setPopup: (bool)->
         @setState popup: bool
+      getAvailabePowers: (game)->
+        powers = [['','Random']].concat game.data.available_powers
+        if game.user_side && game.user_side.power?[0]
+          powers.push game.user_side.power[0]
+        powers
+      componentDidMount: ->
+        $(@getDOMNode()).on 'ajax:success', =>
+          @setPopup false if @state.popup
+        return
       render: ->
         game = @props.game
 
@@ -27,27 +36,45 @@ modulejs.define 'g.v.menu.Participation',
 
           openCallback = @setPopup.bind null, true
 
-          button = 
+          create = Button
+            className: 'green'
+            text: icons.get 'flag', TEXT.create
+            onMouseDown: openCallback
+
+          update = Button
+            className: 'yellow'
+            text: icons.get 'flag', TEXT.update
+            onMouseDown: openCallback
+
+          destroy = Button
+            href: Routes.game_side_path game.data.id, format: 'json'
+            className: 'red'
+            method: 'delete'
+            remote: true
+            text: icons.get 'flag', TEXT.destroy
+
+          button =
             if game.user_side == null
-              Button
-                className: 'yellow'
-                text: icons.get 'flag', 'participation'
-                onMouseDown: openCallback
+              create
             else
-              {
-                change: Button
-                  className: 'green'
-                  text: icons.get 'flag', 'change power'
-                  onMouseDown: openCallback
-                cancel: Button
-                  href: Routes.game_side_path game.data.id, format: 'json'
-                  className: 'red'
-                  method: 'delete'
-                  remote: true
-                  text: icons.get 'flag', 'cancel participation'
-              }
+              if game.user_side.creator
+                update unless game.data.powers_is_random
+              else
+                if game.data.powers_is_random
+                  destroy
+                else
+                  [ update, destroy ]
 
           if @state.popup
+
+            closeCallback = @setPopup.bind null, false
+
+            submit =
+              if game.user_side
+                [ 'yellow', TEXT.update ]
+              else
+                [ 'green', TEXT.create ]
+
             fields =
               if game.data.powers_is_random
                 `<div className='field powers_is_random'>
@@ -59,22 +86,22 @@ modulejs.define 'g.v.menu.Participation',
                   'power':
                     label: I18n.t 'mongoid.attributes.side.power'
                     allow_blank: false
-                    collection: [['','Random']].concat game.data.available_powers
-
-            closeCallback = @setPopup.bind null, false
+                    collection: @getAvailabePowers game
+                    value: game.user_side.power?[0]
 
             popup =
               `<div id='participation_new_side' className='new_side layer'>
                 <div className='content container'>
                   <div className='closer' onMouseDown={closeCallback} />
                   <Form
+                    className='new_side'
                     action={Routes.game_side_path(game.data.id, {format: 'json'})}
                     method='post'
                     remote='true'
                     no_redirect='true'
                   >
                     {fields}
-                    <Submit className='green' text={TEXT.participate} />
+                    <Submit className={submit[0]} text={submit[1]} />
                   </Form>
                 </div>
               </div>`

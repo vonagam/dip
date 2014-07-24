@@ -27,7 +27,7 @@ class SidesController < ApplicationController
 
   def side_params
     p = params.require(:side).permit :power
-    p[:power] = p[:power] == 'Random' ? nil : [p[:power]] if p[:power].not_blank?
+    p[:power] = p[:power].blank? ? nil : [p[:power]] 
     p
   end
 end

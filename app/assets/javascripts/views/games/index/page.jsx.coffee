@@ -23,7 +23,7 @@ modulejs.define 'r.v.Page',
       setOpenedComponent: ( name )->
         @setState opened_component: name
         return
-      updateAccess: ->
+      fetch: ->
         $(@getDOMNode()).ajax 'get', 
           Routes.games_path(format: 'json'), 
           {},

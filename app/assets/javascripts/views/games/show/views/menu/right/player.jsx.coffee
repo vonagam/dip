@@ -15,7 +15,9 @@ modulejs.define 'g.v.menu.Player',
           login = `<div className='login'>{name}</div>`
 
           if game.user_side
-            power = `<div className='power'>{game.user_side.name || 'Random'}</div>`
+            power = `<div className='power'>
+              {game.user_side.name || game.user_side.power || 'Random'}
+            </div>`
 
         className = classes 'player', two_line: power != null
 
