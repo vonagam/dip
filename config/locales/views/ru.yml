@@ -29,26 +29,26 @@ ru:
 
     show:
       root:
-        root: На <br> главную
+        root: На главную
       actions:
         actions: Действия
       delete:
-        delete: Удалить <br> игру
+        delete: Удалить игру
       start:
-        start: Начать <br> игру
+        start: Начать игру
       participation:
-        participate: Принять <br> участие
-        cancel: Отменить <br> участие
-        change_power: Изменить <br> страну
+        participate: Принять участие
+        cancel: Отменить участие
+        change_power: Изменить страну
         powers_is_random: Страны будут распределены случайно
       rollback:
-        rollback: Откатить <br> ход
+        rollback: Откатить ход
       order:
-        send: Отдать <br> приказы
+        send: Отдать приказы
       timer:
         remain: Осталось
       manual:
-        progress: Следующий <br> ход
+        progress: Следующий ход
       stats:
         statistic: Показатели
         power: Страна

@@ -35,8 +35,7 @@ class Ability
 
     can :manage, Side do |side|
       side.game.waiting? &&
-      he( side ) &&
-      ne( side.game, :creator )
+      he( side )
     end
   end
 

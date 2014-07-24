@@ -40,8 +40,6 @@ gem 'activeadmin-mongoid', github: 'elia/activeadmin-mongoid', branch: 'rails4'
 
 gem 'websocket-rails'
 
-gem 'will_paginate_mongoid'
-
 
 #back
 gem 'devise'

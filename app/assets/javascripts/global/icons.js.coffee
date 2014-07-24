@@ -9,6 +9,7 @@ modulejs.define 'icons',
       is_public: 'eye'
       is_participated: 'gamepad'
       created_at: 'calendar'
+      map: 'globe'
     values:
       time_mode:
         manual: 'wrench'

@@ -2,8 +2,10 @@ require 'engine/adjudicator/adjudicator'
 
 class Map
   include Mongoid::Document
+  include Mongoid::Slug
 
   field :name
+  slug :name
 
   has_many :games, dependent: :destroy
 

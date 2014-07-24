@@ -34,6 +34,7 @@ class Game
   embeds_many :messages
   embeds_many :orders
 
+  slug :name
   delegate :progress_game_url, to: 'Rails.application.routes.url_helpers'
 
   validates :name, :is_public, :powers_is_random, :time_mode, :chat_mode, :map, :creator, presence: true
@@ -43,8 +44,6 @@ class Game
   validate :if_manual_then_private
 
   after_create :create_initial_state, :add_creator_side
-
-  slug { |game| game.name }
 
   def state
     states.last
@@ -57,7 +56,7 @@ class Game
   end
 
   def alive_sides
-    sides.fighting.to_a + sides.draw.to_a
+    sides.in(status: [:fighting,:draw]).to_a
   end
 
   def powers
@@ -177,6 +176,6 @@ class Game
   end
 
   def get_powers( sides )
-    sides.reduce([]){ |sum,x| sum + x.power.to_a }
+    sides.reduce([]){ |sum,side| sum + side.power.to_a }
   end
 end

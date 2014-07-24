@@ -12,14 +12,16 @@ modulejs.define 'r.v.NewGame',
       render: ->
         button = className: 'green in_form'
 
-        fields = fieldsFor 'game',
-          name: label: 'name', hint: 'hint'
-          map: label: 'map', collection: [1,2,3]
-          time_mode: label: 'time_mode', type: 'radigos', collection: [[1,1],[2,2],[3,3]]
-          chat_mode: label: 'chat_mode', type: 'radigos', collection: [[1,1],[2,2],[3,3]]
-          is_public: label: 'is_public'
-          powers_is_random: label: 'powers_is_random'
+        maps = @props.page.props.maps.map (map)-> [ map.id, map.name ]
 
+        fields = fieldsFor 'game',
+          _labels: I18n.t 'mongoid.attributes.game'
+          name: hint: I18n.t 'simple_form.hints.game.name'
+          map: collection: maps, allow_blank: false
+          time_mode: type: 'radigos', collection: I18n.t 'const.game.time_modes'
+          chat_mode: type: 'radigos', collection: I18n.t 'const.game.chat_modes'
+          is_public: {}
+          powers_is_random: {}
 
         `<RootComponent
           className='container'
@@ -29,11 +31,12 @@ modulejs.define 'r.v.NewGame',
           button={button}
         >
           <Form
+            className='new_game'
             action={Routes.games_path({format: 'json'})}
             method='post'
             remote='true'
           >
             {fields}
-            <Submit className='green' text='new_game' />
+            <Submit className='green' text={I18n.t('application.root.new_game.button')} />
           </Form>
         </RootComponent>`
