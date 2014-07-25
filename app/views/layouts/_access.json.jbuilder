@@ -1,4 +1,5 @@
-json.access do
-  json.user current_user.login if user_signed_in?
-  json.crsf form_authenticity_token
+json.crsf form_authenticity_token
+
+json.user do
+  json.partial! 'users/show', user: current_user if user_signed_in?
 end

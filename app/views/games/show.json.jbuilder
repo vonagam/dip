@@ -1,11 +1,12 @@
-participated = current_user.try(:participated_games) || []
-
-json.partial! 'games/game', game: @game, participated: participated
-json.chat_is_public @game.chat_is_public?
-json.extract! @game, :taken_powers, :available_powers
-
-json.partial! 'sides/index'
-json.partial! 'states/index'
-json.partial! 'messages/index'
+json.game do
+  json.partial! 'games/game', game: @game
+  json.chat_is_public @game.chat_is_public?
+  json.partial! 'sides/index', sides: @game.sides
+  json.partial! 'states/index', game: @game, side: @side
+  json.partial! 'messages/index', game: @game, side: @side, offset: 0
+  json.map do
+    json.partial! 'maps/map', map: @game.map
+  end
+end
 
 json.partial! 'layouts/access'

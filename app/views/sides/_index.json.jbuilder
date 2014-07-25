@@ -1,1 +1,1 @@
-json.sides @game.sides, partial: 'sides/side', as: :side
+json.sides sides, partial: 'sides/side', as: :side

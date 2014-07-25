@@ -20,9 +20,9 @@ class Game
 
   field :name
   enum :status, [:waiting, :going, :ended]
+  field :ended_by
   field :is_public, type: Boolean
   field :secret, default: ->{ SecureRandom.hex(8) }
-  field :ended_by
   field :time_mode
   field :chat_mode
   field :powers_is_random, type: Boolean

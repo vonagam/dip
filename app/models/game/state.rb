@@ -12,6 +12,7 @@ class State
   delegate :count_units, :count_supplies, to: :class
 
   after_create :send_websocket
+  after_destroy :send_websocket
 
   def is_fall?
     date % 2 == 1
