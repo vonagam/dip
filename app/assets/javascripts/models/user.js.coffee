@@ -1,5 +1,6 @@
 modulejs.define 'm.User', ['m.Base'], (Base)->
-  class User extends Base
+  class extends Base
+    name: 'user'
     attrs: [
       'id'
       'login'

@@ -30,7 +30,7 @@ modulejs.define 'm.g.Unit', ->
       @order?.attach()
 
     create_order: ( order_class, options )->
-      order_constructor = modulejs.require 'g.m.order.' + order_class
+      order_constructor = modulejs.require 'm.g.order.' + order_class
       @set_order new order_constructor @, options
       return
 

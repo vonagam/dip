@@ -2,6 +2,7 @@
 
 modulejs.define 'v.g.s.menu.Participation',
   [ 
+    'cancan'
     'vr.Component'
     'vr.Button'
     'vr.Form'
@@ -9,7 +10,7 @@ modulejs.define 'v.g.s.menu.Participation',
     'vr.form.Submit'
     'icons'
   ]
-  ( Component, Button, Form, fieldsFor, Submit, icons )->
+  ( can, Component, Button, Form, fieldsFor, Submit, icons )->
 
     TEXT = I18n.t 'games.show.participation'
 
@@ -19,7 +20,7 @@ modulejs.define 'v.g.s.menu.Participation',
       setPopup: (bool)->
         @setState popup: bool
       getAvailabePowers: (game)->
-        powers = [['','Random']].concat game.data.available_powers
+        powers = [['','Random']].concat game.available_powers()
         if game.user_side && game.user_side.power?[0]
           powers.push game.user_side.power[0]
         powers
@@ -30,40 +31,31 @@ modulejs.define 'v.g.s.menu.Participation',
       render: ->
         game = @props.game
 
-        active = game.data.status == 'waiting'
+        active = game.status == 'waiting'
 
         if active
 
           openCallback = @setPopup.bind null, true
 
-          create = Button
-            className: 'green'
-            text: icons.get 'flag', TEXT.create
-            onMouseDown: openCallback
+          if can 'create side', game
+            create = Button
+              className: 'green'
+              text: icons.get 'flag', TEXT.create
+              onMouseDown: openCallback
 
-          update = Button
-            className: 'yellow'
-            text: icons.get 'flag', TEXT.update
-            onMouseDown: openCallback
+          if can 'update side', game
+            update = Button
+              className: 'yellow'
+              text: icons.get 'flag', TEXT.update
+              onMouseDown: openCallback
 
-          destroy = Button
-            href: Routes.game_side_path game.data.id, format: 'json'
-            className: 'red'
-            method: 'delete'
-            remote: true
-            text: icons.get 'flag', TEXT.destroy
-
-          button =
-            if game.user_side == null
-              create
-            else
-              if game.user_side.creator
-                update unless game.data.powers_is_random
-              else
-                if game.data.powers_is_random
-                  destroy
-                else
-                  [ update, destroy ]
+          if can 'destroy side', game
+            destroy = Button
+              href: Routes.game_side_path game.id, format: 'json'
+              className: 'red'
+              method: 'delete'
+              remote: true
+              text: icons.get 'flag', TEXT.destroy
 
           if @state.popup
 
@@ -76,7 +68,7 @@ modulejs.define 'v.g.s.menu.Participation',
                 [ 'green', TEXT.create ]
 
             fields =
-              if game.data.powers_is_random
+              if game.powers_is_random
                 `<div className='field powers_is_random'>
                   {TEXT.powers_is_random}
                   <input type='hidden' name='side[power]' value='' />
@@ -95,7 +87,7 @@ modulejs.define 'v.g.s.menu.Participation',
                   <div className='closer' onMouseDown={closeCallback} />
                   <Form
                     className='new_side'
-                    action={Routes.game_side_path(game.data.id, {format: 'json'})}
+                    action={Routes.game_side_path(game.id, {format: 'json'})}
                     method='post'
                     remote='true'
                     no_redirect='true'
@@ -107,6 +99,8 @@ modulejs.define 'v.g.s.menu.Participation',
               </div>`
 
         `<Component className='participation' active={active}>
-          {button}
+          {create}
+          {update}
+          {destroy}
           {popup}
         </Component>`

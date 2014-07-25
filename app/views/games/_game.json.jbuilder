@@ -13,4 +13,4 @@ json.extract! game,
 json.states_count game.states.count
 json.sides_count game.sides.count
 json.creator game.creator.login
-json.map game.map.name
+json.map_name game.map.name

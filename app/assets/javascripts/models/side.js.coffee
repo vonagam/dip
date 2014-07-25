@@ -1,5 +1,6 @@
 modulejs.define 'm.Side', ['m.Base'], (Base)->
-  class Side extends Base
+  class extends Base
+    name: 'side'
     attrs: [
       'id'
       'power'
@@ -14,3 +15,6 @@ modulejs.define 'm.Side', ['m.Base'], (Base)->
       return @name if @name
       return @power[0] if @power
       return 'Random'
+
+    is_creator: ->
+      @game.creator == @user

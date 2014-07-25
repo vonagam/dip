@@ -34,7 +34,7 @@ modulejs.define 'v.g.s.menu.History',
       render: ->
         game = @props.game
 
-        @active = game.data.status != 'waiting'
+        @active = game.status != 'waiting'
 
         if @active
           states = game.states
@@ -59,7 +59,7 @@ modulejs.define 'v.g.s.menu.History',
             className: 'input'
             value: current
             onChange: @onChange
-            collection: states.map (state, index)=> [ index, @state_label(state.raw) ]
+            collection: states.map (state, index)=> [ index, @state_label(state) ]
 
         `<Component className='history' active={this.active}>
           {select}

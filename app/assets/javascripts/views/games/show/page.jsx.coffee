@@ -23,7 +23,7 @@ modulejs.define 'v.g.s.Page',
       startWebsockets: ->
         host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
         @websockets = new WebSocketRails host + '/websocket'
-        @game_channel = @websockets.subscribe @id
+        @game_channel = @websockets.subscribe @state.game.id
         @game_channel.bind 'state', @fetch
         @game_channel.bind 'side', @fetch
 
@@ -33,7 +33,7 @@ modulejs.define 'v.g.s.Page',
         return
 
       fetch: ->
-        $(@getDOMNode()).ajax 'get', Routes.game_path( @id, format: 'json' ), {},
+        $(@getDOMNode()).ajax 'get', Routes.game_path( @state.game.id, format: 'json' ), {},
           ( data )=>
             @setState game: @state.game.set data.game
             return
@@ -58,7 +58,7 @@ modulejs.define 'v.g.s.Page',
           @listenSideChannel @state.game.user_side?.name
         return
 
-      componentDidMount: ->
+      componentWillMount: ->
         @startWebsockets()
         @listenSideChannel @state.game.user_side?.name
         return
@@ -71,7 +71,7 @@ modulejs.define 'v.g.s.Page',
           if @state.map_or_info == 'map'
             `<Orders game={this.state}>
               <Map 
-                game={this.state} 
+                game={this.state.game} 
                 page={this}
                 coords={maps.Standart} 
               />

@@ -26,7 +26,7 @@ modulejs.define 'r.v.Games',
       getInitialState: ->
         @dataFromPrors @props.data
       dataFromPrors: (props)->
-        games: props.games
+        games: @check_participation props.games
         page: props.page
         pages: props.pages
       fetchData: ->
@@ -40,6 +40,11 @@ modulejs.define 'r.v.Games',
       refresh: (props)->
         @setState @dataFromPrors props
         return
+      check_participation: (games)->
+        participated = @props.user.participated_games
+        for game in games
+          game.is_participated = participated.indexOf(game.id) > -1
+        games
       render: ->
         games = for game in @state.games
           `<Game key={game.id} game={game} fields={fields} />`

@@ -9,6 +9,7 @@ modulejs.define 'm.State',
   ( Base, Area, Power, Unit, Build )->
 
     class State extends Base
+      name: 'state'
       attrs: [
         'id'
         'date'

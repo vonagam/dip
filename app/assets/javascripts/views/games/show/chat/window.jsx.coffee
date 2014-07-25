@@ -24,7 +24,7 @@ modulejs.define 'v.g.s.chat.Window', [ 'v.g.s.chat.Message' ], ( Message )->
       node.scrollTop = node.scrollHeight - bottom
       return
     fetch: ->
-      $(@getDOMNode()).ajax 'get', "/games/#{@props.game.data.id}/messages.json",
+      $(@getDOMNode()).ajax 'get', "/games/#{@props.game.id}/messages.json",
         offset: @state.offset
         ( messages )=>
           @add_old_messages messages
@@ -34,7 +34,7 @@ modulejs.define 'v.g.s.chat.Window', [ 'v.g.s.chat.Message' ], ( Message )->
       @fetch() if @getDOMNode().scrollTop < 20  
       return
     getInitialState: ->
-      @state_from_messages @props.initialMessages
+      @state_from_messages @props.game.messages
     componentWillUpdate: ->
       node = @getDOMNode()
       @distance_from_bottom = node.scrollHeight - node.scrollTop
@@ -62,7 +62,7 @@ modulejs.define 'v.g.s.chat.Window', [ 'v.g.s.chat.Message' ], ( Message )->
 
       @user_name = user_name
 
-      for message in game.messages
+      for message in @state.messages
         messages[message._id] = `<Message message={message} user_name={this.user_name} />`
 
       `<div className='window' onScroll={ this.state.all ? null : this.onScroll }>

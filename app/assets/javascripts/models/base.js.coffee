@@ -1,7 +1,7 @@
 modulejs.define 'm.Base', ->
-  class Base
+  class
     constructor: ->
-      @set arguments
+      @set.apply this, arguments
     
     set: ->
       for attrs in arguments

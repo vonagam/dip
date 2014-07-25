@@ -39,7 +39,7 @@ modulejs.define 'v.g.s.map.Order',
         $.extend { selecting: true }, @getSelect @getFirstSelecting game
 
       ordersIsPossible: ( game )->
-        game.data.status == 'going' && game.state.last
+        game.status == 'going' && game.state.last
 
       update: ( props )->
         game = props.game

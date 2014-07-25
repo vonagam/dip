@@ -1,2 +1,2 @@
-json.extract! map, :id, :name
+#json.extract! map, :id, :name
 json.powers map.info.powers

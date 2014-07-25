@@ -2,6 +2,7 @@
 
 modulejs.define 'r.v.Page',
   [
+    'm.User'
     'r.v.SignIn'
     'r.v.SignUp'
     'r.v.SignOut'
@@ -9,11 +10,11 @@ modulejs.define 'r.v.Page',
     'r.v.NewGame'
     'r.v.Rules'
   ]
-  ( SignIn, SignUp, SignOut, Games, NewGame, Rules )->
+  ( User, SignIn, SignUp, SignOut, Games, NewGame, Rules )->
     React.createClass
       getInitialState: ->
         opened_component: null
-        user: @props.access.user
+        user: new User @props.user
       updateCRSF: ( crsf )->
         @crsf_meta.attr content: crsf
         return
@@ -29,19 +30,19 @@ modulejs.define 'r.v.Page',
           {},
           ( data )=>
             @updateCRSF data.access.crsf
-            @setState user: data.access.user
+            @setState user: @state.user.set @props.user
             @refs.Games.refresh data
             return
         return
       render: ->
-        is_signed_in = @state.user != undefined
+        is_signed_in = @state.user.login != null
 
         `<div id='application_root' className='page'>
           <div className='background layer'>
             <div className='grey layer' />
           </div>
           <div className='col left'>
-            <Games ref='Games' data={this.props} />
+            <Games ref='Games' data={this.props} user={this.state.user} />
           </div>
           <div className='col right'>
             <SignIn page={this} is_signed_in={is_signed_in} />

@@ -1,18 +1,15 @@
 ###* @jsx React.DOM ###
 
 modulejs.define 'v.g.s.menu.Manual',
-  [ 'v.g.s.menu.buttonComponent' ]
-  ( buttonComponent )->
+  [ 'cancan', 'v.g.s.menu.buttonComponent' ]
+  ( can, buttonComponent )->
 
     React.createClass
       render: buttonComponent(
         'manual'
-        ( game )-> 
-          game.user_side?.creator &&
-          game.data.time_mode == 'manual' && 
-          game.data.status == 'going'
+        ( game )-> can 'progress', game
         ( game )->
-          href: Routes.progress_game_path game.data.id, format: 'json'
+          href: Routes.progress_game_path game.id, format: 'json'
           className: 'yellow'
           method: 'post'
           remote: true

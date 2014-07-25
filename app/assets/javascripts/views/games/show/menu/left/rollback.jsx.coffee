@@ -7,9 +7,9 @@ modulejs.define 'v.g.s.menu.Rollback',
     React.createClass
       render: buttonComponent(
           'rollback'
-          ( game )-> can null, 'destroy state', game
+          ( game )-> can 'destroy state', game
           ( game )->
-            href: Routes.rollback_game_path game.data.id, format: 'json'
+            href: Routes.rollback_game_path game.id, format: 'json'
             className: 'red'
             method: 'post'
             remote: true

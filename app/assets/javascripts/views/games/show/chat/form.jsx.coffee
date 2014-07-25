@@ -25,9 +25,9 @@ modulejs.define 'v.g.s.chat.Form',
         game = @props.game
         user = @props.user
 
-        active = can user, 'create message', game
+        active = can 'create message', game
 
-        if active && game.private_chat_is_available
+        if active && game.private_chat_is_available()
           options = []
           options.push if game.chat_mode == 'both' then 'Public' else ''
           

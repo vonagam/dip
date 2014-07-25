@@ -23,6 +23,7 @@
 //= require i18n/translations
 //= require cookie
 //
-//= require_tree ./global
-//= require_tree ./vonagam_react
+//= require_tree ./globals
+//= require_tree ./models
+//= require_tree ./reacts
 //= require_tree ./views
