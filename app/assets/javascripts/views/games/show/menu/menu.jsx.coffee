@@ -35,11 +35,10 @@ modulejs.define 'v.g.s.Menu',
         user = @props.user
 
         left_part =
-          if game.map_or_info == 'map'
+          if page.state.map_or_info == 'map'
             `<div className='left'>
               <Switch page={page} />
               <Rollback game={game} page={page} />
-              <Start game={game} />
               <Participation game={game} />
               <History game={game} page={page} />
               <Timer game={game} />

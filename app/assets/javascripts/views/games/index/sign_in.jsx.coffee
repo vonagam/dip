@@ -32,6 +32,6 @@ modulejs.define 'r.v.SignIn',
             no_redirect='true'
           >
             {fields}
-            <Submit className='green' text={I18n.t('application.root.sign_in.button')} />
+            <Submit className='yellow' text={I18n.t('application.root.sign_in.button')} />
           </Form>
         </RootComponent>`

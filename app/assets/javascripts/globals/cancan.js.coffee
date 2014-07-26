@@ -46,7 +46,7 @@ modulejs.define 'cancan', ->
     [action, model_name] = question.split ' '
 
     if model_name == undefined
-      model_name = data.name
+      model_name = data.model_name
 
     for name, condition of Abilities[model_name]
       if( 

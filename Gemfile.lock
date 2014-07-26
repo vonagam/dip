@@ -229,11 +229,11 @@ GEM
       activesupport (>= 3.0)
       i18n
       polyamorous (~> 1.0.0)
-    react-rails (0.10.0.0)
+    react-rails (0.11.1.0)
       execjs
       rails (>= 3.1)
-      react-source (= 0.10.0)
-    react-source (0.10.0)
+      react-source (= 0.11.1)
+    react-source (0.11.1)
     redis (3.1.0)
     redis-objects (0.9.1)
       redis (>= 3.0.2)
@@ -362,7 +362,7 @@ DEPENDENCIES
   rack
   rails (= 4.0.1)
   rails-i18n
-  react-rails (~> 0.10.0.0)
+  react-rails (~> 0.11.1.0)
   rest-client
   rspec-rails
   russian

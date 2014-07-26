@@ -11,7 +11,7 @@ modulejs.define 'v.g.s.map.order.retreat.retreat',
         unit.create_order 'Retreat', to: name
 
       dislodged_selecting = modulejs.require 'v.g.s.map.order.retreat.dislodged'
-      @changeSelecting unit_selecting
+      @changeSelecting dislodged_selecting
       return
 
     ( selected )->

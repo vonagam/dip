@@ -2,7 +2,7 @@ modulejs.define 'm.Game',
   ['m.Base', 'm.State', 'm.Side']
   (Base, State, Side)->
     class extends Base
-      name: 'game'
+      model_name: 'game'
       attrs: [
         'id'
         'created_at'

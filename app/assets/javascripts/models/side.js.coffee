@@ -1,6 +1,6 @@
 modulejs.define 'm.Side', ['m.Base'], (Base)->
   class extends Base
-    name: 'side'
+    model_name: 'side'
     attrs: [
       'id'
       'power'

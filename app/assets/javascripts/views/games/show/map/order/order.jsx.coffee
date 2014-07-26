@@ -30,7 +30,7 @@ modulejs.define 'v.g.s.map.Order',
         selecting.apply this, args
 
       getFirstSelecting: ( game )->
-        switch game.state.type()
+        switch game.state.type
           when 'Move' then move_unit
           when 'Retreat' then retreat_dislodged
           when 'Supply' then supply_supply
@@ -67,6 +67,6 @@ modulejs.define 'v.g.s.map.Order',
       render: ->
         child = @props.children
 
-        child.constructor.ConvenienceConstructor(
+        child.constructor(
           $.extend { control: @state, changeOrder: @changeOrder }, child.props
         )

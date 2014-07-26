@@ -49,7 +49,7 @@ modulejs.define 'v.g.s.Page',
         return
 
       componentWillUnmount: ->
-        @websockets.destroy()
+        @websockets.disconnect()
         @side_channel?.destroy()
         return
 
@@ -69,9 +69,9 @@ modulejs.define 'v.g.s.Page',
 
         left_part = 
           if @state.map_or_info == 'map'
-            `<Orders game={this.state}>
+            `<Orders game={game}>
               <Map 
-                game={this.state.game} 
+                game={game} 
                 page={this}
                 coords={maps.Standart} 
               />

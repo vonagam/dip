@@ -23,7 +23,7 @@ modulejs.define 'v.g.s.map.ChooseOrder',
         control = @props.control
         changeOrder = @props.changeOrder
 
-        @active = control.selected && @props.state.type() == 'Move'
+        @active = control.selected && @props.state.type == 'Move'
 
         if @active
           buttons = {}

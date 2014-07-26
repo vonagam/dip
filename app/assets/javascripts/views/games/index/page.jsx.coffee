@@ -29,13 +29,13 @@ modulejs.define 'r.v.Page',
           Routes.games_path(format: 'json'), 
           {},
           ( data )=>
-            @updateCRSF data.access.crsf
-            @setState user: @state.user.set @props.user
+            @updateCRSF data.crsf
+            @setState user: new User data.user
             @refs.Games.refresh data
             return
         return
       render: ->
-        is_signed_in = @state.user.login != null
+        is_signed_in = @state.user.login != undefined
 
         `<div id='application_root' className='page'>
           <div className='background layer'>

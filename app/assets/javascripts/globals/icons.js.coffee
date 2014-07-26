@@ -29,8 +29,8 @@ modulejs.define 'icons',
         false: 0
   Layout:
     actions:
-      sign_in: 'pencil-square-o'
-      sign_up: 'sign-in'
+      sign_up: 'pencil-square-o'
+      sign_in: 'sign-in'
       sign_out: 'sign-out'
       rules: 'book'
       new_game: 'plus'

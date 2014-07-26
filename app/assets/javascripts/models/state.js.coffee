@@ -8,8 +8,8 @@ modulejs.define 'm.State',
   ]
   ( Base, Area, Power, Unit, Build )->
 
-    class State extends Base
-      name: 'state'
+    class extends Base
+      model_name: 'state'
       attrs: [
         'id'
         'date'
@@ -58,7 +58,7 @@ modulejs.define 'm.State',
               unit.create_order 'Hold'
 
         if @orders
-          whom = if @type() == 'Retreat' then 'dislodged' else 'unit'
+          whom = if @type == 'Retreat' then 'dislodged' else 'unit'
           for power_name, orders of @orders
             for area_name, order of orders
               if order.type != 'Build'
