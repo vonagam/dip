@@ -9,8 +9,6 @@ class Side
 
   embedded_in :game
   belongs_to :user
-
-  attr_readonly :user_id
   
   before_validation :delete_power_if_powers_random
   
@@ -18,9 +16,8 @@ class Side
   validate :powers_on_map
   validate :game_has_space, on: :create
 
-  after_create :add_participated_game, :websockets
-  after_update :websockets
-  after_destroy :remove_participated_game, :websockets
+  after_create :add_participated_game
+  after_destroy :remove_participated_game
 
   def order
     game.order_of self
@@ -32,11 +29,11 @@ class Side
 
   def save_name
     name =
-    case power.size
-    when 1 then power.first
-    when game.powers.size then 'Host'
-    else power.reduce(''){ |sum,p| sum + p[0] }
-    end
+      case power.size
+      when 1 then power.first
+      when game.powers.size then 'Host'
+      else power.reduce(''){ |sum,p| sum + p[0] }
+      end
 
     update_attribute :name, name
   end
@@ -44,9 +41,7 @@ class Side
   protected
 
   def powers_on_map
-    return if power.blank?
-
-    if power.any? { |p| game.powers.not_include? p }
+    if power.not_blank? && power.any?{ |p| game.available_powers.not_include? p }
       errors.add :power, :unknown
     end
   end
@@ -58,7 +53,9 @@ class Side
   end
 
   def delete_power_if_powers_random
-    self.power = nil if game.waiting? && game.powers_is_random
+    if game.waiting? && game.powers_is_random
+      self.power = nil
+    end
   end
 
   def add_participated_game
@@ -66,10 +63,5 @@ class Side
   end
   def remove_participated_game
     user.pull participated_games: game.id
-  end
-
-  def websockets
-    WebsocketRails["#{game.id}_#{name}"].make_private if name
-    WebsocketRails[game.id.to_s].trigger 'side', self
   end
 end

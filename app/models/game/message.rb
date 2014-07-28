@@ -13,7 +13,6 @@ class Message
   validate :to_valid_powers, on: :create
 
   before_validation :check_status_if_choosable, :delete_to_if_public, on: :create
-  after_create :send_websocket
 
   protected
 
@@ -27,21 +26,6 @@ class Message
       self.is_public = to == 'Public'
     end
     true
-  end
-
-  def send_websocket
-    game_id = game.id.to_s
-
-    channels =
-    if is_public
-      [game_id]
-    else
-      [from,to].map{ |side| "#{game_id}_#{side}" }
-    end
-
-    channels.each do |channel|
-      WebsocketRails[channel].trigger 'message', self
-    end
   end
 
   def to_valid_powers

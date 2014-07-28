@@ -11,9 +11,6 @@ class State
   delegate :map, to: :game
   delegate :count_units, :count_supplies, to: :class
 
-  after_create :send_websocket
-  after_destroy :send_websocket
-
   def is_fall?
     date % 2 == 1
   end
@@ -52,21 +49,6 @@ class State
     next_state.next_date! if nc == State::Move
 
     next_state.save
-
-    update_sides nc
-
-    game.reload
-  end
-
-  def send_websocket
-    return if game.waiting?
-
-    WebsocketRails[game.id.to_s].trigger 'state'
-
-    return if game.sandbox?
-
-    text = "#{date/2}.#{date%2}:#{type}"
-    game.messages.create from: 'Dip', is_public: true, text: text
   end
 
   protected
@@ -103,8 +85,8 @@ class State
     game.reload.orders.destroy_all
   end
 
-  def update_sides( state_class )
-    orderable = state_class.allow_orders map, @areas_states
+  def update_sides
+    orderable = allow_orders map, @areas_states
     orderable.compact!
     orderable.uniq!
     orderable.map! &:to_s
@@ -131,7 +113,7 @@ class State
   end
 
   def self.count_units( areas_states )
-    units = Hash.new { |h,k| h[k] = 0 }
+    units = Hash.new 0
     areas_states.each do |abbrv, area|
       if unit = area.unit
         units[unit.nationality.to_s] += 1
@@ -144,7 +126,7 @@ class State
   end
 
   def self.count_supplies( supply_centers, areas_states )
-    supplies = Hash.new { |h,k| h[k] = 0 }
+    supplies = Hash.new 0
     supply_centers.each do |abbrv, area|
       if owner = areas_states[abbrv].owner
         supplies[owner.to_s] += 1

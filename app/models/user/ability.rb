@@ -17,10 +17,14 @@ class Ability
       end
     end
 
+    can :start, Game do |game|
+      game.waiting? &&
+      he( game, :creator )
+    end
+
     can :rollback, Game do |game|
-      if he( game, :creator )
-        game.sides.count == 1
-      end
+      he( game, :creator ) &&
+      game.sides.count == 1
     end
 
     can :create, Message do |message|
@@ -38,6 +42,7 @@ class Ability
       he( side )
     end
     cannot :delete, Side do |side|
+      he( side ) &&
       he( side.game, :creator )
     end
   end

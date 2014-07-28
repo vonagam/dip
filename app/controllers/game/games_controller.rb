@@ -1,14 +1,17 @@
 class GamesController < ApplicationController
-  before_action :authenticate_user!, except: [ :index, :show, :progress ]
+  before_filter :authenticate_user!, except: [ :index, :show, :progress ]
+  before_filter :allow_progress, only: :progress
   load_resource except: [ :create, :index ]
   load_and_authorize_resource only: [ :destroy, :start ]
+  after_action :send_websocket, only: [ :start, :progress, :rollback ]
+  after_action :create_message, only: [ :start, :progress, :rollback ]
 
   def index
-    query = [{ is_public: true }]
+    query = [{is_public: true}]
 
-    query.push({ :_id.in => current_user.participated_games }) if user_signed_in?
+    query.push({:_id.in => current_user.participated_games}) if user_signed_in?
     
-    @games = searching( Game.or(*query), params[:filters] ).page
+    @games = searching(Game.or(*query), params[:filters]).page
   end
 
   def create
@@ -17,8 +20,6 @@ class GamesController < ApplicationController
   end
 
   def show
-    @state = @game.state
-    @side = @game.side_of current_user
   end
 
   def destroy
@@ -26,26 +27,43 @@ class GamesController < ApplicationController
     redirect_to root_path, status: 303
   end
 
-  def progress
-    valid_request = 
-    if @game.waiting? || @game.time_mode == 'manual'
-      @game.creator == current_user
-    else
-      @game.secret == params[:secret]
-    end
+  def start
+    @game.progress
+    head :ok
+  end
 
-    @game.progress if valid_request
-    
+  def progress
+    @game.progress
     head :ok
   end
 
   def rollback
     @game.rollback
-    show
-    render 'games/show'
+    head :ok
   end
 
   private
+
+  def allow_progress
+    valid_request = 
+      if @game.time_mode == 'manual'
+        @game.creator == current_user
+      else
+        @game.secret == params[:secret]
+      end
+
+    head :unauthorized unless valid_request
+  end
+
+  def send_websocket
+    WebsocketRails[@game.id.to_s].trigger 'game', render_to_string 'games/changes'
+  end
+
+  def create_message
+    return if @game.sandbox?
+    text = @game.ended? ? 'END' : action_name.upcase
+    @game.messages.create from: 'Dip', is_public: true, text: text 
+  end
 
   def game_params 
     params.require(:game).permit :name, :map, :is_public, :powers_is_random, :time_mode, :chat_mode

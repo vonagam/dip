@@ -9,7 +9,7 @@ modulejs.define 'v.g.s.menu.Start',
           'start'
           ( game )-> can 'start', game
           ( game )->
-            href: Routes.progress_game_path game.id, format: 'json'
+            href: Routes.start_game_path game.id, format: 'json'
             className: 'yellow'
             method: 'post'
             remote: true

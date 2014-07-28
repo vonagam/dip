@@ -7,6 +7,7 @@ Diplomacy::Application.routes.draw do
 
   resources :games, only: [:index, :create, :show, :destroy] do
     member do
+      post :start
       post :progress
       post :continue
       post :rollback

@@ -74,7 +74,7 @@ ru:
         side:
           attributes:
             power:
-              unknown: страна отсутствует на карте
+              unavailable: страна отсутствует на карте или уже занята
             game:
               filled: нет свободных мест
         order:

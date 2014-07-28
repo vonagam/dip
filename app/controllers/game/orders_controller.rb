@@ -6,7 +6,6 @@ class OrdersController < ApplicationController
 
   def create
     @order.update_attributes order_params
-
     respond_with @order, location: game_path(@game)
   end
 
@@ -14,10 +13,8 @@ class OrdersController < ApplicationController
 
   def load_side_order
     @side = @game.side_of current_user
-
     redirect_to root_path, status: 401 unless @side
-
-    @order = @game.order_of( @side ) || @game.orders.build( side: @side )
+    @order = @game.order_of(@side) || @game.orders.build(side: @side)
   end
 
   def order_params 

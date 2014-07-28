@@ -41,7 +41,6 @@ class Game
   validates :name, uniqueness: true, format: { with: /\A[\w\-]{5,15}\z/ }
   validates :time_mode, inclusion: { in: TIME_MODES.keys }
   validates :chat_mode, inclusion: { in: CHAT_MODES.keys }
-  validate :if_manual_then_private
 
   after_create :create_initial_state, :add_creator_side
 
@@ -74,7 +73,7 @@ class Game
 
   def chat_is_public?
     answer = CHAT_MODES[ chat_mode ]
-    answer.is_a?( Proc ) ? answer.call( self ) : answer
+    answer.is_a?(Proc) ? answer.call(self) : answer
   end
 
   def progress
@@ -82,43 +81,42 @@ class Game
 
     if waiting?
       going!
-
       fill_sides_powers
+    else
+      state.process
+      reload
+      state.update_sides
 
-      state.send_websocket
-      start_timer
-
-      return
-    end
-
-    state.process
-
-    if state._type == 'State'
-      end_by 'win'
-      return
+      if state._type == 'State'
+        end_by 'win'
+        return
+      end
     end
 
     start_timer
   end
 
   def rollback
-    return unless states.count > 1
+    return if states.count == 1 || waiting?
+
+    status = states.count > 2 ? :going : :waiting
+    update_attributes! status: status, ended_by: nil
 
     state.destroy
-
     reload
+    state.update_sides
 
     state.update_attribute :resulted_orders, nil
   end
 
   def start_timer( force = false )
-    return if time_mode == 'manual' || ( !force && is_left? )
+    return if time_mode == 'manual' || (!force && is_left?)
 
     end_at = TIME_MODES[ time_mode ].minutes.from_now
       
     state.update_attribute :end_at, end_at
 
-    RestClient.delay( run_at: end_at ).post( progress_game_url(self), secret: secret )
+    RestClient.delay(run_at: end_at).post(progress_game_url(self), secret: secret)
   end
 
   def end_by( reason )
@@ -131,23 +129,11 @@ class Game
 
   def is_left?
     return false if states.count < 4
-
     last_three_states = states.desc(:_id).limit(3).skip(1).to_a
-
-    last_three_states.each do |state|
-      return false unless state.resulted_orders.empty?
-    end
-
-    return true
+    last_three_states.any?{ |state| state.resulted_orders.not_empty? }
   end
 
   protected
-
-  def if_manual_then_private
-    if time_mode == 'manual' && is_public 
-      errors.add :is_public, :cant_be_manual
-    end
-  end
 
   def create_initial_state
     start_state = Engine::Parser::State.new map.initial_state

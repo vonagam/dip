@@ -20,11 +20,8 @@ class Order
 
   def remove_unallowed_powers
     return unless data && data.is_a?(Hash)
-
     powers = data.keys
-
     self.data = self.data.except!( *side.return_unallowed_powers( powers ) )
-
     true
   end
 
@@ -36,8 +33,6 @@ class Order
   end
 
   def game_in_progress
-    unless game.going?
-      errors.add :game, :not_going
-    end
+    errors.add :game, :not_going if game.not_going?
   end
 end

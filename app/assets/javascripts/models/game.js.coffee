@@ -23,6 +23,7 @@ modulejs.define 'm.Game',
         'states_count'
         'messages'
         'chat_is_public'
+        'orders'
       ]
 
       set_states: ( states )->
