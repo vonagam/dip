@@ -16,10 +16,16 @@ modulejs.define 'r.v.Page',
         opened_component: null
         user: new User @props.user
       updateCRSF: ( crsf )->
-        @crsf_meta.attr content: crsf
+        $('meta[name="csrf-token"]').attr content: crsf
         return
       componentDidMount: ->
-        @crsf_meta = $ 'meta[name="csrf-token"]'
+        node = $(@getDOMNode()).parent()[0]
+        callback = ->
+          unless document.body.contains node
+            $(document).off 'page:change', callback
+            React.unmountComponentAtNode node
+          return
+        $(document).on 'page:change', callback
         return
       setOpenedComponent: ( name )->
         @setState opened_component: name

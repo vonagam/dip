@@ -21,7 +21,8 @@ modulejs.define 'v.g.s.Page',
         map_or_info: 'map'
 
       startWebsockets: ->
-        host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
+        #host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
+        host = 'localhost:3000'
         @websockets = new WebSocketRails host + '/websocket'
         @game_channel = @websockets.subscribe @state.game.id
         @game_channel.bind 'state', @fetch
@@ -48,6 +49,11 @@ modulejs.define 'v.g.s.Page',
         @setState map_or_info: bool
         return
 
+      componentWillMount: ->
+        @startWebsockets()
+        @listenSideChannel @state.game.user_side?.name
+        return
+
       componentWillUnmount: ->
         @websockets.disconnect()
         @side_channel?.destroy()
@@ -58,9 +64,14 @@ modulejs.define 'v.g.s.Page',
           @listenSideChannel @state.game.user_side?.name
         return
 
-      componentWillMount: ->
-        @startWebsockets()
-        @listenSideChannel @state.game.user_side?.name
+      componentDidMount: ->
+        node = $(@getDOMNode()).parent()[0]
+        callback = ->
+          unless document.body.contains node
+            $(document).off 'page:change', callback
+            React.unmountComponentAtNode node
+          return
+        $(document).on 'page:change', callback
         return
 
       render: ->

@@ -27,3 +27,5 @@
 //= require_tree ./models
 //= require_tree ./reacts
 //= require_tree ./views
+
+Turbolinks.pagesCached(0);

@@ -15,6 +15,7 @@ module Diplomacy
     end
 
     config.react.variant = :development
+    config.react.addons = true
     
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

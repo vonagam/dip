@@ -79,7 +79,7 @@ modulejs.define 'v.g.s.menu.Participation',
                     label: I18n.t 'mongoid.attributes.side.power'
                     allow_blank: false
                     collection: @getAvailabePowers game
-                    value: game.user_side.power?[0]
+                    value: game.user_side?.power?[0]
 
             popup =
               `<div id='participation_new_side' className='new_side layer'>
