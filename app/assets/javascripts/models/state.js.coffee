@@ -10,18 +10,9 @@ modulejs.define 'm.State',
 
     class extends Base
       model_name: 'state'
-      attrs: [
-        'id'
-        'date'
-        'type'
-        'data'
-        'end_at'
-        'orders'
-        'game'
-      ]
-      constructor: ->
-        super
-        @last = false
+      
+      constructor: ( options, @game, @last = false )->
+        super options
 
       read_data: ->
         @powers = {}

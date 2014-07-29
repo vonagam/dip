@@ -62,7 +62,8 @@ class GamesController < ApplicationController
   def create_message
     return if @game.sandbox?
     text = @game.ended? ? 'END' : action_name.upcase
-    @game.messages.create from: 'Dip', is_public: true, text: text 
+    @message = @game.messages.create from: 'Dip', is_public: true, text: text
+    WebsocketRails[@game.id.to_s].trigger 'message', render_to_string 'messages/show'
   end
 
   def game_params 

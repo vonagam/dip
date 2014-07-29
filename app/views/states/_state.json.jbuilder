@@ -1,1 +1,9 @@
-json.extract! state, :id, :date, :type, :data, :end_at, :resulted_orders
+json.extract! state,
+  :id,
+  :previous_id,
+  :date,
+  :data,
+  :type,
+  :is_end,
+  :orders_info,
+  :sides_info

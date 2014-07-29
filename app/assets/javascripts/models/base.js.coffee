@@ -1,14 +1,25 @@
 modulejs.define 'm.Base', ->
   class
-    constructor: ->
-      @set.apply this, arguments
+    constructor: ( data )->
+      $.extend this, @$update $merge: data
+
+    $update: ( options )->
+      React.addons.update this, @$_update options
     
-    set: ->
-      for attrs in arguments
-        for key, value of attrs
-          if @['set_'+key]
-            @['set_'+key] value, attrs
-          else
-            if @attrs.indexOf(key) > -1
-              @[key] = value
-      @
+    $_update: ( options, path = [] )->
+      top = path.length == 0
+
+      if options.$merge
+        for key, value of options.$merge
+          options[key] = { $set: value }
+        delete options.$merge
+
+      for key, value of options
+        if /^\$.+/.test(key)
+          if @[fun = [key].concat(path).join('_')]
+            @[fun] key, value, options
+          continue
+
+        @update options, value, path.concat key
+
+      options

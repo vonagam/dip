@@ -11,8 +11,9 @@ modulejs.define 'v.g.s.Page',
     'v.g.s.Chat'
     'v.g.s.map.Order'
     'v.g.s.Resizer'
+    'WebSockets'
   ]
-  ( maps, Game, User, Menu, Map, Info, Chat, Orders, Resizer )->
+  ( maps, Game, User, Menu, Map, Info, Chat, Orders, Resizer, WebSockets )->
 
     React.createClass
       getInitialState: ->
@@ -20,17 +21,19 @@ modulejs.define 'v.g.s.Page',
         user: new User @props.user
         map_or_info: 'map'
 
-      startWebsockets: ->
-        #host = if window.location.host == 'localhost:3000' then 'localhost:3000' else 'ws://dip.kerweb.ru'
-        host = 'localhost:3000'
-        @websockets = new WebSocketRails host + '/websocket'
-        @game_channel = @websockets.subscribe @state.game.id
+      listenGameChannel: ->
+        @game_channel = WebSockets.subscribe @state.game.id
         @game_channel.bind 'state', @fetch
         @game_channel.bind 'side', @fetch
 
       listenSideChannel: ( side_name )->
-        @side_channel?.destroy()
-        @side_channel = @websockets.subscribe_private "#{@id}_#{side_name}" if side_name
+        channel_name = "#{@id}_#{side_name}"
+        return if @side_channel && @side_channel.name == channel_name
+        if @side_channel
+          WebSockets.unsubscribe @side_channel.name
+          @side_channel = null
+        if side_name
+          @side_channel = WebSockets.subscribe_private channel_name
         return
 
       fetch: ->
@@ -50,7 +53,7 @@ modulejs.define 'v.g.s.Page',
         return
 
       componentWillMount: ->
-        @startWebsockets()
+        @listenGameChannel()
         @listenSideChannel @state.game.user_side?.name
         return
 

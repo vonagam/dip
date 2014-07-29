@@ -61,7 +61,7 @@ class State
     game.orders.destroy_all
     game.sides.each{ |side| side.update_attributes sides_info[side.id] }
     if is_end
-      game.end_by 'win'
+      game.update_attributes! status: :ended, ended_by: 'win'
     else
       game.update_attributes! status: :going, ended_by: nil
     end

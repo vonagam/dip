@@ -98,10 +98,6 @@ class Game
     RestClient.delay(run_at: timer_at).post progress_game_url(self), secret: secret
   end
 
-  def end_by( reason )
-    update_attributes! status: :ended, ended_by: reason
-  end
-
   def sandbox?
     going? && sides.count == 1
   end
