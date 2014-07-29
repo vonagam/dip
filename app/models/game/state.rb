@@ -3,8 +3,11 @@ class State
 
   field :data, type: Hash
   field :date, type: Integer
-  field :end_at, type: Time
-  field :resulted_orders, type: Hash
+  field :orders_info, type: Hash
+  field :sides_info, type: Hash
+  field :is_end, type: Boolean
+
+  belongs_to :previous, class_name: 'State'
 
   embedded_in :game
 
@@ -12,62 +15,93 @@ class State
   delegate :count_units, :count_supplies, to: :class
 
   def is_fall?
-    date % 2 == 1
+    date % 2 == 1 
   end
-
   def type
     _type.demodulize
+  end
+  def previous
+    game.states.find previous_id
   end
 
   def parse_orders( what = nil )
     what ||= game.orders.all.map!{ |x| x.data }.reduce({}, :merge)
-    
-    Engine::Parser::Order.new( gamestate ).parse_orders what, type
+    Engine::Parser::Order.new(gamestate).parse_orders what, type
   end
 
-  def process
-    @areas_states, adjudicated_orders = map.adjudicator.send( 
+  def create_next
+    @areas_states, resolved_order = map.adjudicator.send( 
       self.class::RESOLVE_METHOD, 
       gamestate, 
       parse_orders, 
       is_fall?
     )
 
-    update_orders adjudicated_orders
-
-    next_state = create_next_state
-
-    return next_state.save if someone_win?
-
-    sc = self.class
-    while nc = sc.next_state_class( is_fall? ) 
-      break unless nc.allow_orders( map, @areas_states ).empty?
-      sc = nc
+    state_class = self.class
+    while next_class = state_class.next_state_class is_fall?
+      orderable = next_class.allow_orders map, @areas_states
+      break unless orderable.empty?
+      state_class = next_class
     end
 
-    next_state._type = nc.name
-    next_state.next_date! if nc == State::Move
+    sides_info, is_end = check_sides orderable
 
-    next_state.save
+    game.states.create(
+      previous_id: self.id,
+      data: Engine::Parser::State.new(@areas_states).to_hash,
+      date: date + (next_class == State::Move ? 1 : 0),
+      orders_info: resolved_to_hash(resolved_order),
+      sides_info: sides_info,
+      is_end: is_end,
+      _type: next_class.name
+    )
+  end
+
+  def apply_to_game
+    game.orders.destroy_all
+    game.sides.each{ |side| side.update_attributes sides_info[side.id] }
+    if is_end
+      game.end_by 'win'
+    else
+      game.update_attributes! status: :going, ended_by: nil
+    end
+    game.reload
+  end
+
+  def self.create_initial_state( game )
+    State::Move.create(
+      game: self,
+      previous_id: nil,
+      data: Engine::Parser::State.new(game.map.initial_state).to_hash,
+      date: 0,
+      orders_info: {},
+      sides_info: {},
+      is_end: false
+    )
+  end
+
+  def initial_sides_info
+    sides_info = game.sides.each_with_object({}) do |side, hash|
+      hash[side.id] = { status: :fighting, orderable: true }
+    end
+    update_attribute :sides_info, sides_info
   end
 
   protected
- 
-  def next_date!
-    self.date += 1
+
+  def self.allowed_powers( powers )
+    powers.compact!
+    powers.uniq!
+    powers.map! &:to_s
+    #powers.select{ |power| game.sides.any?{ |side| side.power.include? power } }
   end
 
   def gamestate
     @_gamestate || @_gamestate = Engine::Parser::State.new.to_state(data)
   end
 
-  def create_next_state
-    state_parser = Engine::Parser::State.new @areas_states
-    game.states.build data: state_parser.to_hash, date: date
-  end
-
-  def update_orders( resolved_orders )
-    powers = {}
+  def resolved_to_hash( resolved_orders )
+    orders = Hash.new({})
 
     resolved_orders.each do |resolved_order|
       raw = resolved_order.raw
@@ -77,39 +111,43 @@ class State
 
       order['result'] = resolved_order.resolution_readable
 
-      ( powers[power] ||= {} )[region] = order
+      orders[power][region] = order
     end
 
-    update_attributes! resulted_orders: powers
-
-    game.reload.orders.destroy_all
+    orders
   end
 
-  def update_sides
-    orderable = allow_orders map, @areas_states
-    orderable.compact!
-    orderable.uniq!
-    orderable.map! &:to_s
-
+  def check_sides( orderable )
+    supply_centers = map.supply_centers
     units = count_units @areas_states
-    supplies = count_supplies map.supply_centers, @areas_states
+    supplies = count_supplies supply_centers, @areas_states
 
-    game.alive_sides.each do |side|
+    info = game.sides.each_with_object({}) do |side, hash|
       ps = side.power
 
-      if ps.any?{ |p| units.include?(p) || supplies.include?(p) }
-        side.update_attributes! orderable: ps.any?{ |p| orderable.include? p }
-      else
-        side.update_attributes! orderable: false, status: :lost
+      hash[side.id] =
+        if ps.any?{ |p| units.include?(p) || supplies.include?(p) }
+          { orderable: ps.any?{ |p| orderable.include? p }, status: side.status }
+        else
+          { orderable: false, status: side.fighting? ? :lost : side.status }
+        end
+    end
+
+    fighting_sides = info.select{ |k,v| v[:status] == :fighting }
+
+    if game.sides.size > 1 && fighting_sides.size == 1
+      winner = fighting_sides.first[0]
+    elsif supplies.values.max > supply_centers.length / 2
+      winner = game.sides.to_a.find{ |side| side.power.include? supplies.max[0] }.id
+    end
+
+    if winner
+      fighting_sides.each do |id, info|
+        info[:status] = id == winner ? :won : :lost
       end
     end
-  end
 
-  def someone_win?
-    supply_centers = map.supply_centers
-    power_supplies = self.class.count_supplies supply_centers, @areas_states
-
-    power_supplies.values.max > supply_centers.length / 2
+    info, winner.not_nil?
   end
 
   def self.count_units( areas_states )
@@ -144,7 +182,7 @@ class State::Move < State
     State::Retreat
   end
   def self.allow_orders( map, areas_states )
-    areas_states.map{ |abbr, area| area.unit.try(:nationality) }
+    allowed_powers areas_states.map{ |abbr, area| area.unit.try(:nationality) }
   end
 end
 
@@ -156,7 +194,7 @@ class State::Retreat < State
     is_fall ? State::Supply : State::Move
   end
   def self.allow_orders( map, areas_states )
-    areas_states.dislodges.map{ |abbr, dislodge| dislodge.unit.nationality }
+    allowed_powers areas_states.dislodges.map{ |abbr, dislodge| dislodge.unit.nationality }
   end
 end
 
@@ -171,8 +209,6 @@ class State::Supply < State
     units = count_units areas_states
     supplies = count_supplies map.supply_centers, areas_states
 
-    map.powers.select do |power|
-      units[power] != supplies[power]
-    end
+    allowed_powers map.powers.select{ |power| units[power] != supplies[power] }
   end
 end

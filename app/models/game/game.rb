@@ -22,10 +22,11 @@ class Game
   enum :status, [:waiting, :going, :ended]
   field :ended_by
   field :is_public, type: Boolean
-  field :secret, default: ->{ SecureRandom.hex(8) }
+  field :secret, default: ->{ SecureRandom.hex 8 }
   field :time_mode
   field :chat_mode
   field :powers_is_random, type: Boolean
+  field :timer_at, type: Time
 
   belongs_to :map
   belongs_to :creator, class_name: 'User'
@@ -54,25 +55,18 @@ class Game
     orders.find_by side: side
   end
 
-  def alive_sides
-    sides.in(status: [:fighting,:draw]).to_a
-  end
-
   def powers
     map.powers
   end
   def taken_powers
-    get_powers sides
-  end
-  def alive_powers
-    get_powers alive_sides
+    sides.reduce([]){ |sum,side| sum + side.power.to_a }
   end
   def available_powers
     powers - taken_powers
   end
 
   def chat_is_public?
-    answer = CHAT_MODES[ chat_mode ]
+    answer = CHAT_MODES[chat_mode]
     answer.is_a?(Proc) ? answer.call(self) : answer
   end
 
@@ -82,41 +76,26 @@ class Game
     if waiting?
       going!
       fill_sides_powers
+      state.initial_sides_info
     else
-      state.process
-      reload
-      state.update_sides
-
-      if state._type == 'State'
-        end_by 'win'
-        return
-      end
+      state.create_next.apply_to_game
     end
 
-    start_timer
+    start_timer if going?
   end
 
   def rollback
-    return if states.count == 1 || waiting?
-
-    status = states.count > 2 ? :going : :waiting
-    update_attributes! status: status, ended_by: nil
-
+    return unless states.count > 1
     state.destroy
     reload
-    state.update_sides
-
-    state.update_attribute :resulted_orders, nil
+    state.apply_to_game
   end
 
   def start_timer( force = false )
     return if time_mode == 'manual' || (!force && is_left?)
-
-    end_at = TIME_MODES[ time_mode ].minutes.from_now
-      
-    state.update_attribute :end_at, end_at
-
-    RestClient.delay(run_at: end_at).post(progress_game_url(self), secret: secret)
+    timer_at = TIME_MODES[ time_mode ].minutes.from_now
+    update_attribute :timer_at, timer_at
+    RestClient.delay(run_at: timer_at).post progress_game_url(self), secret: secret
   end
 
   def end_by( reason )
@@ -136,9 +115,9 @@ class Game
   protected
 
   def create_initial_state
-    start_state = Engine::Parser::State.new map.initial_state
-    State::Move.create game: self, data: start_state.to_hash, date: 0
+    State.create_initial_state self
   end
+  
   def add_creator_side
     sides.create user: creator
   end
@@ -154,14 +133,5 @@ class Game
     end
 
     sides.each &:save_name
-  end
-
-  def sandbox!
-    sides.first.update_attributes! power: map.powers
-    update_attributes! chat_mode: 'only_public'
-  end
-
-  def get_powers( sides )
-    sides.reduce([]){ |sum,side| sum + side.power.to_a }
   end
 end

@@ -3,7 +3,7 @@ class Side
   include Mongoid::Enum
 
   field :power, type: Array
-  enum :status, [:fighting, :draw, :surrendered, :lost, :won]
+  enum :status, [:fighting, :surrendered, :lost, :draw, :won]
   field :orderable, type: Boolean, default: true
   field :name
 
@@ -23,10 +23,6 @@ class Side
     game.order_of self
   end
 
-  def return_unallowed_powers( powers )
-    powers.reject{ |x| power.include? x }
-  end
-
   def save_name
     name =
       case power.size
@@ -42,7 +38,7 @@ class Side
 
   def powers_on_map
     if power.not_blank? && power.any?{ |p| game.available_powers.not_include? p }
-      errors.add :power, :unknown
+      errors.add :power, :unavailable
     end
   end
 

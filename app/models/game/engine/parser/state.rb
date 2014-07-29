@@ -31,10 +31,9 @@ module Engine
         state['Areas'].each do |land|
           @gamestate[land.to_sym].owner = power_s
         end
-
       end
 
-      if data.has_key?( 'Embattled' )
+      if data.has_key?('Embattled')
         data['Embattled'].each do |land|
           @gamestate[land.to_sym].embattled = true
         end
@@ -51,7 +50,7 @@ module Engine
       @gamestate.each do |name, area|
         if unit = area.unit
           powers[unit.nationality][:Units] <<
-          unit_to_string( unit, "#{name}#{area.coast}" )
+          unit_to_string(unit, "#{name}#{area.coast}")
         end
         if area.owner
           powers[area.owner][:Areas] << name
@@ -61,7 +60,7 @@ module Engine
       unless @gamestate.dislodges.empty?
         @gamestate.dislodges.each do |name, dislodge|
           powers[dislodge.unit.nationality][:Units] <<
-          dislodge_to_string( name, dislodge )
+          dislodge_to_string(dislodge, name)
         end
         data[:Embattled] = @gamestate.embattled
       end
@@ -75,7 +74,7 @@ module Engine
       "#{unit.type_to_s}#{area}"
     end
 
-    def dislodge_to_string(area, dislodge_tuple)
+    def dislodge_to_string(dislodge_tuple, area)
       "#{unit_to_string(dislodge_tuple.unit, area)}-#{dislodge_tuple.origin_area}"
     end
 

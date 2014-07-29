@@ -32,7 +32,7 @@ modulejs.define 'v.g.s.chat.Form',
           options.push if game.chat_mode == 'both' then 'Public' else ''
           
           for side in game.sides
-            if ( side.status == 'fighting' || side.status == 'draw' ) && side != game.user_side
+            if side.status == 'fighting' && side != game.user_side
               options.push side.name
 
           to_select = `<Field 

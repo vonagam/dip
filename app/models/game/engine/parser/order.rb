@@ -25,7 +25,7 @@ module Engine
         orders.each do | region, order |
           order = parse_order region, order, power, state_type
 
-          next if order.nil? || classes.not_include?( order.class )
+          next if order.nil? || classes.not_include?(order.class)
 
           result << order
         end

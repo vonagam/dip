@@ -36,7 +36,7 @@ class Message
       :no_one
     elsif to == from
       :yourself
-    elsif game.alive_sides.map(&:name).not_include?(to)
+    elsif game.sides.fighting.map(&:name).not_include?(to)
       :not_alive
     end
 
