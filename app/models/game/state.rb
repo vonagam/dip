@@ -30,7 +30,7 @@ class State
   end
 
   def create_next
-    @areas_states, resolved_order = map.adjudicator.send( 
+    @areas_states, resolved_orders = map.adjudicator.send( 
       self.class::RESOLVE_METHOD, 
       gamestate, 
       parse_orders, 
@@ -38,7 +38,7 @@ class State
     )
 
     state_class = self.class
-    while next_class = state_class.next_state_class is_fall?
+    while next_class = state_class.next_state_class(is_fall?)
       orderable = next_class.allow_orders map, @areas_states
       break unless orderable.empty?
       state_class = next_class
@@ -50,7 +50,7 @@ class State
       previous_id: self.id,
       data: Engine::Parser::State.new(@areas_states).to_hash,
       date: date + (next_class == State::Move ? 1 : 0),
-      orders_info: resolved_to_hash(resolved_order),
+      orders_info: resolved_to_hash(resolved_orders),
       sides_info: sides_info,
       is_end: is_end,
       _type: next_class.name
@@ -63,7 +63,7 @@ class State
     if is_end
       game.update_attributes! status: :ended, ended_by: 'win'
     else
-      game.update_attributes! status: :going, ended_by: nil
+      game.update_attributes! status: :going, ended_by: nil unless game.going?
     end
     game.reload
   end
@@ -101,7 +101,7 @@ class State
   end
 
   def resolved_to_hash( resolved_orders )
-    orders = Hash.new({})
+    orders = {}
 
     resolved_orders.each do |resolved_order|
       raw = resolved_order.raw
@@ -111,7 +111,7 @@ class State
 
       order['result'] = resolved_order.resolution_readable
 
-      orders[power][region] = order
+      (orders[power] ||= {})[region] = order
     end
 
     orders
@@ -125,7 +125,7 @@ class State
     info = game.sides.each_with_object({}) do |side, hash|
       ps = side.power
 
-      hash[side.id] =
+      hash[side.id.to_s] =
         if ps.any?{ |p| units.include?(p) || supplies.include?(p) }
           { orderable: ps.any?{ |p| orderable.include? p }, status: side.status }
         else
@@ -138,7 +138,7 @@ class State
     if game.sides.size > 1 && fighting_sides.size == 1
       winner = fighting_sides.first[0]
     elsif supplies.values.max > supply_centers.length / 2
-      winner = game.sides.to_a.find{ |side| side.power.include? supplies.max[0] }.id
+      winner = game.sides.to_a.find{ |side| side.power.include? supplies.max[0] }.id.to_s
     end
 
     if winner
@@ -147,7 +147,7 @@ class State
       end
     end
 
-    info, winner.not_nil?
+    return info, winner.not_nil?
   end
 
   def self.count_units( areas_states )

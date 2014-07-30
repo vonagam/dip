@@ -37,6 +37,7 @@ class Side
   protected
 
   def powers_on_map
+    return unless game.waiting?
     if power.not_blank? && power.any?{ |p| game.available_powers.not_include? p }
       errors.add :power, :unavailable
     end

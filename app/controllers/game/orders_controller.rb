@@ -13,11 +13,11 @@ class OrdersController < ApplicationController
 
   def load_side_order
     @side = @game.side_of current_user
-    redirect_to root_path, status: 401 unless @side
+    redirect_to root_path, status: :unauthorized unless @side
     @order = @game.order_of(@side) || @game.orders.build(side: @side)
   end
 
-  def order_params 
+  def order_params
     p = params.require(:order).permit :data
     p[:data] = JSON.parse p[:data]
     p

@@ -15,7 +15,7 @@ modulejs.define 'v.g.s.menu.History',
         season = state.date % 2
         "#{year}.#{season}:#{state.type}"
       set_state_by_index: ( index )->
-        @props.page.set_state @props.game.states[index]
+        @props.page.setGameState @props.game.states[index]
         return
       onChange: (e)->
         @set_state_by_index e.target.value

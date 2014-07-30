@@ -18,13 +18,13 @@ class Order
 
   def remove_unallowed_powers
     return unless data && data.is_a?(Hash)
-    self.data = data.select!{ |k,v| side.power.include? k }
+    self.data = data.select{ |k,v| side.power.include? k.to_s }
     true
   end
 
   def parsable
-    state = game.state
-    state.parse_orders data
+    puts data.to_json
+    game.state.parse_orders data
   rescue
     errors.add :data, :not_parsable
   end

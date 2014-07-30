@@ -17,6 +17,5 @@ modulejs.define 'v.g.s.Chat',
           />
           <Form
             game={this.props.game}
-            user={this.props.user}
           />
         </div>`

@@ -1,25 +1,27 @@
 modulejs.define 'm.Base', ->
   class
     constructor: ( data )->
-      $.extend this, @$update $merge: data
+      return unless data
+      for key, value of @$update($merge: data)
+        @[key] = value
 
     $update: ( options )->
       React.addons.update this, @$_update options
     
-    $_update: ( options, path = [] )->
+    $_update: ( all, local = all, path = [] )->
       top = path.length == 0
 
-      if options.$merge
-        for key, value of options.$merge
-          options[key] = { $set: value }
-        delete options.$merge
+      if local.$merge
+        for key, value of local.$merge
+          local[key] = { $set: value }
+        delete local.$merge
 
-      for key, value of options
+      for key, value of local
         if /^\$.+/.test(key)
           if @[fun = [key].concat(path).join('_')]
-            @[fun] key, value, options
+            @[fun] key, value, local, all
           continue
 
-        @update options, value, path.concat key
+        @$_update all, value, path.concat key
 
-      options
+      local

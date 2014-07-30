@@ -1,15 +1,9 @@
 modulejs.define 'm.Side', ['m.Base'], (Base)->
   class extends Base
     model_name: 'side'
-    attrs: [
-      'id'
-      'power'
-      'name'
-      'status'
-      'orderable'
-      'user'
-      'game'
-    ]
+    
+    constructor: ( options, @game )->
+      super options
 
     get_name: ->
       return @name if @name

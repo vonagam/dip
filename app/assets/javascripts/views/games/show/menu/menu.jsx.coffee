@@ -32,7 +32,6 @@ modulejs.define 'v.g.s.Menu',
       render: ->
         game = @props.game
         page = @props.page
-        user = @props.user
 
         left_part =
           if page.state.map_or_info == 'map'
@@ -57,7 +56,7 @@ modulejs.define 'v.g.s.Menu',
         `<div className='menu container row'>
           {left_part}
           <div className='right'>
-            <Player game={game} user={user} />
+            <Player game={game} user={game.user} />
             <LinkToRoot />
           </div>
         </div>`

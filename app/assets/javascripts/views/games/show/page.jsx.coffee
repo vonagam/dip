@@ -17,16 +17,16 @@ modulejs.define 'v.g.s.Page',
 
     React.createClass
       getInitialState: ->
-        game: new Game @props.game, user: @props.user
-        user: new User @props.user
+        game: new Game @props.game, new User @props.user
         map_or_info: 'map'
 
       listenGameChannel: ->
         @game_channel = WebSockets.subscribe @state.game.id
-        @game_channel.bind 'state', @fetch
-        @game_channel.bind 'side', @fetch
+        @game_channel.bind 'side', @setSides
+        @game_channel.bind 'game', @setGame
 
-      listenSideChannel: ( side_name )->
+      listenSideChannel: ->
+        side_name = @state.game.user_side?.name
         channel_name = "#{@id}_#{side_name}"
         return if @side_channel && @side_channel.name == channel_name
         if @side_channel
@@ -36,16 +36,27 @@ modulejs.define 'v.g.s.Page',
           @side_channel = WebSockets.subscribe_private channel_name
         return
 
+      updateGame: ( options )->
+        @setState game: @state.game.$update options
+        return
+
+      setGame: ( data )->
+        @updateGame $merge: JSON.parse(data).game
+        return
+
+      setSides: ( data )->
+        @updateGame sides: $set: JSON.parse(data).sides
+        return
+
+      setGameState: ( state )->
+        @updateGame state: $set: state
+        return
+
       fetch: ->
         $(@getDOMNode()).ajax 'get', Routes.game_path( @state.game.id, format: 'json' ), {},
           ( data )=>
-            @setState game: @state.game.set data.game
+            @updateGame $merge: data.game
             return
-        return
-
-      set_state: ( state )->
-        @state.game.state = state.read_data()
-        @setState game: @state.game
         return
 
       setMapOrInfo: ( bool )->
@@ -54,17 +65,20 @@ modulejs.define 'v.g.s.Page',
 
       componentWillMount: ->
         @listenGameChannel()
-        @listenSideChannel @state.game.user_side?.name
+        @listenSideChannel()
         return
 
       componentWillUnmount: ->
-        @websockets.disconnect()
-        @side_channel?.destroy()
+        WebSockets.unsubscribe @game_channel.name
+        WebSockets.unsubscribe @side_channel.name if @side_channel
         return
 
-      componentDidUpdate: ( props, prev_state )->
-        if @state.game.user_side?.name != prev_state.game.user_side?.name
-          @listenSideChannel @state.game.user_side?.name
+      componentDidUpdate: ->
+        @listenSideChannel()
+        return
+
+      componentWillUpdate: ( next_props, next_state )->
+        next_state.game.state.read_data()
         return
 
       componentDidMount: ->
@@ -79,7 +93,6 @@ modulejs.define 'v.g.s.Page',
 
       render: ->
         game = @state.game
-        user = @state.user
 
         left_part = 
           if @state.map_or_info == 'map'
@@ -96,14 +109,12 @@ modulejs.define 'v.g.s.Page',
         `<div id='games_show' className='page'>
           <Menu 
             game={game}
-            user={user} 
             page={this}
           />
           <Resizer>
             {left_part}
             <Chat 
               game={game}
-              user={user}
               side_channel={this.side_channel}
               game_channel={this.game_channel}
             />

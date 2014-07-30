@@ -1,8 +1,8 @@
 class GamesController < ApplicationController
   before_filter :authenticate_user!, except: [ :index, :show, :progress ]
-  before_filter :allow_progress, only: :progress
   load_resource except: [ :create, :index ]
   load_and_authorize_resource only: [ :destroy, :start ]
+  before_filter :authorize_progress, only: :progress
   after_action :send_websocket, only: [ :start, :progress, :rollback ]
   after_action :create_message, only: [ :start, :progress, :rollback ]
 
@@ -44,7 +44,7 @@ class GamesController < ApplicationController
 
   private
 
-  def allow_progress
+  def authorize_progress
     valid_request = 
       if @game.time_mode == 'manual'
         @game.creator == current_user
@@ -56,14 +56,14 @@ class GamesController < ApplicationController
   end
 
   def send_websocket
-    WebsocketRails[@game.id.to_s].trigger 'game', render_to_string 'games/changes'
+    WebsocketRails[@game.id.to_s].trigger 'game', render_to_string(:changes)
   end
 
   def create_message
     return if @game.sandbox?
     text = @game.ended? ? 'END' : action_name.upcase
     @message = @game.messages.create from: 'Dip', is_public: true, text: text
-    WebsocketRails[@game.id.to_s].trigger 'message', render_to_string 'messages/show'
+    WebsocketRails[@game.id.to_s].trigger 'message', render_to_string(:show)
   end
 
   def game_params 

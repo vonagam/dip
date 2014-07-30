@@ -13,6 +13,7 @@ modulejs.define 'v.g.s.chat.Form',
     React.createClass
       componentDidMount: ()->
         node = $ @getDOMNode()
+        #TODO no success?
         node.on 'ajax:success', ->
           node.find('textarea').val ''
           return
@@ -23,7 +24,6 @@ modulejs.define 'v.g.s.chat.Form',
         return
       render: ->
         game = @props.game
-        user = @props.user
 
         active = can 'create message', game
 

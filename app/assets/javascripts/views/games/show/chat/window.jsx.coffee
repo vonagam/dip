@@ -17,7 +17,7 @@ modulejs.define 'v.g.s.chat.Window', [ 'v.g.s.chat.Message' ], ( Message )->
       @setState @state_from_messages messages, @state.messages
       return
     bind_channel: ( channel )->
-      channel.bind 'message', ( message )=> @add_new_message message
+      channel.bind 'message', ( message )=> @add_new_message JSON.parse message
       return
     scroll_to: ( bottom )->
       node = @getDOMNode()
@@ -57,13 +57,13 @@ modulejs.define 'v.g.s.chat.Window', [ 'v.g.s.chat.Message' ], ( Message )->
       messages = {}
       user_name = game.user_side?.name
 
-      if @user_name != user_name && user_name
+      if user_name && @user_name != user_name
         @bind_channel @props.side_channel
 
       @user_name = user_name
 
       for message in @state.messages
-        messages[message._id] = `<Message message={message} user_name={this.user_name} />`
+        messages[message.id] = `<Message message={message} user_name={this.user_name} />`
 
       `<div className='window' onScroll={ this.state.all ? null : this.onScroll }>
         {messages}
