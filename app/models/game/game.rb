@@ -70,18 +70,20 @@ class Game
     answer.is_a?(Proc) ? answer.call(self) : answer
   end
 
+  def start
+    return unless waiting?
+    going!
+    fill_sides_powers
+    state.initial_sides_info
+    start_timer
+    reload
+  end
+
   def progress
-    return if ended?
-
-    if waiting?
-      going!
-      fill_sides_powers
-      state.initial_sides_info
-    else
-      state.create_next.apply_to_game
-    end
-
+    return unless going?
+    state.create_next.apply_to_game
     start_timer if going?
+    reload
   end
 
   def rollback
@@ -91,24 +93,24 @@ class Game
     state.apply_to_game
   end
 
-  def start_timer( force = false )
-    return if time_mode == 'manual' || (!force && is_left?)
-    timer_at = TIME_MODES[ time_mode ].minutes.from_now
-    update_attribute :timer_at, timer_at
-    RestClient.delay(run_at: timer_at).post progress_game_url(self), secret: secret
-  end
-
   def sandbox?
     going? && sides.count == 1
   end
 
   def is_left?
     return false if states.count < 4
-    last_three_states = states.desc(:_id).limit(3).skip(1).to_a
-    last_three_states.any?{ |state| state.resulted_orders.not_empty? }
+    last_three_states = states.desc(:_id).limit(3).to_a
+    last_three_states.all?{ |state| state.orders_info.empty? }
   end
 
   protected
+
+  def start_timer( force = false )
+    return if time_mode == 'manual' || (!force && is_left?)
+    timer_at = TIME_MODES[ time_mode ].minutes.from_now
+    update_attribute :timer_at, timer_at
+    RestClient.delay(run_at: timer_at).post progress_game_url(self), secret: secret
+  end
 
   def create_initial_state
     State.create_initial_state self

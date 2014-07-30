@@ -59,7 +59,7 @@ class State
 
   def apply_to_game
     game.orders.destroy_all
-    game.sides.each{ |side| side.update_attributes sides_info[side.id] }
+    game.sides.each{ |side| side.update_attributes sides_info[side.id.to_s] }
     if is_end
       game.update_attributes! status: :ended, ended_by: 'win'
     else
@@ -69,20 +69,20 @@ class State
   end
 
   def self.create_initial_state( game )
-    State::Move.create(
-      game: self,
+    game.states.create(
       previous_id: nil,
       data: Engine::Parser::State.new(game.map.initial_state).to_hash,
       date: 0,
       orders_info: {},
       sides_info: {},
-      is_end: false
+      is_end: false,
+      _type: 'State::Move'
     )
   end
 
   def initial_sides_info
     sides_info = game.sides.each_with_object({}) do |side, hash|
-      hash[side.id] = { status: :fighting, orderable: true }
+      hash[side.id.to_s] = { status: :fighting, orderable: true }
     end
     update_attribute :sides_info, sides_info
   end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Game do
   before do
@@ -6,7 +6,7 @@ describe Game do
   end
 
   it '#initial' do
-    expect( @game.status ).to eq 'waiting'
+    expect( @game.waiting? ).to be true
     expect( @game.sides.count ).to eq 1
     expect( @game.sides.first.user ).to eq @game.creator
     expect( @game.states.count ).to eq 1
@@ -14,34 +14,94 @@ describe Game do
     expect( @game.sides.first.power ).to be nil
   end
 
-  describe '#progress' do
-    let(:progress) { -> { @game.progress } }
-
+  describe '#start' do
     it 'change status' do
-      expect( progress ).to change( @game, :status ).from('waiting').to('started')
+      expect{ @game.start }.to change( @game, :status ).from(:waiting).to(:going)
     end
 
     it 'not create new state' do
-      expect( progress ).not_to change{ @game.states.count }
+      expect{ @game.start }.not_to change{ @game.states.count }
     end
   end
 
-  it '#randomize_sides' do
-    create :side, game: @game, power: nil
-    create :side, game: @game, power: ''
-    create :side, game: @game, power: ' '
+  describe '#progress' do
+    def progress
+      @game.start
+      @game.progress
+    end
 
-    expect{ @game.send :randomize_sides }
-    .to change{ @game.sides.select{ |s| s.power.blank? }.count }.from(4).to(0)
+    def difference
+      @game.start
+      start = @game.attributes
+      @game.progress
+      Hash[start.to_a - @game.attributes.to_a]
+    end
+
+    it 'without start - nothing' do
+      expect{ @game.progress }.not_to change{ @game.attributes }
+    end
+
+    it 'create state' do
+      expect{ progress }.to change{ @game.states.count }.by 1
+    end
+
+    it 'change current state' do
+      expect{ progress }.to change{ @game.state }.from @game.state
+    end
+
+    it 'manual - only states' do
+      expect( difference.keys ).to eq ['states']
+    end
+
+    it 'timed - timer_at change' do
+      @game.update_attributes time_mode: '5m'
+      expect( difference.keys ).to eq ['states','timer_at']
+    end
+
+    it 'multiply times - no problem' do
+      expect do
+        @game.start
+        10.times do
+          @game.progress
+        end
+      end.not_to raise_exception
+
+      expect( @game.states.count ).to eq 11
+    end
+  end
+
+  describe '#rollback' do
+    it 'simple go back' do
+      @game.start
+      10.times{ @game.progress }
+      start = @game.attributes
+      @game.progress
+      expect( start ).not_to eq @game.attributes
+      @game.rollback
+      expect( start ).to eq @game.attributes
+    end
+  end
+
+  it '#progress' do
+    @game.start
+    state = @game.state
+    expect{ @game.progress }.to change{ @game.state }.from(state)
+  end
+
+  it '#fill_sides_powers' do
+    create :side, game: @game, power: nil
+
+    expect{ @game.send :fill_sides_powers }
+    .to change{ @game.sides.select{ |s| s.power.blank? }.count }.from(2).to(0)
   end
 
   it '#is_left?' do
-    @game.update_attributes time_mode: 'sixty_seconds'
+    @game.update_attributes time_mode: '5m'
+    @game.start
 
-    4.times do |i|
+    3.times do |i|
       @game.progress
-      @game.reload
-      expect( @game.send :is_left? ).to be (i == 3)
+      expect( @game.is_left? ).to be (i == 2)
     end
   end
 

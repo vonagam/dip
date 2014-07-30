@@ -28,7 +28,7 @@ class GamesController < ApplicationController
   end
 
   def start
-    @game.progress
+    @game.start
     head :ok
   end
 
