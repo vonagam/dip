@@ -28,7 +28,7 @@ modulejs.define 'm.Game',
             if i+1 < new_states.length
               state.orders = new_states[i+1].orders_info
           options.$set = new_states
-          all.state = $set: new_states[new_states.length-1].read_data()
+          all.state = $set: new_states[new_states.length-1]
 
         return
 
@@ -42,6 +42,24 @@ modulejs.define 'm.Game',
 
         options.$set = new_sides
         all.user_side = $set: user_side
+        return
+
+      $set_orders: ( key, orders, options, all )->
+        if all.states
+          if states = all.states.$set
+            states[states.length-1].orders = orders
+            return
+          if state = all.states.$push
+            state.orders = orders
+            return
+        all.states ||= {}
+        all.states[@states.length-1] = orders: $set: orders
+        return
+
+      $after_update: ( options )->
+        id = @state.id
+        @state = @states.filter( (state)-> state.id == id )[0]
+        @state.read_data()
         return
 
       private_chat_is_available: ->

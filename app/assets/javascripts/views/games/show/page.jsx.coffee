@@ -77,10 +77,6 @@ modulejs.define 'v.g.s.Page',
         @listenSideChannel()
         return
 
-      componentWillUpdate: ( next_props, next_state )->
-        next_state.game.state.read_data()
-        return
-
       componentDidMount: ->
         node = $(@getDOMNode()).parent()[0]
         callback = ->

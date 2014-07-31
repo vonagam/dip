@@ -26,8 +26,8 @@ class Game
   field :time_mode
   field :chat_mode
   field :powers_is_random, type: Boolean
-  field :timer_at, type: Time
 
+  belongs_to :timer, class_name: 'Delayed::Backend::Mongoid::Job'
   belongs_to :map
   belongs_to :creator, class_name: 'User'
   embeds_many :sides
@@ -76,14 +76,12 @@ class Game
     fill_sides_powers
     state.initial_sides_info
     start_timer
-    reload
   end
 
   def progress
     return unless going?
     state.create_next.apply_to_game
     start_timer if going?
-    reload
   end
 
   def rollback
@@ -107,9 +105,10 @@ class Game
 
   def start_timer( force = false )
     return if time_mode == 'manual' || (!force && is_left?)
-    timer_at = TIME_MODES[ time_mode ].minutes.from_now
-    update_attribute :timer_at, timer_at
-    RestClient.delay(run_at: timer_at).post progress_game_url(self), secret: secret
+    run_at = TIME_MODES[time_mode].minutes.from_now
+    update_attribute :timer, 
+      RestClient.delay(run_at: run_at).post(progress_game_url(self), secret: secret)
+    reload
   end
 
   def create_initial_state

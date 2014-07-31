@@ -12,12 +12,7 @@ modulejs.define 'v.g.s.menu.SendOrders',
           Routes.game_order_path @props.game.id, format: 'json'
           order: { data: orders }
           ( order )=>
-            state = @props.game.state
-
-            if state.last
-              state.orders = order.data
-              @props.page.forceUpdate()
-
+            @props.page.updateGame orders: $set: order.data
             return
 
         return stopEvent e

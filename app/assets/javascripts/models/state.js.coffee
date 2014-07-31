@@ -53,6 +53,7 @@ modulejs.define 'm.State',
           for power_name, orders of @orders
             for area_name, order of orders
               if order.type != 'Build'
+                log area_name
                 unit = @get_area( area_name )[whom]
                 unit.create_order order.type, order
               else

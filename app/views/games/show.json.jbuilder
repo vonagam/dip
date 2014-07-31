@@ -10,7 +10,7 @@ json.game do
     json.partial! 'maps/map', map: @game.map
   end
 
-  json.orders @side && order = @game.order_of(@side)
+  json.orders @side && @game.order_of(@side).try(:data)
 end
 
 

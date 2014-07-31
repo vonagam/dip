@@ -6,7 +6,9 @@ modulejs.define 'm.Base', ->
         @[key] = value
 
     $update: ( options )->
-      React.addons.update this, @$_update options
+      result = React.addons.update this, @$_update options
+      result.$after_update? options
+      result
     
     $_update: ( all, local = all, path = [] )->
       top = path.length == 0
