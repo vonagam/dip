@@ -7,8 +7,7 @@ modulejs.define 'v.g.s.menu.Timer',
     React.createClass
       toggle_timer: ( bool )->
         if bool
-          @end_at = Date.parse @last.end_at
-          return if @timer_id || @end_at <= new Date().getTime()
+          return if @timer_id || @timer_at <= new Date().getTime()
           @forceUpdate()
           @timer_id = setInterval (=> @forceUpdate()), 1000
         else 
@@ -17,7 +16,7 @@ modulejs.define 'v.g.s.menu.Timer',
             @timer_id = null
         return
       show_remain: ->
-        remain = @end_at - new Date().getTime()
+        remain = @timer_at - new Date().getTime()
 
         if remain < 0
           @toggle_timer false
@@ -32,12 +31,12 @@ modulejs.define 'v.g.s.menu.Timer',
       componentDidMount: -> @toggle_timer @active
       render: ->
         game = @props.game
-        @last = game.states[ game.states.length - 1 ]
+        @timer_at = game.timer_at && Date.parse game.timer_at
 
         @active = 
           game.status == 'going' && 
           game.time_mode != 'manual' &&
-          @last.end_at != null
+          game.timer_at != null
 
         `<Component className='timer' active={this.active && this.timer_id}>
           remain {this.show_remain()}

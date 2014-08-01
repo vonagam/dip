@@ -1,16 +1,12 @@
 class GamesController < ApplicationController
   before_filter :authenticate_user!, except: [ :index, :show, :progress ]
   load_resource except: [ :create, :index ]
-  load_and_authorize_resource only: [ :destroy, :start ]
+  authorize_resource only: [ :destroy, :start ]
   before_filter :authorize_progress, only: :progress
-  after_action :send_websocket, only: [ :start, :progress, :rollback ]
-  after_action :create_message, only: [ :start, :progress, :rollback ]
 
   def index
     query = [{is_public: true}]
-
-    query.push({:_id.in => current_user.participated_games}) if user_signed_in?
-    
+    query.push(:_id.in => current_user.participated_games) if user_signed_in?
     @games = searching(Game.or(*query), params[:filters]).page
   end
 
@@ -28,21 +24,25 @@ class GamesController < ApplicationController
   end
 
   def start
-    @game.start
-    head :ok
+    simple_action
   end
 
   def progress
-    @game.progress
-    head :ok
+    simple_action
   end
 
   def rollback
-    @game.rollback
-    head :ok
+    simple_action
   end
 
   private
+
+  def simple_action
+    @game.send action_name
+    head :ok
+    send_websocket
+    create_message
+  end
 
   def authorize_progress
     valid_request = 

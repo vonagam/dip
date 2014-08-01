@@ -1,6 +1,25 @@
-def progress
-  @game.progress
-  @game.reload
+def different_games( *args )
+  different_game_variants args
+end
+
+VARIANTS = {
+  sides_count: [0,1,6],
+  progress_count: [false,0,4],
+  time_mode: Game::TIME_MODES.keys,
+  chat_mode: Game::CHAT_MODES.keys,
+  is_public: [true, false],
+  powers_is_random: [true, false]
+}
+
+def different_game_variants( fields, values = {} )
+  return [create(:game, values)] if fields.empty?
+  field = fields.shift
+  result = []
+  VARIANTS[field].each do |variant|
+    values[field] = variant
+    result += different_game_variants fields, values
+  end
+  result
 end
 
 def order_data( raw )

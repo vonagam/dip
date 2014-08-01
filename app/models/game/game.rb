@@ -105,6 +105,7 @@ class Game
 
   def start_timer( force = false )
     return if time_mode == 'manual' || (!force && is_left?)
+    timer.destroy if timer
     run_at = TIME_MODES[time_mode].minutes.from_now
     update_attribute :timer, 
       RestClient.delay(run_at: run_at).post(progress_game_url(self), secret: secret)
@@ -113,6 +114,7 @@ class Game
 
   def create_initial_state
     State.create_initial_state self
+    reload
   end
   
   def add_creator_side

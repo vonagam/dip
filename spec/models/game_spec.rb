@@ -55,7 +55,7 @@ describe Game do
 
     it 'timed - timer_at change' do
       @game.update_attributes time_mode: '5m'
-      expect( difference.keys ).to eq ['states','timer_at']
+      expect( difference.keys ).to eq ['states','timer_id']
     end
 
     it 'multiply times - no problem' do
