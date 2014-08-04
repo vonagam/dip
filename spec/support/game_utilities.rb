@@ -1,5 +1,9 @@
-def different_games( *args )
-  different_game_variants args
+def different_games( *args, &block )
+  variants = different_game_variants args
+
+  variants.each do |variant|
+    block.call variant
+  end
 end
 
 VARIANTS = {
@@ -12,12 +16,11 @@ VARIANTS = {
 }
 
 def different_game_variants( fields, values = {} )
-  return [create(:game, values)] if fields.empty?
+  return [values] if fields.empty?
   field = fields.shift
   result = []
   VARIANTS[field].each do |variant|
-    values[field] = variant
-    result += different_game_variants fields, values
+    result += different_game_variants fields, values.merge(field => variant)
   end
   result
 end

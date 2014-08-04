@@ -127,7 +127,7 @@ class Game
     else
       available = available_powers
       sides.select{ |s| s.power.blank? }.each do |side|
-        side.update_attributes power: [ available.shuffle!.pop ]
+        side.update_attributes! power: [ available.shuffle!.pop ]
       end
     end
 
